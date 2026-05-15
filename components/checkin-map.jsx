@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import Link from "next/link";
+import Image from "next/image";
 import L from "leaflet";
 import { MapContainer, Marker, TileLayer, Tooltip, useMap } from "react-leaflet";
 import { FreeMode, Keyboard } from "swiper/modules";
@@ -15,8 +15,9 @@ import {
   useOverlay,
   usePreventScroll
 } from "react-aria";
-import { Button, Pressable } from "react-aria-components";
+import { Button, Link, Pressable, Tab, TabList, Tabs } from "react-aria-components";
 import { QuickMemoryPanel } from "@/components/quick-memory-panel";
+import { Field, SelectField, SelectItem } from "@/components/ui";
 import {
   categories,
   checkins,
@@ -135,41 +136,41 @@ function MapControls({ activeCheckin, visibleCheckins, onAddMemory }) {
   return (
     <div className="explory-map-controls" aria-label="Điều khiển bản đồ">
       <div className="explory-control-group">
-        <button
+        <Button
           type="button"
           title="Phóng to"
           aria-label="Phóng to"
-          onClick={() => map.zoomIn()}
+          onPress={() => map.zoomIn()}
         >
           +
-        </button>
+        </Button>
         <span aria-hidden="true" />
-        <button
+        <Button
           type="button"
           title="Thu nhỏ"
           aria-label="Thu nhỏ"
-          onClick={() => map.zoomOut()}
+          onPress={() => map.zoomOut()}
         >
           -
-        </button>
+        </Button>
       </div>
 
       <div className="explory-control-button">
-        <button type="button" title="Đưa về hành trình" aria-label="Đưa về hành trình" onClick={resetView}>
+        <Button type="button" title="Đưa về hành trình" aria-label="Đưa về hành trình" onPress={resetView}>
           <span className="control-compass" aria-hidden="true" />
-        </button>
+        </Button>
       </div>
 
       <div className="explory-control-button">
-        <button type="button" title="Vị trí hiện tại" aria-label="Vị trí hiện tại" onClick={locateUser}>
+        <Button type="button" title="Vị trí hiện tại" aria-label="Vị trí hiện tại" onPress={locateUser}>
           <span className="control-location" aria-hidden="true" />
-        </button>
+        </Button>
       </div>
 
       <div className="explory-control-button primary">
-        <button type="button" title="Thêm kỷ niệm" aria-label="Thêm kỷ niệm" onClick={onAddMemory}>
+        <Button type="button" title="Thêm kỷ niệm" aria-label="Thêm kỷ niệm" onPress={onAddMemory}>
           +
-        </button>
+        </Button>
       </div>
 
       {locationStatus ? <p className="explory-location-status">{locationStatus}</p> : null}
@@ -381,23 +382,25 @@ function MapSearchPanel({
   return (
     <div className="explory-map-info" aria-label="Tìm kiếm kỷ niệm trên bản đồ">
       <div className="explory-searchbar">
-        <label className="explory-search-field">
+        <div className="explory-search-field">
           <span aria-hidden="true">⌕</span>
-          <input
+          <Field
+            aria-label="Tìm kỷ niệm hoặc địa điểm"
+            className="explory-search-input"
             value={query}
-            onChange={(event) => onQueryChange(event.target.value)}
+            onChange={onQueryChange}
             placeholder="Tìm kỷ niệm hoặc địa điểm"
           />
-        </label>
-        <button
+        </div>
+        <Button
           className="explory-info-toggle"
           type="button"
           aria-expanded={isInfoOpen}
           aria-label="Mở bộ lọc"
-          onClick={onToggleInfo}
+          onPress={onToggleInfo}
         >
           <span aria-hidden="true">{isInfoOpen ? "×" : "☰"}</span>
-        </button>
+        </Button>
       </div>
 
       <div className="explory-found-pill">
@@ -407,29 +410,33 @@ function MapSearchPanel({
 
       <div className={isInfoOpen ? "explory-info-detail open" : "explory-info-detail"}>
         <div className="explory-filter-grid">
-          <label>
-            <span>Nhóm</span>
-            <select value={categoryId} onChange={(event) => onCategoryChange(event.target.value)}>
-              <option value="all">Tất cả</option>
+          <SelectField
+            className="aria-select explory-filter-select"
+            label="Nhóm"
+            selectedKey={categoryId}
+            onSelectionChange={onCategoryChange}
+          >
+              <SelectItem id="all">Tất cả</SelectItem>
               {categories.map((category) => (
-                <option value={category.id} key={category.id}>
+                <SelectItem id={category.id} key={category.id}>
                   {category.name}
-                </option>
+                </SelectItem>
               ))}
-            </select>
-          </label>
+          </SelectField>
 
-          <label>
-            <span>Cảm xúc</span>
-            <select value={moodId} onChange={(event) => onMoodChange(event.target.value)}>
-              <option value="all">Tất cả</option>
+          <SelectField
+            className="aria-select explory-filter-select"
+            label="Cảm xúc"
+            selectedKey={moodId}
+            onSelectionChange={onMoodChange}
+          >
+              <SelectItem id="all">Tất cả</SelectItem>
               {moods.map((mood) => (
-                <option value={mood.id} key={mood.id}>
+                <SelectItem id={mood.id} key={mood.id}>
                   {mood.name}
-                </option>
+                </SelectItem>
               ))}
-            </select>
-          </label>
+          </SelectField>
         </div>
 
         <div className="explory-range-panel">
@@ -463,10 +470,10 @@ function MapSearchPanel({
               </span>
             </div>
           </div>
-          <button className="btn btn-primary explory-add-inline" type="button" onClick={onAddMemory}>
+          <Button className="btn btn-primary explory-add-inline" type="button" onPress={onAddMemory}>
             <span aria-hidden="true">+</span>
             Thêm kỷ niệm
-          </button>
+          </Button>
         </div>
       </div>
     </div>
@@ -579,14 +586,19 @@ function MemoryDrawerContent({ checkin, initialMediaIndex }) {
 
   return (
     <article className="drawer-memory">
-      <button
+      <Button
         className="google-place-hero media-open-button"
         type="button"
         aria-label={`Mở ảnh ${checkin.title}`}
-        onClick={() => openMedia(0)}
+        onPress={() => openMedia(0)}
       >
-        <img src={getCoverImage(checkin)} alt={checkin.title} />
-      </button>
+        <Image
+          src={getCoverImage(checkin)}
+          alt={checkin.title}
+          fill
+          sizes="(max-width: 820px) 100vw, 430px"
+        />
+      </Button>
 
       <div className="google-place-summary">
         <h2>{checkin.title}</h2>
@@ -603,14 +615,14 @@ function MemoryDrawerContent({ checkin, initialMediaIndex }) {
           <span aria-hidden="true">↗</span>
           <small>Chi tiết</small>
         </Link>
-        <button type="button">
+        <Button type="button">
           <span aria-hidden="true">♡</span>
           <small>Lưu</small>
-        </button>
-        <button type="button">
+        </Button>
+        <Button type="button">
           <span aria-hidden="true">⇄</span>
           <small>Chia sẻ</small>
-        </button>
+        </Button>
       </div>
 
       <p className="journal-text">{checkin.caption}</p>
@@ -635,27 +647,27 @@ function MemoryDrawerContent({ checkin, initialMediaIndex }) {
 
       <div className="google-place-media" aria-label="Ảnh và video trong kỷ niệm">
         {visibleMedia.map((item, index) => (
-          <button
+          <Button
             className="memory-preview-tile media-open-button"
             key={item.id}
             type="button"
             aria-label={`Mở ${item.type === "video" ? "video" : "ảnh"} ${index + 1}`}
-            onClick={() => openMedia(index)}
+            onPress={() => openMedia(index)}
           >
             <MediaPreview item={item} alt={item.alt ?? ""} />
             {item.type === "video" ? <i aria-label="Video" /> : null}
-          </button>
+          </Button>
         ))}
         {remainingCount > 0 ? (
-          <button
+          <Button
             className="memory-preview-more media-open-button"
             type="button"
             aria-label="Mở thêm media"
-            onClick={() => openMedia(visibleMedia.length)}
+            onPress={() => openMedia(visibleMedia.length)}
           >
             <strong>+{remainingCount}</strong>
             <small>More</small>
-          </button>
+          </Button>
         ) : null}
       </div>
 
@@ -675,6 +687,7 @@ function MemoryDrawerContent({ checkin, initialMediaIndex }) {
 function MemoryMediaViewer({ activeIndex, checkin, media, onClose, onSelect }) {
   const activeItem = media[activeIndex] ?? media[0];
   const [mainSwiper, setMainSwiper] = useState(null);
+  const [mediaFilter, setMediaFilter] = useState("all");
 
   usePreventScroll();
 
@@ -714,9 +727,9 @@ function MemoryMediaViewer({ activeIndex, checkin, media, onClose, onSelect }) {
   const viewer = (
     <div className="memory-media-viewer" role="dialog" aria-modal="true" aria-label="Xem ảnh và video">
       <nav className="media-viewer-mini-nav" aria-label="Điều hướng media">
-        <button type="button" aria-label="Menu">
+        <Button type="button" aria-label="Menu">
           ☰
-        </button>
+        </Button>
         <span>
           <i aria-hidden="true">▯</i>
           Saved
@@ -733,20 +746,26 @@ function MemoryMediaViewer({ activeIndex, checkin, media, onClose, onSelect }) {
 
       <aside className="media-viewer-rail" aria-label="Danh sách media">
         <div className="media-viewer-search">
-          <button type="button" aria-label="Đóng trình xem" onClick={onClose}>
+          <Button type="button" aria-label="Đóng trình xem" onPress={onClose}>
             ←
-          </button>
+          </Button>
           <label>
             <span>{checkin.title}</span>
             <i aria-hidden="true">⌕</i>
           </label>
         </div>
-        <div className="media-viewer-tabs" aria-label="Bộ lọc media">
-          <span className="active">Tất cả</span>
-          <span>Mới nhất</span>
-          <span>Video</span>
-          <span>Đã lưu</span>
-        </div>
+        <Tabs
+          selectedKey={mediaFilter}
+          aria-label="Bộ lọc media"
+          onSelectionChange={(key) => setMediaFilter(String(key))}
+        >
+          <TabList className="media-viewer-tabs">
+            <Tab id="all">Tất cả</Tab>
+            <Tab id="latest">Mới nhất</Tab>
+            <Tab id="video">Video</Tab>
+            <Tab id="saved">Đã lưu</Tab>
+          </TabList>
+        </Tabs>
         <Swiper
           className="media-viewer-thumbs"
           direction="vertical"
@@ -768,15 +787,15 @@ function MemoryMediaViewer({ activeIndex, checkin, media, onClose, onSelect }) {
         >
           {media.map((item, index) => (
             <SwiperSlide className="media-viewer-thumb-slide" key={item.id}>
-              <button
+              <Button
                 className={index === activeIndex ? "active" : ""}
                 type="button"
                 aria-label={`Chọn ${item.type === "video" ? "video" : "ảnh"} ${index + 1}`}
-                onClick={() => onSelect(index)}
+                onPress={() => onSelect(index)}
               >
                 <MediaPreview item={item} alt={item.alt ?? ""} />
                 {item.type === "video" ? <i>Video</i> : null}
-              </button>
+              </Button>
             </SwiperSlide>
           ))}
         </Swiper>
@@ -790,33 +809,33 @@ function MemoryMediaViewer({ activeIndex, checkin, media, onClose, onSelect }) {
         </div>
 
         <div className="media-viewer-actions">
-          <button type="button">
+          <Button type="button">
             <span aria-hidden="true">↗</span>
             Chia sẻ
-          </button>
-          <button type="button" aria-label="Đóng" onClick={onClose}>
+          </Button>
+          <Button type="button" aria-label="Đóng" onPress={onClose}>
             ×
-          </button>
+          </Button>
         </div>
 
         {media.length > 1 ? (
           <>
-            <button
+            <Button
               className="media-viewer-nav prev"
               type="button"
               aria-label="Media trước"
-              onClick={() => move(-1)}
+              onPress={() => move(-1)}
             >
               ‹
-            </button>
-            <button
+            </Button>
+            <Button
               className="media-viewer-nav next"
               type="button"
               aria-label="Media tiếp theo"
-              onClick={() => move(1)}
+              onPress={() => move(1)}
             >
               ›
-            </button>
+            </Button>
           </>
         ) : null}
 
@@ -834,7 +853,14 @@ function MemoryMediaViewer({ activeIndex, checkin, media, onClose, onSelect }) {
               {item.type === "video" ? (
                 <video key={item.id} controls preload="metadata" src={item.url} />
               ) : (
-                <img key={item.id} src={item.url} alt={item.alt ?? checkin.title} />
+                <Image
+                  key={item.id}
+                  src={item.url}
+                  alt={item.alt ?? checkin.title}
+                  width={1600}
+                  height={1000}
+                  sizes="(max-width: 820px) 100vw, calc(100vw - 360px)"
+                />
               )}
             </SwiperSlide>
           ))}
@@ -860,7 +886,15 @@ function MediaPreview({ item, alt, className }) {
     );
   }
 
-  return <img className={className} src={item?.url} alt={alt} />;
+  return (
+    <Image
+      className={className}
+      src={item?.url}
+      alt={alt}
+      fill
+      sizes="(max-width: 820px) 34vw, 160px"
+    />
+  );
 }
 
 function MemoryMediaPreview({ checkin, onMouseEnter, onMouseLeave, onPress, variant }) {
@@ -869,26 +903,21 @@ function MemoryMediaPreview({ checkin, onMouseEnter, onMouseLeave, onPress, vari
   const visibleMedia = media.slice(0, variant === "drawer" ? 8 : 6);
   const remainingCount = Math.max(media.length - visibleMedia.length, 0);
   const isHoverPreview = variant === "hover";
-  const category = getCategory(checkin.categoryId);
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
+  const [hoverSwiper, setHoverSwiper] = useState(null);
   const activeSlide = media[activeSlideIndex] ?? media[0];
 
-  function moveSlide(event, direction) {
-    event.preventDefault();
-    event.stopPropagation();
-    setActiveSlideIndex((currentIndex) => {
-      const nextIndex = currentIndex + direction;
+  function moveSlide(direction) {
+    if (!hoverSwiper) {
+      return;
+    }
 
-      if (nextIndex < 0) {
-        return media.length - 1;
-      }
+    if (direction < 0) {
+      hoverSwiper.slidePrev();
+      return;
+    }
 
-      if (nextIndex >= media.length) {
-        return 0;
-      }
-
-      return nextIndex;
-    });
+    hoverSwiper.slideNext();
   }
 
   const preview = isHoverPreview ? (
@@ -899,11 +928,25 @@ function MemoryMediaPreview({ checkin, onMouseEnter, onMouseLeave, onPress, vari
       aria-label={`Xem chi tiết ${checkin.title}`}
     >
       <div className="memory-place-slider">
-        <MediaPreview
-          className="memory-place-card-photo"
-          item={activeSlide}
-          alt={activeSlide?.alt ?? checkin.title}
-        />
+        <Swiper
+          className="memory-place-swiper"
+          loop={media.length > 1}
+          slidesPerView={1}
+          preventClicks
+          preventClicksPropagation
+          onSlideChange={(swiper) => setActiveSlideIndex(swiper.realIndex)}
+          onSwiper={setHoverSwiper}
+        >
+          {media.map((item) => (
+            <SwiperSlide className="memory-place-slide" key={item.id}>
+              <MediaPreview
+                className="memory-place-card-photo"
+                item={item}
+                alt={item.alt ?? checkin.title}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
         <div className="memory-place-scrim" aria-hidden="true" />
 
         {activeSlide?.type === "video" ? (
@@ -914,34 +957,24 @@ function MemoryMediaPreview({ checkin, onMouseEnter, onMouseLeave, onPress, vari
 
         {media.length > 1 ? (
           <>
-            <button
+            <Button
               className="memory-slide-button prev"
               type="button"
               aria-label="Media trước"
-              onClick={(event) => moveSlide(event, -1)}
+              onPress={() => moveSlide(-1)}
             >
               ‹
-            </button>
-            <button
+            </Button>
+            <Button
               className="memory-slide-button next"
               type="button"
               aria-label="Media tiếp theo"
-              onClick={(event) => moveSlide(event, 1)}
+              onPress={() => moveSlide(1)}
             >
               ›
-            </button>
+            </Button>
           </>
         ) : null}
-
-        <div className="memory-place-overlay">
-          <div>
-            <h3>{checkin.title}</h3>
-            <p>{checkin.locationName}</p>
-          </div>
-          <span className="memory-place-badge">
-            {activeSlide?.type === "video" ? "Video" : "Ảnh"}
-          </span>
-        </div>
 
         {media.length > 1 ? (
           <div className="memory-slide-progress" aria-label={`${activeSlideIndex + 1} / ${media.length}`}>
@@ -956,20 +989,9 @@ function MemoryMediaPreview({ checkin, onMouseEnter, onMouseLeave, onPress, vari
         ) : null}
       </div>
 
-      <div className="memory-place-footer">
-        <button
-          type="button"
-          onClick={(event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            onPress?.();
-          }}
-        >
-          Xem chi tiết
-        </button>
-        <span>
-          {mediaSummary.photos} ảnh{mediaSummary.videos ? ` · ${mediaSummary.videos} video` : ""}
-        </span>
+      <div className="memory-place-body">
+        <h3>{checkin.title}</h3>
+        <p>{formatDate(checkin.checkinTime)}</p>
       </div>
     </article>
   ) : (

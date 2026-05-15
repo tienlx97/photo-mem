@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
-import { Button } from "react-aria-components";
+import { Button, Input, Link } from "react-aria-components";
 import { moods } from "@/lib/mock-data";
+import { Field, SelectField, SelectItem, TextAreaField } from "@/components/ui";
 
 export function QuickMemoryPanel({ embedded = false }) {
   const [saved, setSaved] = useState(false);
@@ -48,43 +48,28 @@ export function QuickMemoryPanel({ embedded = false }) {
       ) : null}
 
       <label className="quick-upload" htmlFor="quick-photos">
-        <input id="quick-photos" type="file" accept="image/*,video/*" multiple />
+        <Input id="quick-photos" type="file" accept="image/*,video/*" multiple />
         <span aria-hidden="true">+</span>
         <strong>Thêm ảnh hoặc video</strong>
       </label>
 
-      <label className="field">
-        <span>Tiêu đề *</span>
-        <input required defaultValue="Một buổi chiều đáng nhớ" />
-      </label>
+      <Field isRequired label="Tiêu đề *" defaultValue="Một buổi chiều đáng nhớ" />
 
       <div className="field-grid compact">
-        <label className="field">
-          <span>Ngày *</span>
-          <input type="date" required defaultValue="2026-05-15" />
-        </label>
+        <Field isRequired label="Ngày *" type="date" defaultValue="2026-05-15" />
 
-        <label className="field">
-          <span>Cảm xúc</span>
-          <select defaultValue="memorable">
-            {moods.map((mood) => (
-              <option value={mood.id} key={mood.id}>
-                {mood.name}
-              </option>
-            ))}
-          </select>
-        </label>
+        <SelectField label="Cảm xúc" defaultSelectedKey="memorable">
+          {moods.map((mood) => (
+            <SelectItem id={mood.id} key={mood.id}>
+              {mood.name}
+            </SelectItem>
+          ))}
+        </SelectField>
       </div>
 
-      <label className="field">
-        <span>Địa điểm</span>
-        <input value={location} onChange={(event) => setLocation(event.target.value)} />
-      </label>
+      <Field label="Địa điểm" value={location} onChange={setLocation} />
 
-      <label className="field">
-        <span>Ghi chú</span>
-        <textarea rows={4} defaultValue="Điều mình muốn nhớ nhất là..." />
-      </label>
+      <TextAreaField label="Ghi chú" rows={4} defaultValue="Điều mình muốn nhớ nhất là..." />
 
       <div className="quick-actions">
         <Button className="btn btn-primary" type="submit">

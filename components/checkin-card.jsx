@@ -1,4 +1,7 @@
-import Link from "next/link";
+"use client";
+
+import Image from "next/image";
+import { Link } from "react-aria-components";
 import { formatDate, getCategory, getCoverImage, getMediaSummary, getMood } from "@/lib/mock-data";
 
 export function CheckinCard({ checkin, compact = false }) {
@@ -10,7 +13,12 @@ export function CheckinCard({ checkin, compact = false }) {
   return (
     <article className={compact ? "checkin-card compact" : "checkin-card"}>
       <Link href={`/checkins/${checkin.id}`} className="checkin-image-link" aria-label={checkin.title}>
-        <img src={coverImage} alt={checkin.title} />
+        <Image
+          src={coverImage}
+          alt={checkin.title}
+          fill
+          sizes={compact ? "(max-width: 820px) 100vw, 230px" : "(max-width: 820px) 100vw, 360px"}
+        />
         <span className="media-count">
           {mediaSummary.photos} ảnh{mediaSummary.videos ? ` · ${mediaSummary.videos} video` : ""}
         </span>

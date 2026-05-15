@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { CheckinCard } from "@/components/checkin-card";
 import { PageHeader, StatCard } from "@/components/ui";
 import { categories, checkins, coupleSpace, formatDate } from "@/lib/mock-data";
@@ -15,7 +16,15 @@ export default function ProfilePage() {
       />
 
       <section className="profile-hero">
-        <img src={coupleSpace.coverImage} alt="" />
+        <div className="profile-hero-image">
+          <Image
+            src={coupleSpace.coverImage}
+            alt=""
+            fill
+            priority
+            sizes="(max-width: 820px) 100vw, 360px"
+          />
+        </div>
         <div>
           <p className="eyebrow">Bắt đầu {formatDate(coupleSpace.startDate)}</p>
           <h2>{coupleSpace.name}</h2>
@@ -23,7 +32,7 @@ export default function ProfilePage() {
           <div className="people-row profile-people">
             {coupleSpace.people.map((person) => (
               <span key={person.id}>
-                <img src={person.avatar} alt={person.displayName} />
+                <Image src={person.avatar} alt={person.displayName} width={48} height={48} />
                 {person.displayName}
               </span>
             ))}

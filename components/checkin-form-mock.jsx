@@ -1,8 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
-import { Button } from "react-aria-components";
+import { Button, Radio, RadioGroup } from "react-aria-components";
 import { categories, journalPrompts, moods } from "@/lib/mock-data";
+import { Field, SelectField, SelectItem, TextAreaField } from "@/components/ui";
 
 const previewImages = [
   "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80",
@@ -34,7 +36,7 @@ export function CheckinFormMock() {
           <div className="preview-row">
             {previewImages.map((image, index) => (
               <div className="preview-item" key={image}>
-                <img src={image} alt="" />
+                <Image src={image} alt="" fill sizes="(max-width: 820px) 30vw, 180px" />
                 <span>{index === 0 ? "Cover" : index + 1}</span>
               </div>
             ))}
@@ -42,18 +44,13 @@ export function CheckinFormMock() {
         </div>
 
         <div className="form-section">
-          <label className="field">
-            <span>Tiêu đề</span>
-            <input defaultValue="Một buổi chiều đáng nhớ" />
-          </label>
+          <Field label="Tiêu đề" defaultValue="Một buổi chiều đáng nhớ" />
 
-          <label className="field">
-            <span>Nhật ký ngắn</span>
-            <textarea
-              rows={6}
-              defaultValue="Mình muốn nhớ lại ánh sáng, âm thanh và cảm giác lúc hai đứa vừa đến nơi này."
-            />
-          </label>
+          <TextAreaField
+            label="Nhật ký ngắn"
+            rows={6}
+            defaultValue="Mình muốn nhớ lại ánh sáng, âm thanh và cảm giác lúc hai đứa vừa đến nơi này."
+          />
 
           <div className="prompt-list" aria-label="Gợi ý viết nhật ký">
             {journalPrompts.map((prompt) => (
@@ -79,39 +76,26 @@ export function CheckinFormMock() {
             </div>
           </div>
 
-          <div className="segmented">
-            <Button
-              type="button"
-              className={locationMode === "gps" ? "active" : ""}
-              onPress={() => setLocationMode("gps")}
-            >
+          <RadioGroup
+            aria-label="Cách gắn địa điểm"
+            className="segmented"
+            value={locationMode}
+            onChange={setLocationMode}
+          >
+            <Radio className="segmented-option" value="gps">
               ⌖ GPS
-            </Button>
-            <Button
-              type="button"
-              className={locationMode === "search" ? "active" : ""}
-              onPress={() => setLocationMode("search")}
-            >
+            </Radio>
+            <Radio className="segmented-option" value="search">
               ⌕ Tìm kiếm
-            </Button>
-            <Button
-              type="button"
-              className={locationMode === "pin" ? "active" : ""}
-              onPress={() => setLocationMode("pin")}
-            >
+            </Radio>
+            <Radio className="segmented-option" value="pin">
               ◉ Chọn bản đồ
-            </Button>
-          </div>
+            </Radio>
+          </RadioGroup>
 
-          <label className="field">
-            <span>Tên địa điểm</span>
-            <input defaultValue="Kokoro Cafe" />
-          </label>
+          <Field label="Tên địa điểm" defaultValue="Kokoro Cafe" />
 
-          <label className="field">
-            <span>Địa chỉ</span>
-            <input defaultValue="45 Đặng Thái Thân, Đà Lạt" />
-          </label>
+          <Field label="Địa chỉ" defaultValue="45 Đặng Thái Thân, Đà Lạt" />
 
           <div className="location-picker">
             <span className="location-pin" />
@@ -120,44 +104,37 @@ export function CheckinFormMock() {
 
         <div className="form-section">
           <div className="field-grid">
-            <label className="field">
-              <span>Nhóm</span>
-              <select defaultValue="coffee">
+            <SelectField label="Nhóm" defaultSelectedKey="coffee">
                 {categories.map((category) => (
-                  <option value={category.id} key={category.id}>
+                  <SelectItem id={category.id} key={category.id}>
                     {category.name}
-                  </option>
+                  </SelectItem>
                 ))}
-              </select>
-            </label>
+            </SelectField>
 
-            <label className="field">
-              <span>Cảm xúc</span>
-              <select defaultValue="peaceful">
+            <SelectField label="Cảm xúc" defaultSelectedKey="peaceful">
                 {moods.map((mood) => (
-                  <option value={mood.id} key={mood.id}>
+                  <SelectItem id={mood.id} key={mood.id}>
                     {mood.name}
-                  </option>
+                  </SelectItem>
                 ))}
-              </select>
-            </label>
+            </SelectField>
           </div>
 
-          <label className="field">
-            <span>Ngày kỷ niệm</span>
-            <input type="date" defaultValue="2026-04-27" />
-          </label>
+          <Field label="Ngày kỷ niệm" type="date" defaultValue="2026-04-27" />
 
-          <div className="visibility-choice" role="radiogroup" aria-label="Trạng thái lưu">
-            <label>
-              <input type="radio" name="visibility" defaultChecked />
+          <RadioGroup
+            aria-label="Trạng thái lưu"
+            className="visibility-choice"
+            defaultValue="private"
+          >
+            <Radio value="private">
               <span>Chỉ hai người</span>
-            </label>
-            <label>
-              <input type="radio" name="visibility" />
+            </Radio>
+            <Radio value="draft">
               <span>Bản nháp</span>
-            </label>
-          </div>
+            </Radio>
+          </RadioGroup>
 
           <Button className="btn btn-primary submit-btn" type="submit">
             <span aria-hidden="true">✓</span>

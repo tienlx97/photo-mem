@@ -584,3 +584,49 @@
  ✓ Compiled in 907ms (3427 modules)
  ✓ Compiled in 989ms (3427 modules)
  ✓ Compiled in 1483ms (3413 modules)
+ ✓ Compiled in 4.7s (3413 modules)
+ ✓ Compiled in 978ms (3415 modules)
+ ✓ Compiled in 355ms (1782 modules)
+ ✓ Compiled in 566ms (3415 modules)
+ ✓ Compiled in 811ms (3394 modules)
+ ✓ Compiled in 997ms (3408 modules)
+ ✓ Compiled in 652ms (3408 modules)
+ ✓ Compiled in 619ms (3408 modules)
+ ✓ Compiled in 281ms (1781 modules)
+ ✓ Compiled in 675ms (3394 modules)
+ GET / 200 in 78ms
+ ○ Compiling /checkins ...
+ ✓ Compiled /checkins in 845ms (3401 modules)
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 862ms (3404 modules)
+ ✓ Compiled /_error in 441ms (3406 modules)
+ GET /checkins 500 in 30ms
+ GET /checkins 500 in 26ms
+ GET /checkins 500 in 14ms
+ GET / 500 in 14ms
+ GET / 500 in 12ms
+  ▲ Next.js 14.2.5
+  - Local:        http://localhost:3000
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 1859ms
+ ○ Compiling / ...
+ ✓ Compiled / in 15s (3197 modules)
+ GET /_next/static/webpack/12cfa1e7398278c7.webpack.hot-update.json 404 in 15339ms
+ GET / 200 in 15331ms
+ GET / 200 in 59ms
+ GET / 200 in 75ms
+ GET / 200 in 47ms
+ GET /_next/static/css/app/layout.css?v=1778867443637 404 in 50ms
+ GET /_next/static/chunks/webpack.js?v=1778867443637 404 in 66ms
+ GET /_next/static/chunks/app/page.js 404 in 56ms
+ GET /_next/static/chunks/app/layout.js 404 in 57ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 60ms
+ GET /_next/static/chunks/main-app.js?v=1778867443637 404 in 60ms
+ ✓ Compiled in 1737ms (3180 modules)
+ ✓ Compiled in 1245ms (3194 modules)
+ ✓ Compiled in 2.1s (3180 modules)
+ ✓ Compiled in 517ms (3194 modules)
+ ✓ Compiled in 560ms (3194 modules)
+ ✓ Compiled in 594ms (3194 modules)

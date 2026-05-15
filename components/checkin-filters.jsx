@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { categories, checkins, moods } from "@/lib/mock-data";
 import { CheckinCard } from "@/components/checkin-card";
+import { Field, SelectField, SelectItem } from "@/components/ui";
 
 export function CheckinFilters() {
   const [query, setQuery] = useState("");
@@ -34,37 +35,51 @@ export function CheckinFilters() {
   return (
     <>
       <section className="filter-panel" aria-label="Tìm kiếm và lọc kỷ niệm">
-        <label className="search-field">
+        <div className="search-field">
           <span aria-hidden="true">⌕</span>
-          <input
+          <Field
+            aria-label="Tìm tiêu đề, ghi chú hoặc địa điểm"
+            className="search-field-input"
             value={query}
-            onChange={(event) => setQuery(event.target.value)}
+            onChange={setQuery}
             placeholder="Tìm tiêu đề, ghi chú hoặc địa điểm"
           />
-        </label>
+        </div>
 
-        <select value={categoryId} onChange={(event) => setCategoryId(event.target.value)}>
-          <option value="all">Tất cả nhóm</option>
+        <SelectField
+          className="aria-select filter-select"
+          selectedKey={categoryId}
+          onSelectionChange={setCategoryId}
+        >
+          <SelectItem id="all">Tất cả nhóm</SelectItem>
           {categories.map((category) => (
-            <option value={category.id} key={category.id}>
+            <SelectItem id={category.id} key={category.id}>
               {category.name}
-            </option>
+            </SelectItem>
           ))}
-        </select>
+        </SelectField>
 
-        <select value={moodId} onChange={(event) => setMoodId(event.target.value)}>
-          <option value="all">Tất cả cảm xúc</option>
+        <SelectField
+          className="aria-select filter-select"
+          selectedKey={moodId}
+          onSelectionChange={setMoodId}
+        >
+          <SelectItem id="all">Tất cả cảm xúc</SelectItem>
           {moods.map((mood) => (
-            <option value={mood.id} key={mood.id}>
+            <SelectItem id={mood.id} key={mood.id}>
               {mood.name}
-            </option>
+            </SelectItem>
           ))}
-        </select>
+        </SelectField>
 
-        <select value={sort} onChange={(event) => setSort(event.target.value)}>
-          <option value="newest">Mới nhất</option>
-          <option value="oldest">Cũ nhất</option>
-        </select>
+        <SelectField
+          className="aria-select filter-select"
+          selectedKey={sort}
+          onSelectionChange={setSort}
+        >
+          <SelectItem id="newest">Mới nhất</SelectItem>
+          <SelectItem id="oldest">Cũ nhất</SelectItem>
+        </SelectField>
       </section>
 
       <section className="library-summary" aria-label="Tổng quan thư viện">

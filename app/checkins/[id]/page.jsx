@@ -1,7 +1,8 @@
-import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { CheckinCard } from "@/components/checkin-card";
-import { PageHeader } from "@/components/ui";
+import { DetailActions } from "@/components/detail-actions";
+import { PageHeader, SecondaryLink } from "@/components/ui";
 import {
   checkins,
   formatDate,
@@ -31,10 +32,10 @@ export default function CheckinDetailPage({ params }) {
         title={checkin.title}
         description={`${mediaSummary.photos} ảnh${mediaSummary.videos ? ` · ${mediaSummary.videos} video` : ""} · ${checkin.locationName} · ${formatDate(checkin.checkinTime)}`}
         action={
-          <Link href="/" className="btn btn-secondary">
+          <SecondaryLink href="/">
             <span aria-hidden="true">←</span>
             Bản đồ
-          </Link>
+          </SecondaryLink>
         }
       />
 
@@ -47,7 +48,12 @@ export default function CheckinDetailPage({ params }) {
                   <source src={item.url} type="video/mp4" />
                 </video>
               ) : (
-                <img src={item.url} alt={item.alt || checkin.title} />
+                <Image
+                  src={item.url}
+                  alt={item.alt || checkin.title}
+                  fill
+                  sizes={index === 0 ? "(max-width: 820px) 100vw, 720px" : "(max-width: 820px) 50vw, 360px"}
+                />
               )}
               {item.type === "video" ? <figcaption>Video</figcaption> : null}
             </figure>
@@ -108,16 +114,7 @@ export default function CheckinDetailPage({ params }) {
               />
             </div>
 
-            <div className="detail-actions">
-              <button className="btn btn-primary" type="button">
-                <span aria-hidden="true">✎</span>
-                Chỉnh sửa
-              </button>
-              <button className="btn btn-secondary" type="button">
-                <span aria-hidden="true">⌁</span>
-                Chỉ đường
-              </button>
-            </div>
+            <DetailActions />
           </aside>
         </section>
       </article>
