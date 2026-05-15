@@ -1,9 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import L from "leaflet";
 import { MapContainer, Marker, TileLayer, Tooltip, useMap } from "react-leaflet";
+import { FreeMode, Keyboard } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 import {
   FocusScope,
   mergeProps,
@@ -176,6 +179,7 @@ function MapControls({ activeCheckin, visibleCheckins, onAddMemory }) {
 
 export function CheckinMap() {
   const [activeId, setActiveId] = useState(null);
+  const [initialMediaIndex, setInitialMediaIndex] = useState(null);
   const [drawerMode, setDrawerMode] = useState(null);
   const [hoveredPreviewId, setHoveredPreviewId] = useState(null);
   const [query, setQuery] = useState("");
@@ -237,9 +241,10 @@ export function CheckinMap() {
     }, 180);
   }
 
-  function openMemory(checkinId) {
+  function openMemory(checkinId, mediaIndex = null) {
     keepPreviewOpen();
     setActiveId(checkinId);
+    setInitialMediaIndex(mediaIndex);
     setHoveredPreviewId(null);
     setDrawerMode("memory");
   }
@@ -247,6 +252,7 @@ export function CheckinMap() {
   function closeDrawer() {
     setDrawerMode(null);
     setHoveredPreviewId(null);
+    setInitialMediaIndex(null);
 
     if (drawerMode === "memory") {
       setActiveId(null);
@@ -328,7 +334,7 @@ export function CheckinMap() {
                           checkin={checkin}
                           onMouseEnter={keepPreviewOpen}
                           onMouseLeave={scheduleCloseHoverPreview}
-                          onPress={() => openMemory(checkin.id)}
+                          onPress={(mediaIndex) => openMemory(checkin.id, mediaIndex)}
                           variant="hover"
                         />
                       </Tooltip>
@@ -349,6 +355,7 @@ export function CheckinMap() {
           <MapDrawerOverlay
             activeCheckin={activeCheckin}
             drawerMode={drawerMode}
+            initialMediaIndex={initialMediaIndex}
             onClose={closeDrawer}
           />
         ) : null}
@@ -482,7 +489,7 @@ function getBoundsSummary(items) {
   };
 }
 
-function MapDrawerOverlay({ activeCheckin, drawerMode, onClose }) {
+function MapDrawerOverlay({ activeCheckin, drawerMode, initialMediaIndex, onClose }) {
   const drawerRef = useRef(null);
   const titleRef = useRef(null);
   const isAddDrawer = drawerMode === "add";
@@ -548,26 +555,38 @@ function MapDrawerOverlay({ activeCheckin, drawerMode, onClose }) {
         {isAddDrawer ? (
           <QuickMemoryPanel embedded />
         ) : activeCheckin ? (
-          <MemoryDrawerContent checkin={activeCheckin} />
+          <MemoryDrawerContent checkin={activeCheckin} initialMediaIndex={initialMediaIndex} />
         ) : null}
       </aside>
     </FocusScope>
   );
 }
 
-function MemoryDrawerContent({ checkin }) {
+function MemoryDrawerContent({ checkin, initialMediaIndex }) {
   const category = getCategory(checkin.categoryId);
   const mood = getMood(checkin.moodId);
   const media = getMemoryMedia(checkin);
   const mediaSummary = getMediaSummary(checkin);
   const visibleMedia = media.slice(0, 4);
   const remainingCount = Math.max(media.length - visibleMedia.length, 0);
+  const [viewerIndex, setViewerIndex] = useState(() =>
+    Number.isInteger(initialMediaIndex) ? initialMediaIndex : null
+  );
+
+  function openMedia(index) {
+    setViewerIndex(index);
+  }
 
   return (
     <article className="drawer-memory">
-      <div className="google-place-hero">
+      <button
+        className="google-place-hero media-open-button"
+        type="button"
+        aria-label={`Mở ảnh ${checkin.title}`}
+        onClick={() => openMedia(0)}
+      >
         <img src={getCoverImage(checkin)} alt={checkin.title} />
-      </div>
+      </button>
 
       <div className="google-place-summary">
         <h2>{checkin.title}</h2>
@@ -615,21 +634,233 @@ function MemoryDrawerContent({ checkin }) {
       </dl>
 
       <div className="google-place-media" aria-label="Ảnh và video trong kỷ niệm">
-        {visibleMedia.map((item) => (
-          <span className="memory-preview-tile" key={item.id}>
-            <img src={item.type === "video" ? item.poster : item.url} alt={item.alt ?? ""} />
+        {visibleMedia.map((item, index) => (
+          <button
+            className="memory-preview-tile media-open-button"
+            key={item.id}
+            type="button"
+            aria-label={`Mở ${item.type === "video" ? "video" : "ảnh"} ${index + 1}`}
+            onClick={() => openMedia(index)}
+          >
+            <MediaPreview item={item} alt={item.alt ?? ""} />
             {item.type === "video" ? <i aria-label="Video" /> : null}
-          </span>
+          </button>
         ))}
         {remainingCount > 0 ? (
-          <span className="memory-preview-more">
+          <button
+            className="memory-preview-more media-open-button"
+            type="button"
+            aria-label="Mở thêm media"
+            onClick={() => openMedia(visibleMedia.length)}
+          >
             <strong>+{remainingCount}</strong>
             <small>More</small>
-          </span>
+          </button>
         ) : null}
       </div>
+
+      {viewerIndex !== null ? (
+        <MemoryMediaViewer
+          activeIndex={viewerIndex}
+          checkin={checkin}
+          media={media}
+          onClose={() => setViewerIndex(null)}
+          onSelect={setViewerIndex}
+        />
+      ) : null}
     </article>
   );
+}
+
+function MemoryMediaViewer({ activeIndex, checkin, media, onClose, onSelect }) {
+  const activeItem = media[activeIndex] ?? media[0];
+  const [mainSwiper, setMainSwiper] = useState(null);
+
+  usePreventScroll();
+
+  useEffect(() => {
+    function handleKeyDown(event) {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
+
+  useEffect(() => {
+    if (mainSwiper && mainSwiper.activeIndex !== activeIndex) {
+      mainSwiper.slideTo(activeIndex);
+    }
+  }, [activeIndex, mainSwiper]);
+
+  function move(direction) {
+    onSelect((currentIndex) => {
+      const nextIndex = currentIndex + direction;
+
+      if (nextIndex < 0) {
+        return media.length - 1;
+      }
+
+      if (nextIndex >= media.length) {
+        return 0;
+      }
+
+      return nextIndex;
+    });
+  }
+
+  const viewer = (
+    <div className="memory-media-viewer" role="dialog" aria-modal="true" aria-label="Xem ảnh và video">
+      <nav className="media-viewer-mini-nav" aria-label="Điều hướng media">
+        <button type="button" aria-label="Menu">
+          ☰
+        </button>
+        <span>
+          <i aria-hidden="true">▯</i>
+          Saved
+        </span>
+        <span>
+          <i aria-hidden="true">◷</i>
+          Recents
+        </span>
+        <span className="active">
+          <i aria-hidden="true">▣</i>
+          Media
+        </span>
+      </nav>
+
+      <aside className="media-viewer-rail" aria-label="Danh sách media">
+        <div className="media-viewer-search">
+          <button type="button" aria-label="Đóng trình xem" onClick={onClose}>
+            ←
+          </button>
+          <label>
+            <span>{checkin.title}</span>
+            <i aria-hidden="true">⌕</i>
+          </label>
+        </div>
+        <div className="media-viewer-tabs" aria-label="Bộ lọc media">
+          <span className="active">Tất cả</span>
+          <span>Mới nhất</span>
+          <span>Video</span>
+          <span>Đã lưu</span>
+        </div>
+        <Swiper
+          className="media-viewer-thumbs"
+          direction="vertical"
+          freeMode
+          modules={[FreeMode]}
+          slidesPerView="auto"
+          spaceBetween={0}
+          watchSlidesProgress
+          breakpoints={{
+            0: {
+              direction: "horizontal",
+              spaceBetween: 6
+            },
+            821: {
+              direction: "vertical",
+              spaceBetween: 0
+            }
+          }}
+        >
+          {media.map((item, index) => (
+            <SwiperSlide className="media-viewer-thumb-slide" key={item.id}>
+              <button
+                className={index === activeIndex ? "active" : ""}
+                type="button"
+                aria-label={`Chọn ${item.type === "video" ? "video" : "ảnh"} ${index + 1}`}
+                onClick={() => onSelect(index)}
+              >
+                <MediaPreview item={item} alt={item.alt ?? ""} />
+                {item.type === "video" ? <i>Video</i> : null}
+              </button>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </aside>
+
+      <section className="media-viewer-stage">
+        <div className="media-viewer-topcard">
+          <strong>{checkin.title}</strong>
+          <span>{checkin.createdBy} · {formatDate(checkin.checkinTime)}</span>
+          <small>{activeItem?.type === "video" ? "Video" : "Photo"} · {activeIndex + 1}/{media.length}</small>
+        </div>
+
+        <div className="media-viewer-actions">
+          <button type="button">
+            <span aria-hidden="true">↗</span>
+            Chia sẻ
+          </button>
+          <button type="button" aria-label="Đóng" onClick={onClose}>
+            ×
+          </button>
+        </div>
+
+        {media.length > 1 ? (
+          <>
+            <button
+              className="media-viewer-nav prev"
+              type="button"
+              aria-label="Media trước"
+              onClick={() => move(-1)}
+            >
+              ‹
+            </button>
+            <button
+              className="media-viewer-nav next"
+              type="button"
+              aria-label="Media tiếp theo"
+              onClick={() => move(1)}
+            >
+              ›
+            </button>
+          </>
+        ) : null}
+
+        <Swiper
+          className="media-viewer-main"
+          initialSlide={activeIndex}
+          keyboard={{ enabled: true }}
+          modules={[Keyboard]}
+          slidesPerView={1}
+          onSlideChange={(swiper) => onSelect(swiper.activeIndex)}
+          onSwiper={setMainSwiper}
+        >
+          {media.map((item) => (
+            <SwiperSlide className="media-viewer-slide" key={item.id}>
+              {item.type === "video" ? (
+                <video key={item.id} controls preload="metadata" src={item.url} />
+              ) : (
+                <img key={item.id} src={item.url} alt={item.alt ?? checkin.title} />
+              )}
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </section>
+    </div>
+  );
+
+  return createPortal(viewer, document.body);
+}
+
+function MediaPreview({ item, alt, className }) {
+  if (item?.type === "video") {
+    return (
+      <video
+        aria-hidden="true"
+        className={className}
+        muted
+        playsInline
+        preload="metadata"
+        src={item.url}
+      />
+    );
+  }
+
+  return <img className={className} src={item?.url} alt={alt} />;
 }
 
 function MemoryMediaPreview({ checkin, onMouseEnter, onMouseLeave, onPress, variant }) {
@@ -641,7 +872,6 @@ function MemoryMediaPreview({ checkin, onMouseEnter, onMouseLeave, onPress, vari
   const category = getCategory(checkin.categoryId);
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const activeSlide = media[activeSlideIndex] ?? media[0];
-  const activeSlideSrc = activeSlide?.type === "video" ? activeSlide.poster : activeSlide?.url;
 
   function moveSlide(event, direction) {
     event.preventDefault();
@@ -669,9 +899,9 @@ function MemoryMediaPreview({ checkin, onMouseEnter, onMouseLeave, onPress, vari
       aria-label={`Xem chi tiết ${checkin.title}`}
     >
       <div className="memory-place-slider">
-        <img
+        <MediaPreview
           className="memory-place-card-photo"
-          src={activeSlideSrc}
+          item={activeSlide}
           alt={activeSlide?.alt ?? checkin.title}
         />
         <div className="memory-place-scrim" aria-hidden="true" />
@@ -758,7 +988,7 @@ function MemoryMediaPreview({ checkin, onMouseEnter, onMouseLeave, onPress, vari
       <div className="memory-preview-grid" aria-label="Ảnh và video trong kỷ niệm">
         {visibleMedia.map((item) => (
           <span className="memory-preview-tile" key={item.id}>
-            <img src={item.type === "video" ? item.poster : item.url} alt={item.alt ?? ""} />
+            <MediaPreview item={item} alt={item.alt ?? ""} />
             {item.type === "video" ? <i aria-label="Video" /> : null}
           </span>
         ))}
@@ -794,7 +1024,13 @@ function MemoryMediaPreview({ checkin, onMouseEnter, onMouseLeave, onPress, vari
   );
 
   if (onPress) {
-    return <Pressable onPress={onPress}>{preview}</Pressable>;
+    return (
+      <Pressable
+        onPress={() => onPress(activeSlide?.type === "video" ? activeSlideIndex : null)}
+      >
+        {preview}
+      </Pressable>
+    );
   }
 
   return preview;

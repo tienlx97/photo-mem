@@ -43,7 +43,7 @@ export default function CheckinDetailPage({ params }) {
           {media.map((item, index) => (
             <figure className={index === 0 ? "article-media-item featured" : "article-media-item"} key={item.id}>
               {item.type === "video" ? (
-                <video controls poster={item.poster} preload="metadata">
+                <video controls preload="metadata">
                   <source src={item.url} type="video/mp4" />
                 </video>
               ) : (

@@ -1,4 +1,6 @@
 import "leaflet/dist/leaflet.css";
+import "swiper/css";
+import "swiper/css/free-mode";
 import "./globals.css";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";

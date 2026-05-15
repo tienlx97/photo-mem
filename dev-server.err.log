@@ -1,0 +1,222 @@
+ ⨯ Error: Cannot find module './vendor-chunks/@swc+helpers@0.5.5.js'
+Require stack:
+- D:\_work\AI\photo-mem\.next\server\webpack-runtime.js
+- D:\_work\AI\photo-mem\.next\server\app\checkins\[id]\page.js
+- D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\require.js
+- D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\load-components.js
+- D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\build\utils.js
+- D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\dev\static-paths-worker.js
+- D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\compiled\jest-worker\processChild.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1476:15)
+    at D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\require-hook.js:55:36
+    at wrapResolveFilename (node:internal/modules/cjs/loader:1049:27)
+    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1073:10)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1094:12)
+    at Module._load (node:internal/modules/cjs/loader:1262:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1576:12)
+    at mod.require (D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:153:16) {
+  type: 'Error',
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\_work\\AI\\photo-mem\\.next\\server\\webpack-runtime.js',
+    'D:\\_work\\AI\\photo-mem\\.next\\server\\app\\checkins\\[id]\\page.js',
+    'D:\\_work\\AI\\photo-mem\\node_modules\\.pnpm\\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\_work\\AI\\photo-mem\\node_modules\\.pnpm\\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\\node_modules\\next\\dist\\server\\load-components.js',
+    'D:\\_work\\AI\\photo-mem\\node_modules\\.pnpm\\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\\node_modules\\next\\dist\\build\\utils.js',
+    'D:\\_work\\AI\\photo-mem\\node_modules\\.pnpm\\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\\node_modules\\next\\dist\\server\\dev\\static-paths-worker.js',
+    'D:\\_work\\AI\\photo-mem\\node_modules\\.pnpm\\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\\node_modules\\next\\dist\\compiled\\jest-worker\\processChild.js'
+  ],
+  page: '/checkins/ck-006'
+}
+ ⨯ Error: Cannot find module './vendor-chunks/geist@1.7.0_next@14.2.5_rea_b3d7f6f533f9b403ac644289a4d547df.js'
+Require stack:
+- D:\_work\AI\photo-mem\.next\server\webpack-runtime.js
+- D:\_work\AI\photo-mem\.next\server\app\checkins\[id]\page.js
+- D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\require.js
+- D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\load-components.js
+- D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\build\utils.js
+- D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\dev\static-paths-worker.js
+- D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\compiled\jest-worker\processChild.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1476:15)
+    at D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\require-hook.js:55:36
+    at wrapResolveFilename (node:internal/modules/cjs/loader:1049:27)
+    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1073:10)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1094:12)
+    at Module._load (node:internal/modules/cjs/loader:1262:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1576:12)
+    at mod.require (D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:153:16) {
+  type: 'Error',
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\_work\\AI\\photo-mem\\.next\\server\\webpack-runtime.js',
+    'D:\\_work\\AI\\photo-mem\\.next\\server\\app\\checkins\\[id]\\page.js',
+    'D:\\_work\\AI\\photo-mem\\node_modules\\.pnpm\\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\_work\\AI\\photo-mem\\node_modules\\.pnpm\\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\\node_modules\\next\\dist\\server\\load-components.js',
+    'D:\\_work\\AI\\photo-mem\\node_modules\\.pnpm\\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\\node_modules\\next\\dist\\build\\utils.js',
+    'D:\\_work\\AI\\photo-mem\\node_modules\\.pnpm\\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\\node_modules\\next\\dist\\server\\dev\\static-paths-worker.js',
+    'D:\\_work\\AI\\photo-mem\\node_modules\\.pnpm\\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\\node_modules\\next\\dist\\compiled\\jest-worker\\processChild.js'
+  ],
+  page: '/checkins/ck-002'
+}
+ ⨯ Error: Cannot find module './vendor-chunks/geist@1.7.0_next@14.2.5_rea_b3d7f6f533f9b403ac644289a4d547df.js'
+Require stack:
+- D:\_work\AI\photo-mem\.next\server\webpack-runtime.js
+- D:\_work\AI\photo-mem\.next\server\app\checkins\[id]\page.js
+- D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\require.js
+- D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\load-components.js
+- D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\build\utils.js
+- D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\dev\static-paths-worker.js
+- D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\compiled\jest-worker\processChild.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1476:15)
+    at D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\require-hook.js:55:36
+    at wrapResolveFilename (node:internal/modules/cjs/loader:1049:27)
+    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1073:10)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1094:12)
+    at Module._load (node:internal/modules/cjs/loader:1262:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1576:12)
+    at mod.require (D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:153:16) {
+  type: 'Error',
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\_work\\AI\\photo-mem\\.next\\server\\webpack-runtime.js',
+    'D:\\_work\\AI\\photo-mem\\.next\\server\\app\\checkins\\[id]\\page.js',
+    'D:\\_work\\AI\\photo-mem\\node_modules\\.pnpm\\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\_work\\AI\\photo-mem\\node_modules\\.pnpm\\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\\node_modules\\next\\dist\\server\\load-components.js',
+    'D:\\_work\\AI\\photo-mem\\node_modules\\.pnpm\\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\\node_modules\\next\\dist\\build\\utils.js',
+    'D:\\_work\\AI\\photo-mem\\node_modules\\.pnpm\\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\\node_modules\\next\\dist\\server\\dev\\static-paths-worker.js',
+    'D:\\_work\\AI\\photo-mem\\node_modules\\.pnpm\\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\\node_modules\\next\\dist\\compiled\\jest-worker\\processChild.js'
+  ],
+  page: '/checkins/ck-001'
+}
+ ⨯ Error: Cannot find module './vendor-chunks/geist@1.7.0_next@14.2.5_rea_b3d7f6f533f9b403ac644289a4d547df.js'
+Require stack:
+- D:\_work\AI\photo-mem\.next\server\webpack-runtime.js
+- D:\_work\AI\photo-mem\.next\server\app\checkins\[id]\page.js
+- D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\require.js
+- D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\load-components.js
+- D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\build\utils.js
+- D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\dev\static-paths-worker.js
+- D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\compiled\jest-worker\processChild.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1476:15)
+    at D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\require-hook.js:55:36
+    at wrapResolveFilename (node:internal/modules/cjs/loader:1049:27)
+    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1073:10)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1094:12)
+    at Module._load (node:internal/modules/cjs/loader:1262:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1576:12)
+    at mod.require (D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:153:16) {
+  type: 'Error',
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\_work\\AI\\photo-mem\\.next\\server\\webpack-runtime.js',
+    'D:\\_work\\AI\\photo-mem\\.next\\server\\app\\checkins\\[id]\\page.js',
+    'D:\\_work\\AI\\photo-mem\\node_modules\\.pnpm\\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\_work\\AI\\photo-mem\\node_modules\\.pnpm\\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\\node_modules\\next\\dist\\server\\load-components.js',
+    'D:\\_work\\AI\\photo-mem\\node_modules\\.pnpm\\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\\node_modules\\next\\dist\\build\\utils.js',
+    'D:\\_work\\AI\\photo-mem\\node_modules\\.pnpm\\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\\node_modules\\next\\dist\\server\\dev\\static-paths-worker.js',
+    'D:\\_work\\AI\\photo-mem\\node_modules\\.pnpm\\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\\node_modules\\next\\dist\\compiled\\jest-worker\\processChild.js'
+  ],
+  page: '/checkins/ck-003'
+}
+ ⨯ Error: Cannot find module './vendor-chunks/geist@1.7.0_next@14.2.5_rea_b3d7f6f533f9b403ac644289a4d547df.js'
+Require stack:
+- D:\_work\AI\photo-mem\.next\server\webpack-runtime.js
+- D:\_work\AI\photo-mem\.next\server\app\checkins\[id]\page.js
+- D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\require.js
+- D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\load-components.js
+- D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\build\utils.js
+- D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\dev\static-paths-worker.js
+- D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\compiled\jest-worker\processChild.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1476:15)
+    at D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\require-hook.js:55:36
+    at wrapResolveFilename (node:internal/modules/cjs/loader:1049:27)
+    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1073:10)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1094:12)
+    at Module._load (node:internal/modules/cjs/loader:1262:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1576:12)
+    at mod.require (D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:153:16) {
+  type: 'Error',
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\_work\\AI\\photo-mem\\.next\\server\\webpack-runtime.js',
+    'D:\\_work\\AI\\photo-mem\\.next\\server\\app\\checkins\\[id]\\page.js',
+    'D:\\_work\\AI\\photo-mem\\node_modules\\.pnpm\\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\_work\\AI\\photo-mem\\node_modules\\.pnpm\\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\\node_modules\\next\\dist\\server\\load-components.js',
+    'D:\\_work\\AI\\photo-mem\\node_modules\\.pnpm\\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\\node_modules\\next\\dist\\build\\utils.js',
+    'D:\\_work\\AI\\photo-mem\\node_modules\\.pnpm\\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\\node_modules\\next\\dist\\server\\dev\\static-paths-worker.js',
+    'D:\\_work\\AI\\photo-mem\\node_modules\\.pnpm\\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\\node_modules\\next\\dist\\compiled\\jest-worker\\processChild.js'
+  ],
+  page: '/checkins/ck-005'
+}
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat 'D:\_work\AI\photo-mem\.next\server\vendor-chunks\leaflet@1.9.4.js'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/leaflet@1.9.4' in D:\_work\AI\photo-mem\.next\server for build dependencies doesn't lead to expected result 'D:\_work\AI\photo-mem\.next\server\vendor-chunks\leaflet@1.9.4.js', but to 'Error: Can't resolve './vendor-chunks/leaflet@1.9.4' in 'D:\_work\AI\photo-mem\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/leaflet@1.9.4 (expected D:\_work\AI\photo-mem\.next\server\vendor-chunks\leaflet@1.9.4.js)
+<w>  at file dependencies D:\_work\AI\photo-mem\.next\server\webpack-runtime.js
+<w>  at file D:\_work\AI\photo-mem\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\_work\AI\photo-mem\.next\server\pages\_error.js
+<w>  at file D:\_work\AI\photo-mem\.next\server\pages\_error.js
+<w>  at file dependencies D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\require.js
+<w>  at file D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\load-components.js
+<w>  at file D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\build\utils.js
+<w>  at file D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at resolve commonjs D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/geist@1.7.0_next@14.2.5_rea_b3d7f6f533f9b403ac644289a4d547df' in D:\_work\AI\photo-mem\.next\server for build dependencies doesn't lead to expected result 'D:\_work\AI\photo-mem\.next\server\vendor-chunks\geist@1.7.0_next@14.2.5_rea_b3d7f6f533f9b403ac644289a4d547df.js', but to 'Error: Can't resolve './vendor-chunks/geist@1.7.0_next@14.2.5_rea_b3d7f6f533f9b403ac644289a4d547df' in 'D:\_work\AI\photo-mem\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/geist@1.7.0_next@14.2.5_rea_b3d7f6f533f9b403ac644289a4d547df (expected D:\_work\AI\photo-mem\.next\server\vendor-chunks\geist@1.7.0_next@14.2.5_rea_b3d7f6f533f9b403ac644289a4d547df.js)
+<w>  at file dependencies D:\_work\AI\photo-mem\.next\server\webpack-runtime.js
+<w>  at file D:\_work\AI\photo-mem\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\_work\AI\photo-mem\.next\server\pages\_error.js
+<w>  at file D:\_work\AI\photo-mem\.next\server\pages\_error.js
+<w>  at file dependencies D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\require.js
+<w>  at file D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\load-components.js
+<w>  at file D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\build\utils.js
+<w>  at file D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at resolve commonjs D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat 'D:\_work\AI\photo-mem\.next\server\vendor-chunks\leaflet@1.9.4.js'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/leaflet@1.9.4' in D:\_work\AI\photo-mem\.next\server for build dependencies doesn't lead to expected result 'D:\_work\AI\photo-mem\.next\server\vendor-chunks\leaflet@1.9.4.js', but to 'Error: Can't resolve './vendor-chunks/leaflet@1.9.4' in 'D:\_work\AI\photo-mem\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/leaflet@1.9.4 (expected D:\_work\AI\photo-mem\.next\server\vendor-chunks\leaflet@1.9.4.js)
+<w>  at file dependencies D:\_work\AI\photo-mem\.next\server\webpack-runtime.js
+<w>  at file D:\_work\AI\photo-mem\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\_work\AI\photo-mem\.next\server\app\_not-found\page.js
+<w>  at file D:\_work\AI\photo-mem\.next\server\app\_not-found\page.js
+<w>  at file dependencies D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\require.js
+<w>  at file D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\load-components.js
+<w>  at file D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\build\utils.js
+<w>  at file D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at resolve commonjs D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/geist@1.7.0_next@14.2.5_rea_b3d7f6f533f9b403ac644289a4d547df' in D:\_work\AI\photo-mem\.next\server for build dependencies doesn't lead to expected result 'D:\_work\AI\photo-mem\.next\server\vendor-chunks\geist@1.7.0_next@14.2.5_rea_b3d7f6f533f9b403ac644289a4d547df.js', but to 'Error: Can't resolve './vendor-chunks/geist@1.7.0_next@14.2.5_rea_b3d7f6f533f9b403ac644289a4d547df' in 'D:\_work\AI\photo-mem\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/geist@1.7.0_next@14.2.5_rea_b3d7f6f533f9b403ac644289a4d547df (expected D:\_work\AI\photo-mem\.next\server\vendor-chunks\geist@1.7.0_next@14.2.5_rea_b3d7f6f533f9b403ac644289a4d547df.js)
+<w>  at file dependencies D:\_work\AI\photo-mem\.next\server\webpack-runtime.js
+<w>  at file D:\_work\AI\photo-mem\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\_work\AI\photo-mem\.next\server\app\_not-found\page.js
+<w>  at file D:\_work\AI\photo-mem\.next\server\app\_not-found\page.js
+<w>  at file dependencies D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\require.js
+<w>  at file D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\load-components.js
+<w>  at file D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\build\utils.js
+<w>  at file D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at resolve commonjs D:\_work\AI\photo-mem\node_modules\.pnpm\next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
