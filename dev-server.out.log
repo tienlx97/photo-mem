@@ -647,3 +647,24 @@
  ✓ Compiled in 588ms (3416 modules)
  ✓ Compiled in 623ms (3416 modules)
  ✓ Compiled in 600ms (3416 modules)
+ ✓ Compiled in 1021ms (3402 modules)
+ ✓ Compiled in 567ms (3416 modules)
+ ✓ Compiled in 606ms (3416 modules)
+ ✓ Compiled in 555ms (3402 modules)
+ ✓ Compiled in 735ms (3402 modules)
+ ✓ Compiled in 619ms (3402 modules)
+ ✓ Compiled in 606ms (3416 modules)
+ GET / 200 in 66ms
+ GET / 200 in 48ms
+ GET / 200 in 23ms
+ ✓ Compiled in 570ms (3416 modules)
+ GET / 200 in 145ms
+ ✓ Compiled /_not-found in 485ms (3405 modules)
+ GET /_next/static/chunks/app/page.js 404 in 642ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 644ms
+ GET /_next/static/chunks/main-app.js?v=1778870023941 404 in 645ms
+ GET /?verify=1778870061213 200 in 65ms
+ GET /_next/static/chunks/app/page.js 404 in 20ms
+ GET /_next/static/chunks/main-app.js?v=1778870061273 404 in 22ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 21ms
+ ✓ Compiled in 4.2s (3416 modules)
