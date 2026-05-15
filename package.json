@@ -3,20 +3,32 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "analyze": "ANALYZE=true next build",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "type-check": "node -e \"console.log('JavaScript MVP: no TypeScript check configured')\""
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.90.21",
+    "blurhash": "^2.0.5",
+    "clsx": "^2.1.1",
     "geist": "^1.7.0",
     "leaflet": "^1.9.4",
+    "motion": "^12.34.0",
     "next": "14.2.5",
     "react": "18.3.1",
     "react-aria": "^3.48.0",
     "react-aria-components": "^1.17.0",
     "react-dom": "18.3.1",
-    "react-leaflet": "4.2.1"
+    "react-error-boundary": "^6.1.0",
+    "react-leaflet": "4.2.1",
+    "sonner": "^2.0.7",
+    "tailwind-merge": "^3.4.0",
+    "usehooks-ts": "^3.1.1",
+    "zod": "^4.1.13",
+    "zustand": "^5.0.11"
   },
   "devDependencies": {
     "eslint": "8.57.0",

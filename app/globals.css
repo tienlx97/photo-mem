@@ -28,7 +28,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family:
-    var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    var(--font-app-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
 }
 
@@ -299,6 +299,93 @@ a {
 
 .home-map-area .page-header p {
   max-width: 780px;
+}
+
+.hero-cta {
+  min-width: 156px;
+}
+
+.home-map-frame {
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.home-map-frame .map-workspace {
+  min-height: 520px;
+}
+
+.home-map-frame .map-body,
+.home-map-frame .leaflet-map-shell,
+.home-map-frame .checkin-leaflet-map,
+.home-map-frame .map-loading,
+.home-map-frame .map-empty-state {
+  min-height: 520px;
+}
+
+.media-wall-section {
+  display: grid;
+  gap: 14px;
+}
+
+.media-wall {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr 0.8fr;
+  grid-auto-rows: 156px;
+  gap: 10px;
+}
+
+.media-wall-item {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #dfe9e4;
+}
+
+.media-wall-item:first-child {
+  grid-row: span 2;
+}
+
+.media-wall-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 220ms ease;
+}
+
+.media-wall-item:hover img {
+  transform: scale(1.04);
+}
+
+.media-wall-item span {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  left: 10px;
+  display: grid;
+  gap: 3px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.86);
+  padding: 9px 10px;
+  backdrop-filter: blur(18px);
+}
+
+.media-wall-item strong,
+.media-wall-item small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.media-wall-item strong {
+  font-size: 13px;
+  line-height: 1.15;
+}
+
+.media-wall-item small {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
 }
 
 .quick-memory-panel,
@@ -783,8 +870,12 @@ textarea:focus {
   overflow: hidden;
   border: 1px solid rgba(213, 219, 229, 0.74);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 24px 72px rgba(31, 41, 55, 0.22);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.88)),
+    rgba(255, 255, 255, 0.92);
+  box-shadow:
+    0 26px 80px rgba(31, 41, 55, 0.24),
+    0 8px 24px rgba(11, 132, 255, 0.08);
   color: var(--map-text, var(--text));
   padding: 14px;
   backdrop-filter: blur(34px) saturate(1.18);
@@ -792,6 +883,9 @@ textarea:focus {
 
 .memory-media-preview.hover {
   cursor: pointer;
+  transform-origin: 50% 100%;
+  animation: memory-preview-in 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: opacity, transform;
 }
 
 .memory-media-preview.hover:focus-visible {
@@ -882,10 +976,19 @@ textarea:focus {
   background: rgba(102, 113, 127, 0.12);
 }
 
+.memory-preview-tile {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.38);
+}
+
 .memory-preview-tile img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 240ms ease;
+}
+
+.memory-media-preview.hover:hover .memory-preview-tile img {
+  transform: scale(1.04);
 }
 
 .memory-preview-tile i {
@@ -1139,6 +1242,55 @@ textarea:focus {
   margin-top: 14px;
 }
 
+.gallery-grid {
+  align-items: start;
+}
+
+.gallery-grid .checkin-card:nth-child(3n + 1) .checkin-image-link {
+  min-height: 280px;
+}
+
+.gallery-grid .checkin-card:nth-child(3n + 2) .checkin-image-link {
+  min-height: 240px;
+}
+
+.library-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  padding: 14px 16px;
+  box-shadow: var(--shadow);
+}
+
+.library-summary div {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  white-space: nowrap;
+}
+
+.library-summary span {
+  color: var(--primary-dark);
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.library-summary strong {
+  font-size: 14px;
+}
+
+.library-summary p {
+  max-width: 640px;
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
 .checkin-card {
   display: grid;
   grid-template-columns: 210px minmax(0, 1fr);
@@ -1146,6 +1298,7 @@ textarea:focus {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #fff;
+  box-shadow: 0 8px 24px rgba(28, 46, 42, 0.06);
 }
 
 .checkin-card.compact {
@@ -1773,6 +1926,10 @@ textarea:focus {
     grid-template-columns: minmax(0, 1fr) minmax(320px, 0.8fr);
   }
 
+  .media-wall {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .home-stats,
   .latest-memory {
     grid-column: 1;
@@ -1804,6 +1961,10 @@ textarea:focus {
   .home-topbar {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .hero-cta {
+    width: 100%;
   }
 
   .space-summary {
@@ -1843,8 +2004,14 @@ textarea:focus {
   .checkin-grid,
   .checkin-grid.three,
   .checkin-grid.two,
-  .filter-panel {
+  .filter-panel,
+  .media-wall {
     grid-template-columns: 1fr;
+  }
+
+  .library-summary {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .map-toolbar {
@@ -1879,6 +2046,15 @@ textarea:focus {
   .overview-map-page .map-loading,
   .overview-map-page .map-empty-state {
     min-height: 0;
+  }
+
+  .home-map-frame .map-workspace,
+  .home-map-frame .map-body,
+  .home-map-frame .leaflet-map-shell,
+  .home-map-frame .checkin-leaflet-map,
+  .home-map-frame .map-loading,
+  .home-map-frame .map-empty-state {
+    min-height: 480px;
   }
 
   .map-drawer {
@@ -1990,6 +2166,14 @@ textarea:focus {
   .quick-actions,
   .latest-memory {
     grid-template-columns: 1fr;
+  }
+
+  .media-wall {
+    grid-auto-rows: 180px;
+  }
+
+  .media-wall-item:first-child {
+    grid-row: span 1;
   }
 
   .map-toolbar {
@@ -2536,6 +2720,7 @@ textarea:focus {
   cursor: pointer;
   padding: 0;
   place-items: center;
+  pointer-events: auto;
 }
 
 .memory-hover-tooltip {
@@ -2543,6 +2728,7 @@ textarea:focus {
   background: transparent;
   box-shadow: none;
   padding: 0;
+  pointer-events: auto;
 }
 
 .memory-hover-tooltip::before {
@@ -2559,20 +2745,22 @@ textarea:focus {
 
 .explory-memory-marker {
   position: relative;
+  z-index: 0;
   display: grid;
-  width: 48px;
-  height: 48px;
-  place-items: center;
-  border-radius: 50%;
+  width: 54px;
+  height: 64px;
+  align-items: start;
+  justify-items: center;
   cursor: pointer;
   transition:
     filter 160ms ease,
     transform 160ms ease;
+  transform-origin: 50% 100%;
+  will-change: transform;
 }
 
 .explory-memory-marker.active {
-  width: 60px;
-  height: 60px;
+  transform: scale(1.08);
 }
 
 .explory-memory-marker:hover {
@@ -2580,32 +2768,40 @@ textarea:focus {
   transform: scale(1.06);
 }
 
+.explory-memory-marker.active:hover {
+  transform: scale(1.12);
+}
+
 .explory-marker-pulse {
   position: absolute;
-  inset: -8px;
+  left: 50%;
+  bottom: -2px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   background: rgba(11, 132, 255, 0.28);
   animation: marker-pulse 1.8s ease-out infinite;
+  transform: translateX(-50%);
 }
 
 .explory-marker-photo {
   position: absolute;
-  inset: 1px;
+  inset: 2px;
   border-radius: 50%;
   background-position: center;
   background-size: cover;
-  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.22);
   opacity: 0.44;
 }
 
 .explory-marker-core {
   position: relative;
+  z-index: 2;
   display: grid;
-  width: 40px;
-  height: 40px;
+  width: 46px;
+  height: 46px;
   place-items: center;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.68);
+  border: 2px solid rgba(255, 255, 255, 0.82);
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.95);
   box-shadow:
@@ -2616,14 +2812,30 @@ textarea:focus {
 }
 
 .explory-memory-marker.active .explory-marker-core {
-  width: 48px;
-  height: 48px;
   border-color: rgba(255, 255, 255, 0.5);
   background: linear-gradient(135deg, rgba(11, 132, 255, 0.96), rgba(35, 183, 120, 0.92));
   color: #fff;
   box-shadow:
     0 18px 42px rgba(11, 132, 255, 0.34),
     inset 0 0 0 1px rgba(255, 255, 255, 0.24);
+}
+
+.explory-marker-tip {
+  position: absolute;
+  left: 50%;
+  top: 39px;
+  z-index: 1;
+  width: 0;
+  height: 0;
+  border-right: 10px solid transparent;
+  border-left: 10px solid transparent;
+  border-top: 19px solid rgba(255, 255, 255, 0.95);
+  filter: drop-shadow(0 10px 12px rgba(15, 23, 42, 0.16));
+  transform: translateX(-50%);
+}
+
+.explory-memory-marker.active .explory-marker-tip {
+  border-top-color: rgba(19, 143, 187, 0.96);
 }
 
 .explory-marker-glass {
@@ -2811,6 +3023,17 @@ textarea:focus {
   to {
     opacity: 0;
     transform: scale(1.24);
+  }
+}
+
+@keyframes memory-preview-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 

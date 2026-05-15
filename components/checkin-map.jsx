@@ -27,7 +27,6 @@ import {
 } from "@/lib/mock-data";
 
 const DEFAULT_CENTER = [12.35, 107.85];
-const MEMORY_DRAWER_WIDTH = 480;
 
 function fitMapToCheckins(map, visibleCheckins, options = {}) {
   if (!map || visibleCheckins.length === 0) {
@@ -51,49 +50,30 @@ function fitMapToCheckins(map, visibleCheckins, options = {}) {
   });
 }
 
-function focusMapOnCheckin(map, checkin) {
-  if (!map || !checkin) {
-    return;
-  }
-
-  const zoom = Math.max(map.getZoom(), 7);
-
-  const mediaQuery = window.matchMedia("(max-width: 820px)");
-
-  if (mediaQuery.matches) {
-    map.flyTo([checkin.latitude, checkin.longitude], zoom, { duration: 0.55 });
-    return;
-  }
-
-  const size = map.getSize();
-  const reservedWidth = Math.min(MEMORY_DRAWER_WIDTH + 48, size.x * 0.42);
-  const activePoint = map.project([checkin.latitude, checkin.longitude], zoom);
-  const targetCenterPoint = activePoint.add([reservedWidth / 2, 0]);
-
-  map.flyTo(map.unproject(targetCenterPoint, zoom), zoom, { duration: 0.55 });
-}
-
 function createCheckinIcon(checkin, isActive) {
   const category = getCategory(checkin.categoryId);
   const coverImage = getCoverImage(checkin);
-  const size = isActive ? 60 : 48;
+  const width = 54;
+  const height = 64;
+  const anchorY = 58;
 
   return L.divIcon({
     className: "checkin-leaflet-icon",
     html: `
       <span class="explory-memory-marker${isActive ? " active" : ""}" style="--marker-color: ${category.color}">
         ${isActive ? '<span class="explory-marker-pulse"></span>' : ""}
-        <span class="explory-marker-photo" style="background-image: url('${coverImage}')"></span>
         <span class="explory-marker-core">
+          <span class="explory-marker-photo" style="background-image: url('${coverImage}')"></span>
           <span class="explory-marker-glass"></span>
           <span class="explory-marker-camera" aria-hidden="true"></span>
         </span>
+        <span class="explory-marker-tip" aria-hidden="true"></span>
       </span>
     `,
-    iconSize: [size, size],
-    iconAnchor: [size / 2, size / 2],
-    popupAnchor: [0, -(size / 2)],
-    tooltipAnchor: [0, -(size / 2 + 10)]
+    iconSize: [width, height],
+    iconAnchor: [width / 2, anchorY],
+    popupAnchor: [0, -anchorY],
+    tooltipAnchor: [0, -(anchorY + 8)]
   });
 }
 
@@ -103,26 +83,6 @@ function FitBounds({ visibleCheckins }) {
   useEffect(() => {
     fitMapToCheckins(map, visibleCheckins);
   }, [map, visibleCheckins]);
-
-  return null;
-}
-
-function DrawerAwareMapView({ activeCheckin, drawerMode, visibleCheckins }) {
-  const map = useMap();
-
-  useEffect(() => {
-    if (drawerMode === "memory") {
-      focusMapOnCheckin(map, activeCheckin);
-    }
-  }, [activeCheckin, drawerMode, map]);
-
-  useEffect(() => {
-    if (drawerMode === "memory") {
-      return;
-    }
-
-    fitMapToCheckins(map, visibleCheckins);
-  }, [drawerMode, map, visibleCheckins]);
 
   return null;
 }
@@ -404,7 +364,6 @@ export function CheckinMap() {
 
   function showHoverPreview(checkinId) {
     keepPreviewOpen();
-    setActiveId(checkinId);
     setHoveredPreviewId(checkinId);
   }
 
@@ -455,11 +414,6 @@ export function CheckinMap() {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
               <FitBounds visibleCheckins={filteredCheckins} />
-              <DrawerAwareMapView
-                activeCheckin={activeCheckin}
-                drawerMode={drawerMode}
-                visibleCheckins={filteredCheckins}
-              />
               <MapControls
                 activeCheckin={activeCheckin}
                 visibleCheckins={filteredCheckins}
@@ -467,7 +421,7 @@ export function CheckinMap() {
               />
 
               {filteredCheckins.map((checkin) => {
-                const isActive = checkin.id === activeId;
+                const isActive = checkin.id === activeId || checkin.id === hoveredPreviewId;
 
                 return (
                   <Marker

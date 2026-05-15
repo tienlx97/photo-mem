@@ -5,9 +5,9 @@ export default function CheckinsPage() {
   return (
     <div className="page-stack">
       <PageHeader
-        eyebrow="Danh sách kỷ niệm"
-        title="Tìm lại theo ngày, nơi chốn và cảm xúc."
-        description="Tất cả kỷ niệm của hai người nằm trong cùng một danh sách, không có feed công khai."
+        eyebrow="Thư viện kỷ niệm"
+        title="Gallery riêng cho ảnh, video và những nơi hai người đã đi qua."
+        description="Thiết kế lại theo hướng photo-first: lọc nhanh, card lớn, xem chi tiết hoặc quay lại bản đồ khi cần."
         action={<PrimaryLink href="/checkins/new">Thêm kỷ niệm</PrimaryLink>}
       />
       <CheckinFilters />

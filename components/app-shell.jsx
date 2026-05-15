@@ -4,10 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const navItems = [
-  { href: "/", label: "Tổng quan", icon: "⌂" },
-  { href: "/checkins", label: "Kỷ niệm", icon: "▤" },
+  { href: "/", label: "Studio", icon: "⌂" },
+  { href: "/checkins", label: "Thư viện", icon: "▥" },
   { href: "/checkins/new", label: "Thêm", icon: "+" },
-  { href: "/profile", label: "Chúng mình", icon: "♡" }
+  { href: "/profile", label: "Không gian", icon: "♡" }
 ];
 
 export function AppShell({ children }) {
@@ -17,10 +17,10 @@ export function AppShell({ children }) {
     <div className="app-shell">
       <aside className="sidebar" aria-label="Điều hướng chính">
         <Link href="/" className="brand" aria-label="Our Memory Map">
-          <span className="brand-mark">M</span>
+          <span className="brand-mark">O</span>
           <span>
             <strong>Our Memory Map</strong>
-            <small>Tiến & Thảo</small>
+            <small>Private photo atlas</small>
           </span>
         </Link>
 
@@ -45,8 +45,8 @@ export function AppShell({ children }) {
         </nav>
 
         <div className="sidebar-note">
-          <span className="note-kicker">Riêng tư</span>
-          <p>Chỉ hai người trong không gian này. Không feed, không like, không người lạ.</p>
+          <span className="note-kicker">Photo-first</span>
+          <p>Ảnh, video, địa điểm và ghi chú nằm trong một không gian riêng cho hai người.</p>
         </div>
       </aside>
 

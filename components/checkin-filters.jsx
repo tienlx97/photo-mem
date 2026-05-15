@@ -67,7 +67,15 @@ export function CheckinFilters() {
         </select>
       </section>
 
-      <section className="checkin-grid" aria-label="Danh sách kỷ niệm">
+      <section className="library-summary" aria-label="Tổng quan thư viện">
+        <div>
+          <span>{filtered.length}</span>
+          <strong>kỷ niệm phù hợp</strong>
+        </div>
+        <p>Thư viện ưu tiên ảnh lớn, metadata gọn và bộ lọc nhanh theo nơi chốn, nhóm và cảm xúc.</p>
+      </section>
+
+      <section className="checkin-grid gallery-grid" aria-label="Danh sách kỷ niệm">
         {filtered.map((checkin) => (
           <CheckinCard checkin={checkin} key={checkin.id} />
         ))}
