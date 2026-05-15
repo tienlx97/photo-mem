@@ -17,17 +17,14 @@ import {
 } from "react-aria";
 import { Button, Link, Pressable, Tab, TabList, Tabs } from "react-aria-components";
 import { QuickMemoryPanel } from "@/components/quick-memory-panel";
-import { Field, SelectField, SelectItem } from "@/components/ui";
 import {
-  categories,
   checkins,
   formatDate,
   getCategory,
   getCoverImage,
   getMemoryMedia,
   getMediaSummary,
-  getMood,
-  moods
+  getMood
 } from "@/lib/mock-data";
 
 const DEFAULT_CENTER = [12.35, 107.85];
@@ -183,36 +180,26 @@ export function CheckinMap() {
   const [initialMediaIndex, setInitialMediaIndex] = useState(null);
   const [drawerMode, setDrawerMode] = useState(null);
   const [hoveredPreviewId, setHoveredPreviewId] = useState(null);
-  const [query, setQuery] = useState("");
-  const [categoryId, setCategoryId] = useState("all");
-  const [moodId, setMoodId] = useState("all");
-  const [isInfoOpen, setIsInfoOpen] = useState(false);
   const hoverCloseTimerRef = useRef(null);
-  const filteredCheckins = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase();
+  const mapPlaces = useMemo(() => {
+    const places = new Map();
 
-    return checkins.filter((checkin) => {
-      const queryMatch =
-        !normalizedQuery ||
-        checkin.title.toLowerCase().includes(normalizedQuery) ||
-        checkin.caption.toLowerCase().includes(normalizedQuery) ||
-        checkin.locationName.toLowerCase().includes(normalizedQuery) ||
-        checkin.city.toLowerCase().includes(normalizedQuery);
-      const categoryMatch = categoryId === "all" || checkin.categoryId === categoryId;
-      const moodMatch = moodId === "all" || checkin.moodId === moodId;
+    for (const checkin of checkins) {
+      const current = places.get(checkin.locationName);
 
-      return queryMatch && categoryMatch && moodMatch;
-    });
-  }, [categoryId, moodId, query]);
-
-  useEffect(() => {
-    if (activeId && !filteredCheckins.some((checkin) => checkin.id === activeId)) {
-      setActiveId(null);
+      if (
+        !current ||
+        new Date(checkin.checkinTime).getTime() > new Date(current.checkinTime).getTime()
+      ) {
+        places.set(checkin.locationName, checkin);
+      }
     }
-  }, [activeId, filteredCheckins]);
+
+    return Array.from(places.values());
+  }, []);
 
   const activeCheckin = activeId
-    ? filteredCheckins.find((checkin) => checkin.id === activeId) ?? null
+    ? checkins.find((checkin) => checkin.id === activeId) ?? null
     : null;
 
   useEffect(() => {
@@ -267,24 +254,8 @@ export function CheckinMap() {
           <span aria-hidden="true">‹</span>
         </Link>
 
-        <MapSearchPanel
-          categoryId={categoryId}
-          isInfoOpen={isInfoOpen}
-          moodId={moodId}
-          query={query}
-          resultCount={filteredCheckins.length}
-          onAddMemory={() => {
-            setActiveId(null);
-            setDrawerMode("add");
-          }}
-          onCategoryChange={setCategoryId}
-          onMoodChange={setMoodId}
-          onQueryChange={setQuery}
-          onToggleInfo={() => setIsInfoOpen((value) => !value)}
-        />
-
         <div className="leaflet-map-shell">
-          {filteredCheckins.length > 0 ? (
+          {mapPlaces.length > 0 ? (
             <MapContainer
               center={DEFAULT_CENTER}
               zoom={6}
@@ -296,17 +267,17 @@ export function CheckinMap() {
               className="checkin-leaflet-map"
             >
               <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-              <FitBounds visibleCheckins={filteredCheckins} />
+              <FitBounds visibleCheckins={mapPlaces} />
               <MapControls
                 activeCheckin={activeCheckin}
-                visibleCheckins={filteredCheckins}
+                visibleCheckins={mapPlaces}
                 onAddMemory={() => {
                   setActiveId(null);
                   setDrawerMode("add");
                 }}
               />
 
-              {filteredCheckins.map((checkin) => {
+              {mapPlaces.map((checkin) => {
                 const isActive =
                   (drawerMode === "memory" && checkin.id === activeId) ||
                   checkin.id === hoveredPreviewId;
@@ -363,137 +334,6 @@ export function CheckinMap() {
       </div>
     </section>
   );
-}
-
-function MapSearchPanel({
-  categoryId,
-  isInfoOpen,
-  moodId,
-  onAddMemory,
-  onCategoryChange,
-  onMoodChange,
-  onQueryChange,
-  onToggleInfo,
-  query,
-  resultCount
-}) {
-  const boundsSummary = getBoundsSummary(checkins);
-
-  return (
-    <div className="explory-map-info" aria-label="Tìm kiếm kỷ niệm trên bản đồ">
-      <div className="explory-searchbar">
-        <div className="explory-search-field">
-          <span aria-hidden="true">⌕</span>
-          <Field
-            aria-label="Tìm kỷ niệm hoặc địa điểm"
-            className="explory-search-input"
-            value={query}
-            onChange={onQueryChange}
-            placeholder="Tìm kỷ niệm hoặc địa điểm"
-          />
-        </div>
-        <Button
-          className="explory-info-toggle"
-          type="button"
-          aria-expanded={isInfoOpen}
-          aria-label="Mở bộ lọc"
-          onPress={onToggleInfo}
-        >
-          <span aria-hidden="true">{isInfoOpen ? "×" : "☰"}</span>
-        </Button>
-      </div>
-
-      <div className="explory-found-pill">
-        <span aria-hidden="true" />
-        {resultCount} kỷ niệm đang hiển thị
-      </div>
-
-      <div className={isInfoOpen ? "explory-info-detail open" : "explory-info-detail"}>
-        <div className="explory-filter-grid">
-          <SelectField
-            className="aria-select explory-filter-select"
-            label="Nhóm"
-            selectedKey={categoryId}
-            onSelectionChange={onCategoryChange}
-          >
-              <SelectItem id="all">Tất cả</SelectItem>
-              {categories.map((category) => (
-                <SelectItem id={category.id} key={category.id}>
-                  {category.name}
-                </SelectItem>
-              ))}
-          </SelectField>
-
-          <SelectField
-            className="aria-select explory-filter-select"
-            label="Cảm xúc"
-            selectedKey={moodId}
-            onSelectionChange={onMoodChange}
-          >
-              <SelectItem id="all">Tất cả</SelectItem>
-              {moods.map((mood) => (
-                <SelectItem id={mood.id} key={mood.id}>
-                  {mood.name}
-                </SelectItem>
-              ))}
-          </SelectField>
-        </div>
-
-        <div className="explory-range-panel">
-          <div className="explory-range-title">
-            <span className="range-location-icon" aria-hidden="true" />
-            Vùng kỷ niệm
-          </div>
-          <div className="explory-range-grid">
-            <div className="explory-coordinate-card">
-              <span className="coordinate-card-title">
-                <span aria-hidden="true" />
-                Tây nam
-              </span>
-              <span className="coordinate-line">
-                Lat <strong>{boundsSummary.southwest.lat}</strong>
-              </span>
-              <span className="coordinate-line">
-                Lng <strong>{boundsSummary.southwest.lng}</strong>
-              </span>
-            </div>
-            <div className="explory-coordinate-card">
-              <span className="coordinate-card-title">
-                <span className="northeast" aria-hidden="true" />
-                Đông bắc
-              </span>
-              <span className="coordinate-line">
-                Lat <strong>{boundsSummary.northeast.lat}</strong>
-              </span>
-              <span className="coordinate-line">
-                Lng <strong>{boundsSummary.northeast.lng}</strong>
-              </span>
-            </div>
-          </div>
-          <Button className="btn btn-primary explory-add-inline" type="button" onPress={onAddMemory}>
-            <span aria-hidden="true">+</span>
-            Thêm kỷ niệm
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function getBoundsSummary(items) {
-  const latitudes = items.map((item) => item.latitude);
-  const longitudes = items.map((item) => item.longitude);
-
-  return {
-    northeast: {
-      lat: Math.max(...latitudes).toFixed(3),
-      lng: Math.max(...longitudes).toFixed(3)
-    },
-    southwest: {
-      lat: Math.min(...latitudes).toFixed(3),
-      lng: Math.min(...longitudes).toFixed(3)
-    }
-  };
 }
 
 function MapDrawerOverlay({ activeCheckin, drawerMode, initialMediaIndex, onClose }) {
@@ -636,11 +476,6 @@ function MemoryDrawerContent({ checkin, initialMediaIndex }) {
           <dd>{checkin.locationName}</dd>
         </div>
         <div>
-          <span aria-hidden="true">◷</span>
-          <dt>Ngày kỷ niệm</dt>
-          <dd>{formatDate(checkin.checkinTime)}</dd>
-        </div>
-        <div>
           <span aria-hidden="true">●</span>
           <dt>Người thêm</dt>
           <dd>{checkin.createdBy}</dd>
@@ -673,8 +508,6 @@ function PlaceVisitTimeline({ visits, onOpenMedia }) {
       <div className="timeline-list">
         {visits.map((visit) => {
           const visitMedia = getMemoryMedia(visit);
-          const visibleMedia = visitMedia.slice(0, 4);
-          const remainingCount = Math.max(visitMedia.length - visibleMedia.length, 0);
 
           return (
             <article className="timeline-visit" key={visit.id}>
@@ -684,31 +517,28 @@ function PlaceVisitTimeline({ visits, onOpenMedia }) {
                   <strong>{formatDate(visit.checkinTime)}</strong>
                   <span>{visit.title}</span>
                 </div>
-                <div className="timeline-media-grid">
-                  {visibleMedia.map((item, index) => (
-                    <Button
-                      className="memory-preview-tile media-open-button"
-                      key={item.id}
-                      type="button"
-                      aria-label={`Mở ${item.type === "video" ? "video" : "ảnh"} ${index + 1} ngày ${formatDate(visit.checkinTime)}`}
-                      onPress={() => onOpenMedia(visit, index)}
-                    >
-                      <MediaPreview item={item} alt={item.alt ?? ""} />
-                      {item.type === "video" ? <i aria-label="Video" /> : null}
-                    </Button>
+                <Swiper
+                  className="timeline-media-swiper"
+                  freeMode
+                  modules={[FreeMode]}
+                  slidesPerView="auto"
+                  spaceBetween={7}
+                  watchSlidesProgress
+                >
+                  {visitMedia.map((item, index) => (
+                    <SwiperSlide className="timeline-media-slide" key={item.id}>
+                      <Button
+                        className="memory-preview-tile media-open-button"
+                        type="button"
+                        aria-label={`Mở ${item.type === "video" ? "video" : "ảnh"} ${index + 1} ngày ${formatDate(visit.checkinTime)}`}
+                        onPress={() => onOpenMedia(visit, index)}
+                      >
+                        <MediaPreview item={item} alt={item.alt ?? ""} />
+                        {item.type === "video" ? <i aria-label="Video" /> : null}
+                      </Button>
+                    </SwiperSlide>
                   ))}
-                  {remainingCount > 0 ? (
-                    <Button
-                      className="memory-preview-more media-open-button"
-                      type="button"
-                      aria-label={`Mở thêm media ngày ${formatDate(visit.checkinTime)}`}
-                      onPress={() => onOpenMedia(visit, visibleMedia.length)}
-                    >
-                      <strong>+{remainingCount}</strong>
-                      <small>More</small>
-                    </Button>
-                  ) : null}
-                </div>
+                </Swiper>
               </div>
             </article>
           );
@@ -887,14 +717,15 @@ function MemoryMediaViewer({ activeIndex, checkin, media, onClose, onSelect }) {
               {item.type === "video" ? (
                 <video key={item.id} controls preload="metadata" src={item.url} />
               ) : (
-                <Image
-                  key={item.id}
-                  src={item.url}
-                  alt={item.alt ?? checkin.title}
-                  width={1600}
-                  height={1000}
-                  sizes="(max-width: 820px) 100vw, calc(100vw - 360px)"
-                />
+                <div className="media-viewer-image-frame">
+                  <Image
+                    key={item.id}
+                    src={item.url}
+                    alt={item.alt ?? checkin.title}
+                    fill
+                    sizes="(max-width: 820px) 100vw, calc(100vw - 360px)"
+                  />
+                </div>
               )}
             </SwiperSlide>
           ))}

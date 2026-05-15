@@ -635,3 +635,15 @@
  ✓ Compiled in 576ms (3194 modules)
  ✓ Compiled in 575ms (3194 modules)
  ✓ Compiled in 548ms (3194 modules)
+ ✓ Compiled in 1802ms (3180 modules)
+ ✓ Compiled in 1032ms (3180 modules)
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 1859ms (3404 modules)
+ GET / 500 in 2360ms
+ ✓ Compiled in 831ms (3418 modules)
+ ✓ Compiled in 882ms (3418 modules)
+ ✓ Compiled in 793ms (3402 modules)
+ ✓ Compiled in 812ms (3416 modules)
+ ✓ Compiled in 588ms (3416 modules)
+ ✓ Compiled in 623ms (3416 modules)
+ ✓ Compiled in 600ms (3416 modules)
