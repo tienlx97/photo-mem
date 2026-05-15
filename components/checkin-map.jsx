@@ -574,14 +574,31 @@ function MemoryDrawerContent({ checkin, initialMediaIndex }) {
   const mood = getMood(checkin.moodId);
   const media = getMemoryMedia(checkin);
   const mediaSummary = getMediaSummary(checkin);
-  const visibleMedia = media.slice(0, 4);
-  const remainingCount = Math.max(media.length - visibleMedia.length, 0);
-  const [viewerIndex, setViewerIndex] = useState(() =>
-    Number.isInteger(initialMediaIndex) ? initialMediaIndex : null
+  const placeVisits = useMemo(() => {
+    return checkins
+      .filter((item) => item.locationName === checkin.locationName)
+      .sort((a, b) => new Date(b.checkinTime).getTime() - new Date(a.checkinTime).getTime());
+  }, [checkin.locationName]);
+  const [viewerState, setViewerState] = useState(() =>
+    Number.isInteger(initialMediaIndex)
+      ? { checkin, index: initialMediaIndex, media }
+      : null
   );
 
-  function openMedia(index) {
-    setViewerIndex(index);
+  function openMedia(visit, index) {
+    setViewerState({ checkin: visit, index, media: getMemoryMedia(visit) });
+  }
+
+  function selectViewerMedia(nextIndex) {
+    setViewerState((current) => {
+      if (!current) {
+        return current;
+      }
+
+      const index =
+        typeof nextIndex === "function" ? nextIndex(current.index) : nextIndex;
+      return { ...current, index };
+    });
   }
 
   return (
@@ -590,7 +607,7 @@ function MemoryDrawerContent({ checkin, initialMediaIndex }) {
         className="google-place-hero media-open-button"
         type="button"
         aria-label={`Mở ảnh ${checkin.title}`}
-        onPress={() => openMedia(0)}
+        onPress={() => openMedia(checkin, 0)}
       >
         <Image
           src={getCoverImage(checkin)}
@@ -608,21 +625,6 @@ function MemoryDrawerContent({ checkin, initialMediaIndex }) {
           <em>{mediaSummary.photos} ảnh{mediaSummary.videos ? `, ${mediaSummary.videos} video` : ""}</em>
         </p>
         <p>{category.name} · {mood.name}</p>
-      </div>
-
-      <div className="google-place-actions" aria-label="Thao tác kỷ niệm">
-        <Link href={`/checkins/${checkin.id}`}>
-          <span aria-hidden="true">↗</span>
-          <small>Chi tiết</small>
-        </Link>
-        <Button type="button">
-          <span aria-hidden="true">♡</span>
-          <small>Lưu</small>
-        </Button>
-        <Button type="button">
-          <span aria-hidden="true">⇄</span>
-          <small>Chia sẻ</small>
-        </Button>
       </div>
 
       <p className="journal-text">{checkin.caption}</p>
@@ -645,42 +647,74 @@ function MemoryDrawerContent({ checkin, initialMediaIndex }) {
         </div>
       </dl>
 
-      <div className="google-place-media" aria-label="Ảnh và video trong kỷ niệm">
-        {visibleMedia.map((item, index) => (
-          <Button
-            className="memory-preview-tile media-open-button"
-            key={item.id}
-            type="button"
-            aria-label={`Mở ${item.type === "video" ? "video" : "ảnh"} ${index + 1}`}
-            onPress={() => openMedia(index)}
-          >
-            <MediaPreview item={item} alt={item.alt ?? ""} />
-            {item.type === "video" ? <i aria-label="Video" /> : null}
-          </Button>
-        ))}
-        {remainingCount > 0 ? (
-          <Button
-            className="memory-preview-more media-open-button"
-            type="button"
-            aria-label="Mở thêm media"
-            onPress={() => openMedia(visibleMedia.length)}
-          >
-            <strong>+{remainingCount}</strong>
-            <small>More</small>
-          </Button>
-        ) : null}
-      </div>
+      <PlaceVisitTimeline visits={placeVisits} onOpenMedia={openMedia} />
 
-      {viewerIndex !== null ? (
+      {viewerState ? (
         <MemoryMediaViewer
-          activeIndex={viewerIndex}
-          checkin={checkin}
-          media={media}
-          onClose={() => setViewerIndex(null)}
-          onSelect={setViewerIndex}
+          activeIndex={viewerState.index}
+          checkin={viewerState.checkin}
+          media={viewerState.media}
+          onClose={() => setViewerState(null)}
+          onSelect={selectViewerMedia}
         />
       ) : null}
     </article>
+  );
+}
+
+function PlaceVisitTimeline({ visits, onOpenMedia }) {
+  return (
+    <section className="place-visit-timeline" aria-label="Timeline ảnh theo ngày">
+      <div className="timeline-heading">
+        <h3>Ảnh theo ngày</h3>
+        <span>{visits.length} lần ghé</span>
+      </div>
+
+      <div className="timeline-list">
+        {visits.map((visit) => {
+          const visitMedia = getMemoryMedia(visit);
+          const visibleMedia = visitMedia.slice(0, 4);
+          const remainingCount = Math.max(visitMedia.length - visibleMedia.length, 0);
+
+          return (
+            <article className="timeline-visit" key={visit.id}>
+              <div className="timeline-marker" aria-hidden="true" />
+              <div className="timeline-visit-content">
+                <div className="timeline-visit-date">
+                  <strong>{formatDate(visit.checkinTime)}</strong>
+                  <span>{visit.title}</span>
+                </div>
+                <div className="timeline-media-grid">
+                  {visibleMedia.map((item, index) => (
+                    <Button
+                      className="memory-preview-tile media-open-button"
+                      key={item.id}
+                      type="button"
+                      aria-label={`Mở ${item.type === "video" ? "video" : "ảnh"} ${index + 1} ngày ${formatDate(visit.checkinTime)}`}
+                      onPress={() => onOpenMedia(visit, index)}
+                    >
+                      <MediaPreview item={item} alt={item.alt ?? ""} />
+                      {item.type === "video" ? <i aria-label="Video" /> : null}
+                    </Button>
+                  ))}
+                  {remainingCount > 0 ? (
+                    <Button
+                      className="memory-preview-more media-open-button"
+                      type="button"
+                      aria-label={`Mở thêm media ngày ${formatDate(visit.checkinTime)}`}
+                      onPress={() => onOpenMedia(visit, visibleMedia.length)}
+                    >
+                      <strong>+{remainingCount}</strong>
+                      <small>More</small>
+                    </Button>
+                  ) : null}
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 
