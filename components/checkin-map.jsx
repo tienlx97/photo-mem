@@ -53,9 +53,9 @@ function fitMapToCheckins(map, visibleCheckins, options = {}) {
 function createCheckinIcon(checkin, isActive) {
   const category = getCategory(checkin.categoryId);
   const coverImage = getCoverImage(checkin);
-  const width = 54;
-  const height = 64;
-  const anchorY = 58;
+  const width = 44;
+  const height = 54;
+  const anchorY = 50;
 
   return L.divIcon({
     className: "checkin-leaflet-icon",
@@ -174,167 +174,31 @@ function MapControls({ activeCheckin, visibleCheckins, onAddMemory }) {
   );
 }
 
-function getBounds(checkinList) {
-  if (checkinList.length === 0) {
-    return null;
-  }
-
-  const latitudes = checkinList.map((checkin) => checkin.latitude);
-  const longitudes = checkinList.map((checkin) => checkin.longitude);
-  const minLat = Math.min(...latitudes);
-  const maxLat = Math.max(...latitudes);
-  const minLng = Math.min(...longitudes);
-  const maxLng = Math.max(...longitudes);
-
-  return {
-    minLat,
-    maxLat,
-    minLng,
-    maxLng,
-    coverage: Math.abs((maxLat - minLat) * (maxLng - minLng) * 111 * 111)
-  };
-}
-
-function MapInfoPanel({
-  bounds,
-  categoryId,
-  filteredCount,
-  moodId,
-  onAddMemory,
-  onCategoryChange,
-  onMoodChange
-}) {
-  const [expanded, setExpanded] = useState(false);
-
-  return (
-    <aside className="explory-map-info" aria-label="Thông tin bản đồ kỷ niệm">
-      <div className="explory-info-summary">
-        <div className="explory-info-icon" aria-hidden="true">
-          <span />
-        </div>
-
-        <div className="explory-info-content">
-          <div className="explory-info-title-row">
-            <h1>Bản đồ kỷ niệm</h1>
-            <button
-              type="button"
-              className="explory-info-toggle"
-              aria-expanded={expanded}
-              aria-label={expanded ? "Thu gọn thông tin bản đồ" : "Mở thông tin bản đồ"}
-              onClick={() => setExpanded((value) => !value)}
-            >
-              <span aria-hidden="true">{expanded ? "⌃" : "⌄"}</span>
-            </button>
-          </div>
-
-          <div className="explory-found-pill">
-            <span aria-hidden="true" />
-            {filteredCount} địa điểm phù hợp
-          </div>
-        </div>
-      </div>
-
-      <div className="explory-info-actions">
-        <button className="btn btn-primary" type="button" onClick={onAddMemory}>
-          <span aria-hidden="true">+</span>
-          Thêm kỷ niệm
-        </button>
-      </div>
-
-      <div className={expanded ? "explory-info-detail open" : "explory-info-detail"}>
-        <div className="explory-filter-grid" aria-label="Bộ lọc bản đồ">
-          <label>
-            <span>Nhóm</span>
-            <select value={categoryId} onChange={(event) => onCategoryChange(event.target.value)}>
-              <option value="all">Tất cả</option>
-              {categories.map((category) => (
-                <option value={category.id} key={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label>
-            <span>Cảm xúc</span>
-            <select value={moodId} onChange={(event) => onMoodChange(event.target.value)}>
-              <option value="all">Tất cả</option>
-              {moods.map((mood) => (
-                <option value={mood.id} key={mood.id}>
-                  {mood.name}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-
-        {bounds ? (
-          <div className="explory-range-panel">
-            <div className="explory-range-title">
-              <span className="range-location-icon" aria-hidden="true" />
-              <span>Vùng kỷ niệm</span>
-            </div>
-
-            <div className="explory-range-grid">
-              <CoordinateCard
-                title="Tây nam"
-                latitude={bounds.minLat}
-                longitude={bounds.minLng}
-                direction="southwest"
-              />
-              <CoordinateCard
-                title="Đông bắc"
-                latitude={bounds.maxLat}
-                longitude={bounds.maxLng}
-                direction="northeast"
-              />
-            </div>
-
-            <div className="explory-coverage">
-              <span className="coverage-grid-icon" aria-hidden="true" />
-              Hành trình phủ khoảng {bounds.coverage.toFixed(1)} km²
-            </div>
-          </div>
-        ) : null}
-      </div>
-    </aside>
-  );
-}
-
-function CoordinateCard({ direction, latitude, longitude, title }) {
-  return (
-    <div className="explory-coordinate-card">
-      <div className="coordinate-card-title">
-        <span className={direction} aria-hidden="true" />
-        {title}
-      </div>
-      <div className="coordinate-line">
-        <span>Lat</span>
-        <strong>{latitude.toFixed(6)}°</strong>
-      </div>
-      <div className="coordinate-line">
-        <span>Lng</span>
-        <strong>{longitude.toFixed(6)}°</strong>
-      </div>
-    </div>
-  );
-}
-
 export function CheckinMap() {
-  const [categoryId, setCategoryId] = useState("all");
-  const [moodId, setMoodId] = useState("all");
   const [activeId, setActiveId] = useState(null);
   const [drawerMode, setDrawerMode] = useState(null);
   const [hoveredPreviewId, setHoveredPreviewId] = useState(null);
+  const [query, setQuery] = useState("");
+  const [categoryId, setCategoryId] = useState("all");
+  const [moodId, setMoodId] = useState("all");
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
   const hoverCloseTimerRef = useRef(null);
-
   const filteredCheckins = useMemo(() => {
+    const normalizedQuery = query.trim().toLowerCase();
+
     return checkins.filter((checkin) => {
+      const queryMatch =
+        !normalizedQuery ||
+        checkin.title.toLowerCase().includes(normalizedQuery) ||
+        checkin.caption.toLowerCase().includes(normalizedQuery) ||
+        checkin.locationName.toLowerCase().includes(normalizedQuery) ||
+        checkin.city.toLowerCase().includes(normalizedQuery);
       const categoryMatch = categoryId === "all" || checkin.categoryId === categoryId;
       const moodMatch = moodId === "all" || checkin.moodId === moodId;
-      return categoryMatch && moodMatch;
+
+      return queryMatch && categoryMatch && moodMatch;
     });
-  }, [categoryId, moodId]);
+  }, [categoryId, moodId, query]);
 
   useEffect(() => {
     if (activeId && !filteredCheckins.some((checkin) => checkin.id === activeId)) {
@@ -345,8 +209,6 @@ export function CheckinMap() {
   const activeCheckin = activeId
     ? filteredCheckins.find((checkin) => checkin.id === activeId) ?? null
     : null;
-
-  const bounds = useMemo(() => getBounds(filteredCheckins), [filteredCheckins]);
 
   useEffect(() => {
     return () => {
@@ -398,17 +260,20 @@ export function CheckinMap() {
           <span aria-hidden="true">‹</span>
         </Link>
 
-        <MapInfoPanel
-          bounds={bounds}
+        <MapSearchPanel
           categoryId={categoryId}
-          filteredCount={filteredCheckins.length}
+          isInfoOpen={isInfoOpen}
           moodId={moodId}
+          query={query}
+          resultCount={filteredCheckins.length}
           onAddMemory={() => {
             setActiveId(null);
             setDrawerMode("add");
           }}
           onCategoryChange={setCategoryId}
           onMoodChange={setMoodId}
+          onQueryChange={setQuery}
+          onToggleInfo={() => setIsInfoOpen((value) => !value)}
         />
 
         <div className="leaflet-map-shell">
@@ -492,6 +357,131 @@ export function CheckinMap() {
   );
 }
 
+function MapSearchPanel({
+  categoryId,
+  isInfoOpen,
+  moodId,
+  onAddMemory,
+  onCategoryChange,
+  onMoodChange,
+  onQueryChange,
+  onToggleInfo,
+  query,
+  resultCount
+}) {
+  const boundsSummary = getBoundsSummary(checkins);
+
+  return (
+    <div className="explory-map-info" aria-label="Tìm kiếm kỷ niệm trên bản đồ">
+      <div className="explory-searchbar">
+        <label className="explory-search-field">
+          <span aria-hidden="true">⌕</span>
+          <input
+            value={query}
+            onChange={(event) => onQueryChange(event.target.value)}
+            placeholder="Tìm kỷ niệm hoặc địa điểm"
+          />
+        </label>
+        <button
+          className="explory-info-toggle"
+          type="button"
+          aria-expanded={isInfoOpen}
+          aria-label="Mở bộ lọc"
+          onClick={onToggleInfo}
+        >
+          <span aria-hidden="true">{isInfoOpen ? "×" : "☰"}</span>
+        </button>
+      </div>
+
+      <div className="explory-found-pill">
+        <span aria-hidden="true" />
+        {resultCount} kỷ niệm đang hiển thị
+      </div>
+
+      <div className={isInfoOpen ? "explory-info-detail open" : "explory-info-detail"}>
+        <div className="explory-filter-grid">
+          <label>
+            <span>Nhóm</span>
+            <select value={categoryId} onChange={(event) => onCategoryChange(event.target.value)}>
+              <option value="all">Tất cả</option>
+              {categories.map((category) => (
+                <option value={category.id} key={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label>
+            <span>Cảm xúc</span>
+            <select value={moodId} onChange={(event) => onMoodChange(event.target.value)}>
+              <option value="all">Tất cả</option>
+              {moods.map((mood) => (
+                <option value={mood.id} key={mood.id}>
+                  {mood.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+
+        <div className="explory-range-panel">
+          <div className="explory-range-title">
+            <span className="range-location-icon" aria-hidden="true" />
+            Vùng kỷ niệm
+          </div>
+          <div className="explory-range-grid">
+            <div className="explory-coordinate-card">
+              <span className="coordinate-card-title">
+                <span aria-hidden="true" />
+                Tây nam
+              </span>
+              <span className="coordinate-line">
+                Lat <strong>{boundsSummary.southwest.lat}</strong>
+              </span>
+              <span className="coordinate-line">
+                Lng <strong>{boundsSummary.southwest.lng}</strong>
+              </span>
+            </div>
+            <div className="explory-coordinate-card">
+              <span className="coordinate-card-title">
+                <span className="northeast" aria-hidden="true" />
+                Đông bắc
+              </span>
+              <span className="coordinate-line">
+                Lat <strong>{boundsSummary.northeast.lat}</strong>
+              </span>
+              <span className="coordinate-line">
+                Lng <strong>{boundsSummary.northeast.lng}</strong>
+              </span>
+            </div>
+          </div>
+          <button className="btn btn-primary explory-add-inline" type="button" onClick={onAddMemory}>
+            <span aria-hidden="true">+</span>
+            Thêm kỷ niệm
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function getBoundsSummary(items) {
+  const latitudes = items.map((item) => item.latitude);
+  const longitudes = items.map((item) => item.longitude);
+
+  return {
+    northeast: {
+      lat: Math.max(...latitudes).toFixed(3),
+      lng: Math.max(...longitudes).toFixed(3)
+    },
+    southwest: {
+      lat: Math.min(...latitudes).toFixed(3),
+      lng: Math.min(...longitudes).toFixed(3)
+    }
+  };
+}
+
 function MapDrawerOverlay({ activeCheckin, drawerMode, onClose }) {
   const drawerRef = useRef(null);
   const titleRef = useRef(null);
@@ -510,33 +500,40 @@ function MapDrawerOverlay({ activeCheckin, drawerMode, onClose }) {
   );
   const { modalProps } = useModal();
   const { dialogProps, titleProps } = useDialog({}, drawerRef);
+  const drawerProps = isAddDrawer
+    ? mergeProps(overlayProps, dialogProps, modalProps)
+    : mergeProps(overlayProps, dialogProps);
 
-  usePreventScroll({ isDisabled: false });
+  usePreventScroll({ isDisabled: !isAddDrawer });
 
   return (
-    <FocusScope autoFocus contain restoreFocus>
+    <FocusScope autoFocus={isAddDrawer} contain={isAddDrawer} restoreFocus>
       {isAddDrawer ? (
         <div
           {...underlayProps}
           className="drawer-backdrop"
           role="presentation"
         />
-      ) : (
-        <div className="drawer-backdrop map-lock-backdrop" aria-hidden="true" />
-      )}
+      ) : null}
       <aside
-        {...mergeProps(overlayProps, dialogProps, modalProps)}
+        {...drawerProps}
         ref={drawerRef}
         className={isAddDrawer ? "map-drawer add-drawer" : "map-drawer memory-drawer"}
       >
         <span className="drawer-handle" aria-hidden="true" />
-        <div className="drawer-head">
-          <div>
-            <p className="eyebrow">{isAddDrawer ? "Thêm mới" : "Kỷ niệm"}</p>
-            <h2 {...titleProps} ref={titleRef}>
+        <div className={isAddDrawer ? "drawer-head" : "drawer-head memory-drawer-head"}>
+          {isAddDrawer ? (
+            <div>
+              <p className="eyebrow">Thêm mới</p>
+              <h2 {...titleProps} ref={titleRef}>
+                {title}
+              </h2>
+            </div>
+          ) : (
+            <h2 {...titleProps} ref={titleRef} className="sr-only">
               {title}
             </h2>
-          </div>
+          )}
           <Button
             aria-label="Đóng drawer"
             className="icon-btn"
@@ -561,42 +558,75 @@ function MapDrawerOverlay({ activeCheckin, drawerMode, onClose }) {
 function MemoryDrawerContent({ checkin }) {
   const category = getCategory(checkin.categoryId);
   const mood = getMood(checkin.moodId);
+  const media = getMemoryMedia(checkin);
+  const mediaSummary = getMediaSummary(checkin);
+  const visibleMedia = media.slice(0, 4);
+  const remainingCount = Math.max(media.length - visibleMedia.length, 0);
 
   return (
     <article className="drawer-memory">
-      <MemoryMediaPreview checkin={checkin} variant="drawer" />
+      <div className="google-place-hero">
+        <img src={getCoverImage(checkin)} alt={checkin.title} />
+      </div>
 
-      <div className="tag-row">
-        <span className="pill" style={{ "--pill-color": category.color }}>
-          {category.icon} · {category.name}
-        </span>
-        <span className="pill muted">{mood.icon} · {mood.name}</span>
+      <div className="google-place-summary">
+        <h2>{checkin.title}</h2>
+        <p className="google-place-rating">
+          <strong>{mediaSummary.total}</strong>
+          <span aria-hidden="true"> ★★★★★ </span>
+          <em>{mediaSummary.photos} ảnh{mediaSummary.videos ? `, ${mediaSummary.videos} video` : ""}</em>
+        </p>
+        <p>{category.name} · {mood.name}</p>
+      </div>
+
+      <div className="google-place-actions" aria-label="Thao tác kỷ niệm">
+        <Link href={`/checkins/${checkin.id}`}>
+          <span aria-hidden="true">↗</span>
+          <small>Chi tiết</small>
+        </Link>
+        <button type="button">
+          <span aria-hidden="true">♡</span>
+          <small>Lưu</small>
+        </button>
+        <button type="button">
+          <span aria-hidden="true">⇄</span>
+          <small>Chia sẻ</small>
+        </button>
       </div>
 
       <p className="journal-text">{checkin.caption}</p>
 
-      <dl className="meta-list drawer-meta">
+      <dl className="google-place-facts drawer-meta">
         <div>
+          <span aria-hidden="true">⌖</span>
           <dt>Địa điểm</dt>
           <dd>{checkin.locationName}</dd>
         </div>
         <div>
+          <span aria-hidden="true">◷</span>
           <dt>Ngày kỷ niệm</dt>
           <dd>{formatDate(checkin.checkinTime)}</dd>
         </div>
         <div>
+          <span aria-hidden="true">●</span>
           <dt>Người thêm</dt>
           <dd>{checkin.createdBy}</dd>
         </div>
       </dl>
 
-      <div className="detail-actions">
-        <Link href={`/checkins/${checkin.id}`} className="btn btn-primary">
-          Đọc bài viết
-        </Link>
-        <button className="btn btn-secondary" type="button">
-          Chỉnh sửa
-        </button>
+      <div className="google-place-media" aria-label="Ảnh và video trong kỷ niệm">
+        {visibleMedia.map((item) => (
+          <span className="memory-preview-tile" key={item.id}>
+            <img src={item.type === "video" ? item.poster : item.url} alt={item.alt ?? ""} />
+            {item.type === "video" ? <i aria-label="Video" /> : null}
+          </span>
+        ))}
+        {remainingCount > 0 ? (
+          <span className="memory-preview-more">
+            <strong>+{remainingCount}</strong>
+            <small>More</small>
+          </span>
+        ) : null}
       </div>
     </article>
   );
@@ -608,24 +638,121 @@ function MemoryMediaPreview({ checkin, onMouseEnter, onMouseLeave, onPress, vari
   const visibleMedia = media.slice(0, variant === "drawer" ? 8 : 6);
   const remainingCount = Math.max(media.length - visibleMedia.length, 0);
   const isHoverPreview = variant === "hover";
+  const category = getCategory(checkin.categoryId);
+  const [activeSlideIndex, setActiveSlideIndex] = useState(0);
+  const activeSlide = media[activeSlideIndex] ?? media[0];
+  const activeSlideSrc = activeSlide?.type === "video" ? activeSlide.poster : activeSlide?.url;
 
-  const preview = (
+  function moveSlide(event, direction) {
+    event.preventDefault();
+    event.stopPropagation();
+    setActiveSlideIndex((currentIndex) => {
+      const nextIndex = currentIndex + direction;
+
+      if (nextIndex < 0) {
+        return media.length - 1;
+      }
+
+      if (nextIndex >= media.length) {
+        return 0;
+      }
+
+      return nextIndex;
+    });
+  }
+
+  const preview = isHoverPreview ? (
+    <article
+      className="memory-place-card hover"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      aria-label={`Xem chi tiết ${checkin.title}`}
+    >
+      <div className="memory-place-slider">
+        <img
+          className="memory-place-card-photo"
+          src={activeSlideSrc}
+          alt={activeSlide?.alt ?? checkin.title}
+        />
+        <div className="memory-place-scrim" aria-hidden="true" />
+
+        {activeSlide?.type === "video" ? (
+          <span className="memory-place-play" aria-label="Video">
+            <span aria-hidden="true" />
+          </span>
+        ) : null}
+
+        {media.length > 1 ? (
+          <>
+            <button
+              className="memory-slide-button prev"
+              type="button"
+              aria-label="Media trước"
+              onClick={(event) => moveSlide(event, -1)}
+            >
+              ‹
+            </button>
+            <button
+              className="memory-slide-button next"
+              type="button"
+              aria-label="Media tiếp theo"
+              onClick={(event) => moveSlide(event, 1)}
+            >
+              ›
+            </button>
+          </>
+        ) : null}
+
+        <div className="memory-place-overlay">
+          <div>
+            <h3>{checkin.title}</h3>
+            <p>{checkin.locationName}</p>
+          </div>
+          <span className="memory-place-badge">
+            {activeSlide?.type === "video" ? "Video" : "Ảnh"}
+          </span>
+        </div>
+
+        {media.length > 1 ? (
+          <div className="memory-slide-progress" aria-label={`${activeSlideIndex + 1} / ${media.length}`}>
+            {media.map((item, index) => (
+              <span
+                className={index === activeSlideIndex ? "active" : ""}
+                key={item.id}
+                aria-hidden="true"
+              />
+            ))}
+          </div>
+        ) : null}
+      </div>
+
+      <div className="memory-place-footer">
+        <button
+          type="button"
+          onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            onPress?.();
+          }}
+        >
+          Xem chi tiết
+        </button>
+        <span>
+          {mediaSummary.photos} ảnh{mediaSummary.videos ? ` · ${mediaSummary.videos} video` : ""}
+        </span>
+      </div>
+    </article>
+  ) : (
     <article
       className={`memory-media-preview ${variant}`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      aria-label={isHoverPreview ? `Xem chi tiết ${checkin.title}` : undefined}
     >
       <div className="memory-preview-head">
         <div>
           <p>{mediaSummary.total} media</p>
           <h3>{checkin.title}</h3>
         </div>
-        {isHoverPreview ? (
-          <span className="memory-preview-action" aria-hidden="true">
-            Xem
-          </span>
-        ) : null}
       </div>
 
       <div className="memory-preview-grid" aria-label="Ảnh và video trong kỷ niệm">

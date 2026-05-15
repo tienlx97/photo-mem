@@ -5,10 +5,10 @@ import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 const navItems = [
-  { href: "/", label: "Studio", icon: "⌂" },
+  { href: "/", label: "Bản đồ", icon: "⌖" },
   { href: "/checkins", label: "Thư viện", icon: "▥" },
   { href: "/checkins/new", label: "Thêm", icon: "+" },
-  { href: "/profile", label: "Không gian", icon: "♡" }
+  { href: "/profile", label: "Hồ sơ", icon: "♡" }
 ];
 
 export function AppShell({ children }) {

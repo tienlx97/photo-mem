@@ -13,9 +13,11 @@
  GET / 200 in 4642ms
  ✓ Compiled in 1073ms (3107 modules)
  ○ Compiling /_not-found ...
- ✓ Compiled /_not-found in 737ms (3110 modules)
- GET / 404 in 948ms
- GET /_next/static/css/app/layout.css?v=1778839260484 404 in 47ms
- GET /_next/static/chunks/main-app.js?v=1778839260484 404 in 53ms
+ ✓ Compiled /_not-fou GET / 200 in 148ms
+ ✓ Compiled in 1031ms (3107 modules)
+ ✓ Compiled in 686ms (3121 modules)
+ ✓ Compiled in 824ms (3107 modules)
+ GET / 200 in 149ms
+78839260484 404 in 53ms
  GET /_next/static/chunks/app/layout.js 404 in 53ms
  GET /_next/static/chunks/app-pages-internals.js 404 in 54ms
