@@ -28,7 +28,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family:
-    var(--font-app-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
 }
 
@@ -1055,19 +1055,32 @@ textarea:focus {
 .memory-preview-meta dd {
   margin: 0;
   font-size: 12px;
+  line-height: 1.35;
 }
 
 .memory-preview-meta dt {
   color: var(--map-muted, var(--muted));
-  font-weight: 850;
+  font-family:
+    var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-weight: 650;
+  letter-spacing: 0;
 }
 
 .memory-preview-meta dd {
   color: var(--map-text, var(--text));
   font-family:
-    var(--font-geist-mono), ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
-  font-weight: 750;
+    var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-weight: 700;
   text-align: right;
+}
+
+.memory-preview-meta .coordinate-value {
+  font-family:
+    var(--font-geist-mono), ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  font-size: 11px;
+  font-weight: 700;
 }
 
 .drawer-meta {

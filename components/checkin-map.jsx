@@ -630,7 +630,7 @@ function MemoryMediaPreview({ checkin, onMouseEnter, onMouseLeave, onPress, vari
       <dl className="memory-preview-meta">
         <div>
           <dt>Vị trí</dt>
-          <dd>
+          <dd className="coordinate-value">
             {checkin.latitude.toFixed(4)}° N, {checkin.longitude.toFixed(4)}° E
           </dd>
         </div>
