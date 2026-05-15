@@ -418,14 +418,12 @@ export function CheckinMap() {
               zoom={6}
               minZoom={4}
               maxZoom={18}
+              attributionControl={false}
               zoomControl={false}
               scrollWheelZoom
               className="checkin-leaflet-map"
             >
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
+              <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
               <FitBounds visibleCheckins={filteredCheckins} />
               <MapControls
                 activeCheckin={activeCheckin}

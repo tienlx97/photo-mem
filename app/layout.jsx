@@ -7,7 +7,21 @@ import { AppShell } from "@/components/app-shell";
 
 export const metadata = {
   title: "Our Memory Map",
-  description: "Không gian kỷ niệm riêng tư dành cho hai người."
+  description: "Không gian kỷ niệm riêng tư dành cho hai người.",
+  applicationName: "Our Memory Map",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Our Memory"
+  },
+  formatDetection: {
+    telephone: false
+  }
+};
+
+export const viewport = {
+  themeColor: "#f7f9f6"
 };
 
 export default function RootLayout({ children }) {
