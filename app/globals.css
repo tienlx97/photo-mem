@@ -778,19 +778,6 @@ textarea:focus {
   color: #fff;
 }
 
-.memory-hover-tooltip.leaflet-tooltip {
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-  padding: 0;
-  pointer-events: auto;
-}
-
-.memory-hover-tooltip.leaflet-tooltip::before {
-  display: none;
-}
-
 .memory-media-preview {
   width: 320px;
   overflow: hidden;
@@ -803,6 +790,15 @@ textarea:focus {
   backdrop-filter: blur(34px) saturate(1.18);
 }
 
+.memory-media-preview.hover {
+  cursor: pointer;
+}
+
+.memory-media-preview.hover:focus-visible {
+  outline: 3px solid rgba(11, 132, 255, 0.35);
+  outline-offset: 3px;
+}
+
 .memory-media-preview.drawer {
   width: 100%;
   border-color: rgba(213, 219, 229, 0.78);
@@ -812,11 +808,15 @@ textarea:focus {
 }
 
 .memory-preview-head {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: flex-start;
-  justify-content: space-between;
   gap: 12px;
   margin-bottom: 12px;
+}
+
+.memory-preview-head > div {
+  min-width: 0;
 }
 
 .memory-preview-head p,
@@ -832,20 +832,33 @@ textarea:focus {
 }
 
 .memory-preview-head h3 {
+  overflow: hidden;
   margin-top: 4px;
   font-size: 16px;
   line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .memory-media-preview.drawer .memory-preview-head h3 {
   font-size: 18px;
 }
 
-.memory-preview-head > span {
-  flex: 0 0 auto;
-  color: var(--map-muted, var(--muted));
+.memory-preview-action {
+  display: inline-flex;
+  min-width: 48px;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(11, 132, 255, 0.16);
+  border-radius: 999px;
+  background: var(--map-blue-soft, rgba(11, 132, 255, 0.12));
+  color: var(--map-blue, var(--primary));
+  padding: 5px 10px;
   font-size: 11px;
-  font-weight: 850;
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .memory-preview-grid {
@@ -1067,63 +1080,6 @@ textarea:focus {
   place-items: center;
   padding: 24px;
   text-align: center;
-}
-
-.leaflet-control-zoom {
-  overflow: hidden;
-  border: 1px solid var(--line) !important;
-  border-radius: 8px !important;
-  box-shadow: var(--shadow) !important;
-}
-
-.leaflet-control-zoom a {
-  color: var(--primary-dark) !important;
-  font-weight: 900;
-}
-
-.leaflet-photo-marker {
-  display: block;
-  width: 56px;
-  height: 56px;
-  overflow: hidden;
-  border: 4px solid var(--marker-color);
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 12px 28px rgba(23, 50, 45, 0.24);
-  padding: 3px;
-}
-
-.leaflet-photo-marker.active {
-  width: 72px;
-  height: 72px;
-  outline: 4px solid rgba(255, 255, 255, 0.9);
-}
-
-.leaflet-photo-marker-image {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background-position: center;
-  background-size: cover;
-}
-
-.checkin-leaflet-icon {
-  display: grid;
-  place-items: center;
-  background: transparent;
-  border: 0;
-}
-
-.checkin-popup .leaflet-popup-content-wrapper {
-  overflow: hidden;
-  border-radius: 8px;
-  padding: 0;
-}
-
-.checkin-popup .leaflet-popup-content {
-  width: 320px !important;
-  margin: 0;
 }
 
 .popup-card {
@@ -2055,9 +2011,6 @@ textarea:focus {
     min-height: 260px;
   }
 
-  .checkin-popup .leaflet-popup-content {
-    width: 280px !important;
-  }
 }
 
 :root {
@@ -2095,20 +2048,6 @@ textarea:focus {
 
 .checkin-leaflet-map {
   background: #edf3f0;
-}
-
-.checkin-leaflet-map .leaflet-tile {
-  filter: saturate(0.78) contrast(0.96) brightness(1.03);
-}
-
-.leaflet-control-attribution {
-  margin: 0 10px 10px 0 !important;
-  border: 1px solid var(--map-panel-border);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.76) !important;
-  color: var(--map-muted) !important;
-  font-size: 10px;
-  backdrop-filter: blur(18px);
 }
 
 .explory-back-button {
@@ -2589,6 +2528,35 @@ textarea:focus {
   backdrop-filter: blur(30px);
 }
 
+.checkin-leaflet-icon {
+  position: relative;
+  display: grid;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  place-items: center;
+}
+
+.memory-hover-tooltip {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+.memory-hover-tooltip::before {
+  display: none;
+}
+
+.memory-hover-tooltip .leaflet-tooltip-content {
+  margin: 0;
+}
+
+.leaflet-tooltip-pane {
+  pointer-events: auto;
+}
+
 .explory-memory-marker {
   position: relative;
   display: grid;
@@ -2951,3 +2919,4 @@ textarea:focus {
     bottom: 12px;
   }
 }
+

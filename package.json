@@ -13,6 +13,8 @@
     "leaflet": "^1.9.4",
     "next": "14.2.5",
     "react": "18.3.1",
+    "react-aria": "^3.48.0",
+    "react-aria-components": "^1.17.0",
     "react-dom": "18.3.1",
     "react-leaflet": "4.2.1"
   },

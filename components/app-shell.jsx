@@ -20,7 +20,7 @@ export function AppShell({ children }) {
           <span className="brand-mark">M</span>
           <span>
             <strong>Our Memory Map</strong>
-            <small>Minh & An</small>
+            <small>Tiến & Thảo</small>
           </span>
         </Link>
 

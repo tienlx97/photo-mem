@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Button } from "react-aria-components";
 import { categories, journalPrompts, moods } from "@/lib/mock-data";
 
 const previewImages = [
@@ -56,14 +57,14 @@ export function CheckinFormMock() {
 
           <div className="prompt-list" aria-label="Gợi ý viết nhật ký">
             {journalPrompts.map((prompt) => (
-              <button
+              <Button
                 key={prompt}
                 type="button"
                 className={activePrompt === prompt ? "prompt-chip active" : "prompt-chip"}
-                onClick={() => setActivePrompt(prompt)}
+                onPress={() => setActivePrompt(prompt)}
               >
                 {prompt}
-              </button>
+              </Button>
             ))}
           </div>
         </div>
@@ -79,27 +80,27 @@ export function CheckinFormMock() {
           </div>
 
           <div className="segmented">
-            <button
+            <Button
               type="button"
               className={locationMode === "gps" ? "active" : ""}
-              onClick={() => setLocationMode("gps")}
+              onPress={() => setLocationMode("gps")}
             >
               ⌖ GPS
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
               className={locationMode === "search" ? "active" : ""}
-              onClick={() => setLocationMode("search")}
+              onPress={() => setLocationMode("search")}
             >
               ⌕ Tìm kiếm
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
               className={locationMode === "pin" ? "active" : ""}
-              onClick={() => setLocationMode("pin")}
+              onPress={() => setLocationMode("pin")}
             >
               ◉ Chọn bản đồ
-            </button>
+            </Button>
           </div>
 
           <label className="field">
@@ -158,10 +159,10 @@ export function CheckinFormMock() {
             </label>
           </div>
 
-          <button className="btn btn-primary submit-btn" type="submit">
+          <Button className="btn btn-primary submit-btn" type="submit">
             <span aria-hidden="true">✓</span>
             Lưu kỷ niệm
-          </button>
+          </Button>
         </div>
       </aside>
     </form>

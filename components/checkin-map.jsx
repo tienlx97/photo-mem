@@ -4,6 +4,15 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import L from "leaflet";
 import { MapContainer, Marker, TileLayer, Tooltip, useMap } from "react-leaflet";
+import {
+  FocusScope,
+  mergeProps,
+  useDialog,
+  useModal,
+  useOverlay,
+  usePreventScroll
+} from "react-aria";
+import { Button, Pressable } from "react-aria-components";
 import { QuickMemoryPanel } from "@/components/quick-memory-panel";
 import {
   categories,
@@ -20,6 +29,50 @@ import {
 const DEFAULT_CENTER = [12.35, 107.85];
 const MEMORY_DRAWER_WIDTH = 480;
 
+function fitMapToCheckins(map, visibleCheckins, options = {}) {
+  if (!map || visibleCheckins.length === 0) {
+    return;
+  }
+
+  if (visibleCheckins.length === 1) {
+    const [checkin] = visibleCheckins;
+    map.flyTo([checkin.latitude, checkin.longitude], options.zoom ?? 13, {
+      duration: 0.55
+    });
+    return;
+  }
+
+  const bounds = visibleCheckins.map((checkin) => [checkin.latitude, checkin.longitude]);
+
+  map.fitBounds(bounds, {
+    padding: options.padding ?? [58, 58],
+    maxZoom: options.maxZoom ?? 9,
+    animate: true
+  });
+}
+
+function focusMapOnCheckin(map, checkin) {
+  if (!map || !checkin) {
+    return;
+  }
+
+  const zoom = Math.max(map.getZoom(), 7);
+
+  const mediaQuery = window.matchMedia("(max-width: 820px)");
+
+  if (mediaQuery.matches) {
+    map.flyTo([checkin.latitude, checkin.longitude], zoom, { duration: 0.55 });
+    return;
+  }
+
+  const size = map.getSize();
+  const reservedWidth = Math.min(MEMORY_DRAWER_WIDTH + 48, size.x * 0.42);
+  const activePoint = map.project([checkin.latitude, checkin.longitude], zoom);
+  const targetCenterPoint = activePoint.add([reservedWidth / 2, 0]);
+
+  map.flyTo(map.unproject(targetCenterPoint, zoom), zoom, { duration: 0.55 });
+}
+
 function createCheckinIcon(checkin, isActive) {
   const category = getCategory(checkin.categoryId);
   const coverImage = getCoverImage(checkin);
@@ -29,7 +82,7 @@ function createCheckinIcon(checkin, isActive) {
     className: "checkin-leaflet-icon",
     html: `
       <span class="explory-memory-marker${isActive ? " active" : ""}" style="--marker-color: ${category.color}">
-        ${isActive ? `<span class="explory-marker-pulse"></span>` : ""}
+        ${isActive ? '<span class="explory-marker-pulse"></span>' : ""}
         <span class="explory-marker-photo" style="background-image: url('${coverImage}')"></span>
         <span class="explory-marker-core">
           <span class="explory-marker-glass"></span>
@@ -48,19 +101,7 @@ function FitBounds({ visibleCheckins }) {
   const map = useMap();
 
   useEffect(() => {
-    if (visibleCheckins.length === 0) {
-      return;
-    }
-
-    const bounds = visibleCheckins.map((checkin) => [
-      checkin.latitude,
-      checkin.longitude
-    ]);
-
-    map.fitBounds(bounds, {
-      padding: [58, 58],
-      maxZoom: visibleCheckins.length === 1 ? 13 : 9
-    });
+    fitMapToCheckins(map, visibleCheckins);
   }, [map, visibleCheckins]);
 
   return null;
@@ -70,44 +111,17 @@ function DrawerAwareMapView({ activeCheckin, drawerMode, visibleCheckins }) {
   const map = useMap();
 
   useEffect(() => {
-    if (!activeCheckin || drawerMode !== "memory") {
-      return;
+    if (drawerMode === "memory") {
+      focusMapOnCheckin(map, activeCheckin);
     }
-
-    const mediaQuery = window.matchMedia("(max-width: 820px)");
-
-    if (mediaQuery.matches) {
-      map.flyTo([activeCheckin.latitude, activeCheckin.longitude], Math.max(map.getZoom(), 7), {
-        duration: 0.55
-      });
-      return;
-    }
-
-    const size = map.getSize();
-    const reservedWidth = Math.min(MEMORY_DRAWER_WIDTH + 48, size.x * 0.42);
-    const zoom = Math.max(map.getZoom(), 7);
-    const activePoint = map.project([activeCheckin.latitude, activeCheckin.longitude], zoom);
-    const targetCenterPoint = activePoint.add([reservedWidth / 2, 0]);
-
-    map.flyTo(map.unproject(targetCenterPoint, zoom), zoom, {
-      duration: 0.55
-    });
   }, [activeCheckin, drawerMode, map]);
 
   useEffect(() => {
-    if (drawerMode === "memory" || visibleCheckins.length === 0) {
+    if (drawerMode === "memory") {
       return;
     }
 
-    const bounds = visibleCheckins.map((checkin) => [
-      checkin.latitude,
-      checkin.longitude
-    ]);
-
-    map.fitBounds(bounds, {
-      padding: [58, 58],
-      maxZoom: visibleCheckins.length === 1 ? 13 : 9
-    });
+    fitMapToCheckins(map, visibleCheckins);
   }, [drawerMode, map, visibleCheckins]);
 
   return null;
@@ -119,26 +133,16 @@ function MapControls({ activeCheckin, visibleCheckins, onAddMemory }) {
 
   function resetView() {
     if (visibleCheckins.length > 1) {
-      const bounds = visibleCheckins.map((checkin) => [
-        checkin.latitude,
-        checkin.longitude
-      ]);
-
-      map.fitBounds(bounds, {
-        padding: [58, 58],
-        maxZoom: 9
-      });
+      fitMapToCheckins(map, visibleCheckins);
       return;
     }
 
     if (activeCheckin) {
-      map.flyTo([activeCheckin.latitude, activeCheckin.longitude], 13, {
-        duration: 0.8
-      });
+      map.flyTo([activeCheckin.latitude, activeCheckin.longitude], 13, { duration: 0.55 });
       return;
     }
 
-    map.flyTo(DEFAULT_CENTER, 6, { duration: 0.8 });
+    map.flyTo(DEFAULT_CENTER, 6, { duration: 0.55 });
   }
 
   function locateUser() {
@@ -151,7 +155,7 @@ function MapControls({ activeCheckin, visibleCheckins, onAddMemory }) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-        map.flyTo([latitude, longitude], 14, { duration: 0.9 });
+        map.flyTo([latitude, longitude], 14, { duration: 0.55 });
         setLocationStatus("Đã đến vị trí hiện tại");
       },
       () => {
@@ -168,11 +172,21 @@ function MapControls({ activeCheckin, visibleCheckins, onAddMemory }) {
   return (
     <div className="explory-map-controls" aria-label="Điều khiển bản đồ">
       <div className="explory-control-group">
-        <button type="button" title="Phóng to" aria-label="Phóng to" onClick={() => map.zoomIn()}>
+        <button
+          type="button"
+          title="Phóng to"
+          aria-label="Phóng to"
+          onClick={() => map.zoomIn()}
+        >
           +
         </button>
         <span aria-hidden="true" />
-        <button type="button" title="Thu nhỏ" aria-label="Thu nhỏ" onClick={() => map.zoomOut()}>
+        <button
+          type="button"
+          title="Thu nhỏ"
+          aria-label="Thu nhỏ"
+          onClick={() => map.zoomOut()}
+        >
           -
         </button>
       </div>
@@ -437,10 +451,9 @@ export function CheckinMap() {
               className="checkin-leaflet-map"
             >
               <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-
               <FitBounds visibleCheckins={filteredCheckins} />
               <DrawerAwareMapView
                 activeCheckin={activeCheckin}
@@ -480,6 +493,7 @@ export function CheckinMap() {
                           checkin={checkin}
                           onMouseEnter={keepPreviewOpen}
                           onMouseLeave={scheduleCloseHoverPreview}
+                          onPress={() => openMemory(checkin.id)}
                           variant="hover"
                         />
                       </Tooltip>
@@ -497,46 +511,80 @@ export function CheckinMap() {
         </div>
 
         {drawerMode ? (
-          <>
-            {drawerMode === "add" ? (
-              <button
-                className="drawer-backdrop"
-                type="button"
-                aria-label="Đóng drawer"
-                onClick={() => setDrawerMode(null)}
-              />
-            ) : (
-              <div
-                className="drawer-backdrop map-lock-backdrop"
-                aria-hidden="true"
-              />
-            )}
-            <aside
-              className={drawerMode === "add" ? "map-drawer add-drawer" : "map-drawer memory-drawer"}
-              aria-label="Thông tin kỷ niệm"
-            >
-              <span className="drawer-handle" aria-hidden="true" />
-            <div className="drawer-head">
-              <div>
-                <p className="eyebrow">{drawerMode === "add" ? "Thêm mới" : "Kỷ niệm"}</p>
-                <h2>{drawerMode === "add" ? "Thêm kỷ niệm" : activeCheckin?.title}</h2>
-              </div>
-              <button className="icon-btn" type="button" onClick={() => setDrawerMode(null)}>
-                <span aria-hidden="true">×</span>
-                <span className="sr-only">Đóng</span>
-              </button>
-            </div>
-
-            {drawerMode === "add" ? (
-              <QuickMemoryPanel embedded />
-            ) : activeCheckin ? (
-              <MemoryDrawerContent checkin={activeCheckin} />
-            ) : null}
-            </aside>
-          </>
+          <MapDrawerOverlay
+            activeCheckin={activeCheckin}
+            drawerMode={drawerMode}
+            onClose={() => setDrawerMode(null)}
+          />
         ) : null}
       </div>
     </section>
+  );
+}
+
+function MapDrawerOverlay({ activeCheckin, drawerMode, onClose }) {
+  const drawerRef = useRef(null);
+  const titleRef = useRef(null);
+  const isAddDrawer = drawerMode === "add";
+  const title = isAddDrawer ? "Thêm kỷ niệm" : activeCheckin?.title ?? "Thông tin kỷ niệm";
+
+  const { overlayProps, underlayProps } = useOverlay(
+    {
+      isDismissable: isAddDrawer,
+      isKeyboardDismissDisabled: false,
+      isOpen: true,
+      onClose,
+      shouldCloseOnInteractOutside: () => isAddDrawer
+    },
+    drawerRef
+  );
+  const { modalProps } = useModal();
+  const { dialogProps, titleProps } = useDialog({}, drawerRef);
+
+  usePreventScroll({ isDisabled: false });
+
+  return (
+    <FocusScope autoFocus contain restoreFocus>
+      {isAddDrawer ? (
+        <div
+          {...underlayProps}
+          className="drawer-backdrop"
+          role="presentation"
+        />
+      ) : (
+        <div className="drawer-backdrop map-lock-backdrop" aria-hidden="true" />
+      )}
+      <aside
+        {...mergeProps(overlayProps, dialogProps, modalProps)}
+        ref={drawerRef}
+        className={isAddDrawer ? "map-drawer add-drawer" : "map-drawer memory-drawer"}
+      >
+        <span className="drawer-handle" aria-hidden="true" />
+        <div className="drawer-head">
+          <div>
+            <p className="eyebrow">{isAddDrawer ? "Thêm mới" : "Kỷ niệm"}</p>
+            <h2 {...titleProps} ref={titleRef}>
+              {title}
+            </h2>
+          </div>
+          <Button
+            aria-label="Đóng drawer"
+            className="icon-btn"
+            type="button"
+            onPress={onClose}
+          >
+            <span aria-hidden="true">×</span>
+            <span className="sr-only">Đóng</span>
+          </Button>
+        </div>
+
+        {isAddDrawer ? (
+          <QuickMemoryPanel embedded />
+        ) : activeCheckin ? (
+          <MemoryDrawerContent checkin={activeCheckin} />
+        ) : null}
+      </aside>
+    </FocusScope>
   );
 }
 
@@ -584,24 +632,30 @@ function MemoryDrawerContent({ checkin }) {
   );
 }
 
-function MemoryMediaPreview({ checkin, onMouseEnter, onMouseLeave, variant }) {
+function MemoryMediaPreview({ checkin, onMouseEnter, onMouseLeave, onPress, variant }) {
   const media = getMemoryMedia(checkin);
   const mediaSummary = getMediaSummary(checkin);
   const visibleMedia = media.slice(0, variant === "drawer" ? 8 : 6);
   const remainingCount = Math.max(media.length - visibleMedia.length, 0);
+  const isHoverPreview = variant === "hover";
 
-  return (
+  const preview = (
     <article
       className={`memory-media-preview ${variant}`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      aria-label={isHoverPreview ? `Xem chi tiết ${checkin.title}` : undefined}
     >
       <div className="memory-preview-head">
         <div>
           <p>{mediaSummary.total} media</p>
           <h3>{checkin.title}</h3>
         </div>
-        {variant === "hover" ? <span>Click để xem chi tiết</span> : null}
+        {isHoverPreview ? (
+          <span className="memory-preview-action" aria-hidden="true">
+            Xem
+          </span>
+        ) : null}
       </div>
 
       <div className="memory-preview-grid" aria-label="Ảnh và video trong kỷ niệm">
@@ -641,4 +695,10 @@ function MemoryMediaPreview({ checkin, onMouseEnter, onMouseLeave, variant }) {
       </dl>
     </article>
   );
+
+  if (onPress) {
+    return <Pressable onPress={onPress}>{preview}</Pressable>;
+  }
+
+  return preview;
 }

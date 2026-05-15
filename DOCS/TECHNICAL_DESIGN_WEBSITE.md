@@ -45,7 +45,7 @@ Khuyến nghị cho MVP:
 - Dùng Client Components cho bản đồ, form upload, location picker, image preview và các UI tương tác cao.
 - TanStack Query cho API cache, pagination và optimistic update nhẹ.
 - React Hook Form + Zod cho form/validation.
-- Leaflet + OpenStreetMap cho MVP để tiết kiệm chi phí, hoặc Mapbox/Google Maps nếu cần geocoding và chất lượng tìm kiếm địa điểm tốt hơn.
+- Leaflet + OpenStreetMap cho MVP để tiết kiệm chi phí, không cần API key và đủ tốt cho bản đồ check-in riêng tư. Có thể thêm provider geocoding riêng nếu cần tìm kiếm địa điểm tốt hơn.
 - Dùng `next/image` cho ảnh public/CDN; với ảnh private signed URL cần cấu hình loader/remote patterns cẩn thận.
 
 ### Backend: Node.js + Express
@@ -500,7 +500,7 @@ LIMIT 500;
 
 Nếu marker quá nhiều:
 
-- Cluster ở frontend bằng Leaflet.markercluster/supercluster.
+- Cluster ở frontend bằng Leaflet.markercluster hoặc `supercluster` khi số lượng marker tăng.
 - Sau này có thể cluster server-side theo zoom level.
 - Giới hạn số marker mỗi request và yêu cầu filter/zoom khi vượt ngưỡng.
 
@@ -546,7 +546,7 @@ lib/
 
 Component chính:
 
-- `CheckinMap`: bản đồ Leaflet/OpenStreetMap, zoom/pan, marker ảnh, popup check-in.
+- `CheckinMap`: bản đồ Leaflet/OpenStreetMap, zoom/pan, marker ảnh, preview check-in.
 - `CheckinForm`: upload ảnh, title, caption, location picker, category, mood, visibility.
 - `LocationPicker`: GPS, search, drag marker.
 - `ImageUploader`: preview, reorder, cover image.

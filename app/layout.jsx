@@ -2,6 +2,7 @@ import "leaflet/dist/leaflet.css";
 import "./globals.css";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
+import { AriaProviders } from "@/components/aria-providers";
 import { AppShell } from "@/components/app-shell";
 
 export const metadata = {
@@ -13,7 +14,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="vi" className={`${GeistSans.variable} ${GeistMono.variable}`}>
       <body>
-        <AppShell>{children}</AppShell>
+        <AriaProviders>
+          <AppShell>{children}</AppShell>
+        </AriaProviders>
       </body>
     </html>
   );

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { Button } from "react-aria-components";
 import { moods } from "@/lib/mock-data";
 
 export function QuickMemoryPanel({ embedded = false }) {
@@ -86,14 +87,14 @@ export function QuickMemoryPanel({ embedded = false }) {
       </label>
 
       <div className="quick-actions">
-        <button className="btn btn-primary" type="submit">
+        <Button className="btn btn-primary" type="submit">
           <span aria-hidden="true">+</span>
           Lưu kỷ niệm
-        </button>
-        <button className="btn btn-secondary" type="button" onClick={useCurrentLocation}>
+        </Button>
+        <Button className="btn btn-secondary" type="button" onPress={useCurrentLocation}>
           <span aria-hidden="true">⌖</span>
           Vị trí hiện tại
-        </button>
+        </Button>
       </div>
 
       {saved ? <p className="save-state">Đã lưu bản nháp trên màn hình.</p> : null}
