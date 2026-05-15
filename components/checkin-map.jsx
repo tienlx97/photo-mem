@@ -323,7 +323,7 @@ function CoordinateCard({ direction, latitude, longitude, title }) {
 export function CheckinMap() {
   const [categoryId, setCategoryId] = useState("all");
   const [moodId, setMoodId] = useState("all");
-  const [activeId, setActiveId] = useState(checkins[0]?.id);
+  const [activeId, setActiveId] = useState(null);
   const [drawerMode, setDrawerMode] = useState(null);
   const [hoveredPreviewId, setHoveredPreviewId] = useState(null);
   const hoverCloseTimerRef = useRef(null);
@@ -337,13 +337,14 @@ export function CheckinMap() {
   }, [categoryId, moodId]);
 
   useEffect(() => {
-    if (!filteredCheckins.some((checkin) => checkin.id === activeId)) {
-      setActiveId(filteredCheckins[0]?.id);
+    if (activeId && !filteredCheckins.some((checkin) => checkin.id === activeId)) {
+      setActiveId(null);
     }
   }, [activeId, filteredCheckins]);
 
-  const activeCheckin =
-    filteredCheckins.find((checkin) => checkin.id === activeId) ?? filteredCheckins[0];
+  const activeCheckin = activeId
+    ? filteredCheckins.find((checkin) => checkin.id === activeId) ?? null
+    : null;
 
   const bounds = useMemo(() => getBounds(filteredCheckins), [filteredCheckins]);
 
@@ -381,6 +382,15 @@ export function CheckinMap() {
     setDrawerMode("memory");
   }
 
+  function closeDrawer() {
+    setDrawerMode(null);
+    setHoveredPreviewId(null);
+
+    if (drawerMode === "memory") {
+      setActiveId(null);
+    }
+  }
+
   return (
     <section className="map-workspace">
       <div className="map-body">
@@ -393,7 +403,10 @@ export function CheckinMap() {
           categoryId={categoryId}
           filteredCount={filteredCheckins.length}
           moodId={moodId}
-          onAddMemory={() => setDrawerMode("add")}
+          onAddMemory={() => {
+            setActiveId(null);
+            setDrawerMode("add");
+          }}
           onCategoryChange={setCategoryId}
           onMoodChange={setMoodId}
         />
@@ -417,11 +430,16 @@ export function CheckinMap() {
               <MapControls
                 activeCheckin={activeCheckin}
                 visibleCheckins={filteredCheckins}
-                onAddMemory={() => setDrawerMode("add")}
+                onAddMemory={() => {
+                  setActiveId(null);
+                  setDrawerMode("add");
+                }}
               />
 
               {filteredCheckins.map((checkin) => {
-                const isActive = checkin.id === activeId || checkin.id === hoveredPreviewId;
+                const isActive =
+                  (drawerMode === "memory" && checkin.id === activeId) ||
+                  checkin.id === hoveredPreviewId;
 
                 return (
                   <Marker
@@ -468,7 +486,7 @@ export function CheckinMap() {
           <MapDrawerOverlay
             activeCheckin={activeCheckin}
             drawerMode={drawerMode}
-            onClose={() => setDrawerMode(null)}
+            onClose={closeDrawer}
           />
         ) : null}
       </div>
