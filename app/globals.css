@@ -3062,15 +3062,15 @@ textarea:focus {
 
 .google-place-facts div {
   display: grid;
-  grid-template-columns: 48px minmax(0, 1fr);
-  gap: 0 16px;
+  grid-template-columns: 14px minmax(0, 1fr);
+  gap: 0 12px;
   padding: 10px 24px;
 }
 
 .google-place-facts span {
   grid-row: span 2;
   color: #0b57d0;
-  font-size: 21px;
+  font-size: 14px;
   line-height: 1.1;
   text-align: center;
 }
@@ -4180,6 +4180,7 @@ textarea {
     bottom: calc(max(84px, env(safe-area-inset-bottom)) + 12px);
     left: max(16px, env(safe-area-inset-left));
     width: auto;
+    height: min(78dvh, calc(100dvh - 136px));
     grid-template-rows: minmax(0, 1fr);
     overflow: hidden;
     border-radius: 10px;
@@ -4265,10 +4266,11 @@ textarea {
   }
 
   .map-drawer.memory-drawer {
-    right: max(16px, env(safe-area-inset-right));
+    right: max(18px, env(safe-area-inset-right));
     bottom: calc(max(78px, env(safe-area-inset-bottom)) + 10px);
-    left: max(16px, env(safe-area-inset-left));
-    max-height: min(78dvh, calc(100dvh - 126px));
+    left: max(18px, env(safe-area-inset-left));
+    height: min(78dvh, calc(100dvh - 126px));
+    max-height: none;
   }
 
   .google-place-hero {

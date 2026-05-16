@@ -449,8 +449,6 @@ function MemoryDrawerContent({ checkin, initialMediaIndex }) {
         <h2>{checkin.title}</h2>
       </div>
 
-      <p className="journal-text">{checkin.caption}</p>
-
       <Tabs className="drawer-detail-tabs" defaultSelectedKey="overview">
         <TabList className="drawer-detail-tab-list" aria-label="Thông tin kỷ niệm">
           <Tab id="overview">Overview</Tab>
@@ -458,6 +456,8 @@ function MemoryDrawerContent({ checkin, initialMediaIndex }) {
         </TabList>
 
         <TabPanel className="drawer-detail-tab-panel" id="overview">
+          <p className="journal-text">{checkin.caption}</p>
+
           <dl className="google-place-facts drawer-meta">
             <div>
               <span aria-hidden="true">⌖</span>
