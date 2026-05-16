@@ -7,22 +7,26 @@ import { Field, SelectField, SelectItem, TextAreaField } from "@/components/ui";
 
 export function QuickMemoryPanel({ embedded = false }) {
   const [saved, setSaved] = useState(false);
-  const [location, setLocation] = useState("Quán nhỏ tụi mình thích");
+  const [locationName, setLocationName] = useState("Quán nhỏ tụi mình thích");
+  const [coordinates, setCoordinates] = useState("");
+  const [googleMapsUrl, setGoogleMapsUrl] = useState("");
 
   function useCurrentLocation() {
     if (!navigator.geolocation) {
-      setLocation("Trình duyệt không hỗ trợ vị trí");
+      setCoordinates("Trình duyệt không hỗ trợ vị trí");
       return;
     }
 
-    setLocation("Đang lấy vị trí hiện tại...");
+    setCoordinates("Đang lấy vị trí hiện tại...");
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-        setLocation(`${latitude.toFixed(5)}, ${longitude.toFixed(5)}`);
+        const nextCoordinates = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
+        setCoordinates(nextCoordinates);
+        setGoogleMapsUrl(`https://maps.google.com/?q=${nextCoordinates}`);
       },
       () => {
-        setLocation("Chưa cấp quyền vị trí");
+        setCoordinates("Chưa cấp quyền vị trí");
       }
     );
   }
@@ -67,7 +71,12 @@ export function QuickMemoryPanel({ embedded = false }) {
         </SelectField>
       </div>
 
-      <Field label="Địa điểm" value={location} onChange={setLocation} />
+      <Field label="Địa điểm" value={locationName} onChange={setLocationName} />
+
+      <div className="field-grid compact">
+        <Field label="Tọa độ" value={coordinates} onChange={setCoordinates} />
+        <Field label="URL Google Maps" type="url" value={googleMapsUrl} onChange={setGoogleMapsUrl} />
+      </div>
 
       <TextAreaField label="Ghi chú" rows={4} defaultValue="Điều mình muốn nhớ nhất là..." />
 

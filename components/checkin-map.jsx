@@ -15,7 +15,7 @@ import {
   useOverlay,
   usePreventScroll
 } from "react-aria";
-import { Button, Link, Pressable, Tab, TabList, Tabs } from "react-aria-components";
+import { Button, Link, Pressable, Tab, TabList, TabPanel, Tabs } from "react-aria-components";
 import { QuickMemoryPanel } from "@/components/quick-memory-panel";
 import {
   checkins,
@@ -27,7 +27,8 @@ import {
   getMood
 } from "@/lib/mock-data";
 
-const DEFAULT_CENTER = [12.35, 107.85];
+const DEFAULT_CENTER = [10.7757, 106.7004];
+const DEFAULT_ZOOM = 11;
 
 function fitMapToCheckins(map, visibleCheckins, options = {}) {
   if (!map || visibleCheckins.length === 0) {
@@ -54,6 +55,7 @@ function fitMapToCheckins(map, visibleCheckins, options = {}) {
 function createCheckinIcon(checkin, isActive) {
   const category = getCategory(checkin.categoryId);
   const coverImage = getCoverImage(checkin);
+  const markerActiveColor = category.id === "home" ? "#b5164f" : category.color;
   const width = 44;
   const height = 54;
   const anchorY = 50;
@@ -61,7 +63,7 @@ function createCheckinIcon(checkin, isActive) {
   return L.divIcon({
     className: "checkin-leaflet-icon",
     html: `
-      <span class="explory-memory-marker${isActive ? " active" : ""}" style="--marker-color: ${category.color}">
+      <span class="explory-memory-marker${category.id === "home" ? " home-marker" : ""}${isActive ? " active" : ""}" style="--marker-color: ${category.color}; --marker-active-color: ${markerActiveColor}">
         ${isActive ? '<span class="explory-marker-pulse"></span>' : ""}
         <span class="explory-marker-core">
           <span class="explory-marker-photo" style="background-image: url('${coverImage}')"></span>
@@ -78,32 +80,22 @@ function createCheckinIcon(checkin, isActive) {
   });
 }
 
-function FitBounds({ visibleCheckins }) {
-  const map = useMap();
-
-  useEffect(() => {
-    fitMapToCheckins(map, visibleCheckins);
-  }, [map, visibleCheckins]);
-
-  return null;
-}
-
 function MapControls({ activeCheckin, visibleCheckins, onAddMemory }) {
   const map = useMap();
   const [locationStatus, setLocationStatus] = useState("");
 
   function resetView() {
-    if (visibleCheckins.length > 1) {
-      fitMapToCheckins(map, visibleCheckins);
-      return;
-    }
-
     if (activeCheckin) {
       map.flyTo([activeCheckin.latitude, activeCheckin.longitude], 13, { duration: 0.55 });
       return;
     }
 
-    map.flyTo(DEFAULT_CENTER, 6, { duration: 0.55 });
+    if (visibleCheckins.length === 1) {
+      fitMapToCheckins(map, visibleCheckins);
+      return;
+    }
+
+    map.flyTo(DEFAULT_CENTER, DEFAULT_ZOOM, { duration: 0.55 });
   }
 
   function locateUser() {
@@ -258,7 +250,7 @@ export function CheckinMap() {
           {mapPlaces.length > 0 ? (
             <MapContainer
               center={DEFAULT_CENTER}
-              zoom={6}
+              zoom={DEFAULT_ZOOM}
               minZoom={4}
               maxZoom={18}
               attributionControl={false}
@@ -267,7 +259,6 @@ export function CheckinMap() {
               className="checkin-leaflet-map"
             >
               <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-              <FitBounds visibleCheckins={mapPlaces} />
               <MapControls
                 activeCheckin={activeCheckin}
                 visibleCheckins={mapPlaces}
@@ -410,10 +401,7 @@ function MapDrawerOverlay({ activeCheckin, drawerMode, initialMediaIndex, onClos
 }
 
 function MemoryDrawerContent({ checkin, initialMediaIndex }) {
-  const category = getCategory(checkin.categoryId);
-  const mood = getMood(checkin.moodId);
   const media = getMemoryMedia(checkin);
-  const mediaSummary = getMediaSummary(checkin);
   const placeVisits = useMemo(() => {
     return checkins
       .filter((item) => item.locationName === checkin.locationName)
@@ -449,7 +437,7 @@ function MemoryDrawerContent({ checkin, initialMediaIndex }) {
         aria-label={`Mở ảnh ${checkin.title}`}
         onPress={() => openMedia(checkin, 0)}
       >
-        <Image
+        <LoadableImage
           src={getCoverImage(checkin)}
           alt={checkin.title}
           fill
@@ -459,30 +447,50 @@ function MemoryDrawerContent({ checkin, initialMediaIndex }) {
 
       <div className="google-place-summary">
         <h2>{checkin.title}</h2>
-        <p className="google-place-rating">
-          <strong>{mediaSummary.total}</strong>
-          <span aria-hidden="true"> ★★★★★ </span>
-          <em>{mediaSummary.photos} ảnh{mediaSummary.videos ? `, ${mediaSummary.videos} video` : ""}</em>
-        </p>
-        <p>{category.name} · {mood.name}</p>
       </div>
 
       <p className="journal-text">{checkin.caption}</p>
 
-      <dl className="google-place-facts drawer-meta">
-        <div>
-          <span aria-hidden="true">⌖</span>
-          <dt>Địa điểm</dt>
-          <dd>{checkin.locationName}</dd>
-        </div>
-        <div>
-          <span aria-hidden="true">●</span>
-          <dt>Người thêm</dt>
-          <dd>{checkin.createdBy}</dd>
-        </div>
-      </dl>
+      <Tabs className="drawer-detail-tabs" defaultSelectedKey="overview">
+        <TabList className="drawer-detail-tab-list" aria-label="Thông tin kỷ niệm">
+          <Tab id="overview">Overview</Tab>
+          <Tab id="review">Review</Tab>
+        </TabList>
 
-      <PlaceVisitTimeline visits={placeVisits} onOpenMedia={openMedia} />
+        <TabPanel className="drawer-detail-tab-panel" id="overview">
+          <dl className="google-place-facts drawer-meta">
+            <div>
+              <span aria-hidden="true">⌖</span>
+              <dt>Địa điểm</dt>
+              <dd>
+                {checkin.locationName}
+                {checkin.googleMapsUrl ? (
+                  <Link
+                    className="google-place-map-link"
+                    href={checkin.googleMapsUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Mở Google Maps
+                  </Link>
+                ) : null}
+              </dd>
+            </div>
+          </dl>
+
+          <PlaceVisitTimeline visits={placeVisits} onOpenMedia={openMedia} />
+        </TabPanel>
+
+        <TabPanel className="drawer-detail-tab-panel" id="review">
+          <section className="drawer-review-panel" aria-label="Review kỷ niệm">
+            <div>
+              <strong>{checkin.createdBy}</strong>
+              <span>{formatDate(checkin.checkinTime)}</span>
+              <p>{checkin.caption}</p>
+            </div>
+          </section>
+        </TabPanel>
+      </Tabs>
 
       {viewerState ? (
         <MemoryMediaViewer
@@ -491,6 +499,7 @@ function MemoryDrawerContent({ checkin, initialMediaIndex }) {
           media={viewerState.media}
           onClose={() => setViewerState(null)}
           onSelect={selectViewerMedia}
+          preserveDrawer
         />
       ) : null}
     </article>
@@ -548,7 +557,7 @@ function PlaceVisitTimeline({ visits, onOpenMedia }) {
   );
 }
 
-function MemoryMediaViewer({ activeIndex, checkin, media, onClose, onSelect }) {
+function MemoryMediaViewer({ activeIndex, checkin, media, onClose, onSelect, preserveDrawer = false }) {
   const activeItem = media[activeIndex] ?? media[0];
   const [mainSwiper, setMainSwiper] = useState(null);
   const [mediaFilter, setMediaFilter] = useState("all");
@@ -558,12 +567,15 @@ function MemoryMediaViewer({ activeIndex, checkin, media, onClose, onSelect }) {
   useEffect(() => {
     function handleKeyDown(event) {
       if (event.key === "Escape") {
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation?.();
         onClose();
       }
     }
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown, true);
+    return () => window.removeEventListener("keydown", handleKeyDown, true);
   }, [onClose]);
 
   useEffect(() => {
@@ -589,81 +601,90 @@ function MemoryMediaViewer({ activeIndex, checkin, media, onClose, onSelect }) {
   }
 
   const viewer = (
-    <div className="memory-media-viewer" role="dialog" aria-modal="true" aria-label="Xem ảnh và video">
-      <nav className="media-viewer-mini-nav" aria-label="Điều hướng media">
-        <Button type="button" aria-label="Menu">
-          ☰
-        </Button>
-        <span>
-          <i aria-hidden="true">▯</i>
-          Saved
-        </span>
-        <span>
-          <i aria-hidden="true">◷</i>
-          Recents
-        </span>
-        <span className="active">
-          <i aria-hidden="true">▣</i>
-          Media
-        </span>
-      </nav>
+    <div
+      className={preserveDrawer ? "memory-media-viewer drawer-stage-viewer" : "memory-media-viewer"}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Xem ảnh và video"
+    >
+      {preserveDrawer ? null : (
+        <>
+          <nav className="media-viewer-mini-nav" aria-label="Điều hướng media">
+            <Button type="button" aria-label="Menu">
+              ☰
+            </Button>
+            <span>
+              <i aria-hidden="true">▯</i>
+              Saved
+            </span>
+            <span>
+              <i aria-hidden="true">◷</i>
+              Recents
+            </span>
+            <span className="active">
+              <i aria-hidden="true">▣</i>
+              Media
+            </span>
+          </nav>
 
-      <aside className="media-viewer-rail" aria-label="Danh sách media">
-        <div className="media-viewer-search">
-          <Button type="button" aria-label="Đóng trình xem" onPress={onClose}>
-            ←
-          </Button>
-          <label>
-            <span>{checkin.title}</span>
-            <i aria-hidden="true">⌕</i>
-          </label>
-        </div>
-        <Tabs
-          selectedKey={mediaFilter}
-          aria-label="Bộ lọc media"
-          onSelectionChange={(key) => setMediaFilter(String(key))}
-        >
-          <TabList className="media-viewer-tabs">
-            <Tab id="all">Tất cả</Tab>
-            <Tab id="latest">Mới nhất</Tab>
-            <Tab id="video">Video</Tab>
-            <Tab id="saved">Đã lưu</Tab>
-          </TabList>
-        </Tabs>
-        <Swiper
-          className="media-viewer-thumbs"
-          direction="vertical"
-          freeMode
-          modules={[FreeMode]}
-          slidesPerView="auto"
-          spaceBetween={0}
-          watchSlidesProgress
-          breakpoints={{
-            0: {
-              direction: "horizontal",
-              spaceBetween: 6
-            },
-            821: {
-              direction: "vertical",
-              spaceBetween: 0
-            }
-          }}
-        >
-          {media.map((item, index) => (
-            <SwiperSlide className="media-viewer-thumb-slide" key={item.id}>
-              <Button
-                className={index === activeIndex ? "active" : ""}
-                type="button"
-                aria-label={`Chọn ${item.type === "video" ? "video" : "ảnh"} ${index + 1}`}
-                onPress={() => onSelect(index)}
-              >
-                <MediaPreview item={item} alt={item.alt ?? ""} />
-                {item.type === "video" ? <i>Video</i> : null}
+          <aside className="media-viewer-rail" aria-label="Danh sách media">
+            <div className="media-viewer-search">
+              <Button type="button" aria-label="Đóng trình xem" onPress={onClose}>
+                ←
               </Button>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </aside>
+              <label>
+                <span>{checkin.title}</span>
+                <i aria-hidden="true">⌕</i>
+              </label>
+            </div>
+            <Tabs
+              selectedKey={mediaFilter}
+              aria-label="Bộ lọc media"
+              onSelectionChange={(key) => setMediaFilter(String(key))}
+            >
+              <TabList className="media-viewer-tabs">
+                <Tab id="all">Tất cả</Tab>
+                <Tab id="latest">Mới nhất</Tab>
+                <Tab id="video">Video</Tab>
+                <Tab id="saved">Đã lưu</Tab>
+              </TabList>
+            </Tabs>
+            <Swiper
+              className="media-viewer-thumbs"
+              direction="vertical"
+              freeMode
+              modules={[FreeMode]}
+              slidesPerView="auto"
+              spaceBetween={0}
+              watchSlidesProgress
+              breakpoints={{
+                0: {
+                  direction: "horizontal",
+                  spaceBetween: 6
+                },
+                821: {
+                  direction: "vertical",
+                  spaceBetween: 0
+                }
+              }}
+            >
+              {media.map((item, index) => (
+                <SwiperSlide className="media-viewer-thumb-slide" key={item.id}>
+                  <Button
+                    className={index === activeIndex ? "active" : ""}
+                    type="button"
+                    aria-label={`Chọn ${item.type === "video" ? "video" : "ảnh"} ${index + 1}`}
+                    onPress={() => onSelect(index)}
+                  >
+                    <MediaPreview item={item} alt={item.alt ?? ""} />
+                    {item.type === "video" ? <i>Video</i> : null}
+                  </Button>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </aside>
+        </>
+      )}
 
       <section className="media-viewer-stage">
         <div className="media-viewer-topcard">
@@ -718,7 +739,7 @@ function MemoryMediaViewer({ activeIndex, checkin, media, onClose, onSelect }) {
                 <video key={item.id} controls preload="metadata" src={item.url} />
               ) : (
                 <div className="media-viewer-image-frame">
-                  <Image
+                  <LoadableImage
                     key={item.id}
                     src={item.url}
                     alt={item.alt ?? checkin.title}
@@ -737,6 +758,28 @@ function MemoryMediaViewer({ activeIndex, checkin, media, onClose, onSelect }) {
   return createPortal(viewer, document.body);
 }
 
+function LoadableImage({ alt, className = "", src, ...props }) {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(false);
+  }, [src]);
+
+  return (
+    <>
+      {!isLoaded ? <span className="image-load-skeleton" aria-hidden="true" /> : null}
+      <Image
+        {...props}
+        className={`${className} loadable-image${isLoaded ? " is-loaded" : ""}`.trim()}
+        src={src}
+        alt={alt}
+        onLoad={() => setIsLoaded(true)}
+        onError={() => setIsLoaded(true)}
+      />
+    </>
+  );
+}
+
 function MediaPreview({ item, alt, className }) {
   if (item?.type === "video") {
     return (
@@ -752,7 +795,7 @@ function MediaPreview({ item, alt, className }) {
   }
 
   return (
-    <Image
+    <LoadableImage
       className={className}
       src={item?.url}
       alt={alt}

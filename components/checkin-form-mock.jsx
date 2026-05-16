@@ -97,6 +97,15 @@ export function CheckinFormMock() {
 
           <Field label="Địa chỉ" defaultValue="45 Đặng Thái Thân, Đà Lạt" />
 
+          <div className="field-grid">
+            <Field label="Tọa độ" defaultValue="11.93650, 108.44190" />
+            <Field
+              label="URL Google Maps"
+              type="url"
+              defaultValue="https://maps.google.com/?q=11.93650,108.44190"
+            />
+          </div>
+
           <div className="location-picker">
             <span className="location-pin" />
           </div>
