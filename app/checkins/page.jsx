@@ -1,9 +1,11 @@
 import { CheckinFilters } from "@/components/checkin-filters";
 import { PageHeader, PrimaryLink } from "@/components/ui";
 
+import { cx } from "@/lib/styles";
+
 export default function CheckinsPage() {
   return (
-    <div className="page-stack">
+    <div className={cx("page-stack")}>
       <PageHeader
         eyebrow="Thư viện kỷ niệm"
         title="Gallery riêng cho ảnh, video và những nơi hai người đã đi qua."

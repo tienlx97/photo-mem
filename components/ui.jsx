@@ -13,6 +13,7 @@ import {
   TextArea,
   TextField
 } from "react-aria-components";
+import { cx } from "@/lib/styles";
 
 export function PageHeader({
   eyebrow,
@@ -21,20 +22,20 @@ export function PageHeader({
   action
 }) {
   return (
-    <header className="page-header">
+    <header className={cx("page-header")}>
       <div>
-        {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
+        {eyebrow ? <p className={cx("eyebrow")}>{eyebrow}</p> : null}
         <h1>{title}</h1>
         {description ? <p>{description}</p> : null}
       </div>
-      {action ? <div className="header-action">{action}</div> : null}
+      {action ? <div className={cx("header-action")}>{action}</div> : null}
     </header>
   );
 }
 
 export function PrimaryLink({ href, children }) {
   return (
-    <Link href={href} className="btn btn-primary">
+    <Link href={href} className={cx("btn btn-primary")}>
       <span aria-hidden="true">+</span>
       {children}
     </Link>
@@ -43,7 +44,7 @@ export function PrimaryLink({ href, children }) {
 
 export function SecondaryLink({ href, children }) {
   return (
-    <Link href={href} className="btn btn-secondary">
+    <Link href={href} className={cx("btn btn-secondary")}>
       {children}
     </Link>
   );
@@ -51,7 +52,7 @@ export function SecondaryLink({ href, children }) {
 
 export function Field({
   "aria-label": ariaLabel,
-  className = "field",
+  className = cx("field"),
   defaultValue,
   inputClassName,
   isRequired,
@@ -82,7 +83,7 @@ export function Field({
 
 export function TextAreaField({
   "aria-label": ariaLabel,
-  className = "field",
+  className = cx("field"),
   defaultValue,
   isRequired,
   label,
@@ -107,7 +108,7 @@ export function TextAreaField({
 
 export function SelectField({
   children,
-  className = "field aria-select",
+  className = cx("field aria-select"),
   defaultSelectedKey,
   label,
   onSelectionChange,
@@ -121,12 +122,12 @@ export function SelectField({
       selectedKey={selectedKey}
     >
       {label ? <Label>{label}</Label> : null}
-      <Button className="aria-select-trigger">
+      <Button className={cx("aria-select-trigger")}>
         <SelectValue />
         <span aria-hidden="true">⌄</span>
       </Button>
-      <Popover className="aria-popover">
-        <ListBox className="aria-listbox">{children}</ListBox>
+      <Popover className={cx("aria-popover")}>
+        <ListBox className={cx("aria-listbox")}>{children}</ListBox>
       </Popover>
     </Select>
   );
@@ -134,7 +135,7 @@ export function SelectField({
 
 export function SelectItem({ children, id, textValue }) {
   return (
-    <ListBoxItem className="aria-listbox-item" id={id} textValue={textValue ?? String(children)}>
+    <ListBoxItem className={cx("aria-listbox-item")} id={id} textValue={textValue ?? String(children)}>
       {children}
     </ListBoxItem>
   );
@@ -146,7 +147,7 @@ export function StatCard({
   accent
 }) {
   return (
-    <div className="stat-card" style={accent ? { borderColor: accent } : undefined}>
+    <div className={cx("stat-card")} style={accent ? { borderColor: accent } : undefined}>
       <strong>{value}</strong>
       <span>{label}</span>
     </div>

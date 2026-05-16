@@ -1,0 +1,908 @@
+/* CSS Module bridge for existing application classes. */
+
+/* The declarations stay in globals.css while JSX is migrated to module lookups. */
+
+.active {
+  composes: active from global;
+}
+
+.add-drawer {
+  composes: add-drawer from global;
+}
+
+.app-shell {
+  composes: app-shell from global;
+}
+
+.aria-listbox {
+  composes: aria-listbox from global;
+}
+
+.aria-listbox-item {
+  composes: aria-listbox-item from global;
+}
+
+.aria-popover {
+  composes: aria-popover from global;
+}
+
+.aria-select {
+  composes: aria-select from global;
+}
+
+.aria-select-trigger {
+  composes: aria-select-trigger from global;
+}
+
+.article-aside {
+  composes: article-aside from global;
+}
+
+.article-content {
+  composes: article-content from global;
+}
+
+.article-lead {
+  composes: article-lead from global;
+}
+
+.article-media {
+  composes: article-media from global;
+}
+
+.article-media-item {
+  composes: article-media-item from global;
+}
+
+.article-prose {
+  composes: article-prose from global;
+}
+
+.article-stack {
+  composes: article-stack from global;
+}
+
+.bottom-nav {
+  composes: bottom-nav from global;
+}
+
+.bottom-nav-item {
+  composes: bottom-nav-item from global;
+}
+
+.brand {
+  composes: brand from global;
+}
+
+.brand-mark {
+  composes: brand-mark from global;
+}
+
+.btn {
+  composes: btn from global;
+}
+
+.btn-primary {
+  composes: btn-primary from global;
+}
+
+.btn-secondary {
+  composes: btn-secondary from global;
+}
+
+.card-meta {
+  composes: card-meta from global;
+}
+
+.card-title {
+  composes: card-title from global;
+}
+
+.category-chip {
+  composes: category-chip from global;
+}
+
+.category-strip {
+  composes: category-strip from global;
+}
+
+.checkin-card {
+  composes: checkin-card from global;
+}
+
+.checkin-card-body {
+  composes: checkin-card-body from global;
+}
+
+.checkin-grid {
+  composes: checkin-grid from global;
+}
+
+.checkin-image-link {
+  composes: checkin-image-link from global;
+}
+
+.checkin-leaflet-icon {
+  composes: checkin-leaflet-icon from global;
+}
+
+.checkin-leaflet-map {
+  composes: checkin-leaflet-map from global;
+}
+
+.compact {
+  composes: compact from global;
+}
+
+.compact-heading {
+  composes: compact-heading from global;
+}
+
+.control-compass {
+  composes: control-compass from global;
+}
+
+.control-location {
+  composes: control-location from global;
+}
+
+.coordinate-value {
+  composes: coordinate-value from global;
+}
+
+.create-layout {
+  composes: create-layout from global;
+}
+
+.dark {
+  composes: dark from global;
+}
+
+.detail-actions {
+  composes: detail-actions from global;
+}
+
+.detail-layout {
+  composes: detail-layout from global;
+}
+
+.detail-panel {
+  composes: detail-panel from global;
+}
+
+.drawer {
+  composes: drawer from global;
+}
+
+.drawer-backdrop {
+  composes: drawer-backdrop from global;
+}
+
+.drawer-detail-tab-list {
+  composes: drawer-detail-tab-list from global;
+}
+
+.drawer-detail-tab-panel {
+  composes: drawer-detail-tab-panel from global;
+}
+
+.drawer-detail-tabs {
+  composes: drawer-detail-tabs from global;
+}
+
+.drawer-handle {
+  composes: drawer-handle from global;
+}
+
+.drawer-head {
+  composes: drawer-head from global;
+}
+
+.drawer-media-strip {
+  composes: drawer-media-strip from global;
+}
+
+.drawer-media-thumb {
+  composes: drawer-media-thumb from global;
+}
+
+.drawer-memory {
+  composes: drawer-memory from global;
+}
+
+.drawer-meta {
+  composes: drawer-meta from global;
+}
+
+.drawer-photo {
+  composes: drawer-photo from global;
+}
+
+.drawer-photo-wrap {
+  composes: drawer-photo-wrap from global;
+}
+
+.drawer-review-panel {
+  composes: drawer-review-panel from global;
+}
+
+.drawer-stage-viewer {
+  composes: drawer-stage-viewer from global;
+}
+
+.explory-back-button {
+  composes: explory-back-button from global;
+}
+
+.explory-control-button {
+  composes: explory-control-button from global;
+}
+
+.explory-control-group {
+  composes: explory-control-group from global;
+}
+
+.explory-location-status {
+  composes: explory-location-status from global;
+}
+
+.explory-map-controls {
+  composes: explory-map-controls from global;
+}
+
+.explory-marker-camera {
+  composes: explory-marker-camera from global;
+}
+
+.explory-marker-core {
+  composes: explory-marker-core from global;
+}
+
+.explory-marker-glass {
+  composes: explory-marker-glass from global;
+}
+
+.explory-marker-photo {
+  composes: explory-marker-photo from global;
+}
+
+.explory-marker-pulse {
+  composes: explory-marker-pulse from global;
+}
+
+.explory-marker-tip {
+  composes: explory-marker-tip from global;
+}
+
+.explory-memory-marker {
+  composes: explory-memory-marker from global;
+}
+
+.eyebrow {
+  composes: eyebrow from global;
+}
+
+.featured {
+  composes: featured from global;
+}
+
+.field {
+  composes: field from global;
+}
+
+.field-grid {
+  composes: field-grid from global;
+}
+
+.filter-panel {
+  composes: filter-panel from global;
+}
+
+.form-panel {
+  composes: form-panel from global;
+}
+
+.form-section {
+  composes: form-section from global;
+}
+
+.gallery-grid {
+  composes: gallery-grid from global;
+}
+
+.gallery-panel {
+  composes: gallery-panel from global;
+}
+
+.google-place-facts {
+  composes: google-place-facts from global;
+}
+
+.google-place-hero {
+  composes: google-place-hero from global;
+}
+
+.google-place-map-link {
+  composes: google-place-map-link from global;
+}
+
+.google-place-media {
+  composes: google-place-media from global;
+}
+
+.google-place-rating {
+  composes: google-place-rating from global;
+}
+
+.google-place-summary {
+  composes: google-place-summary from global;
+}
+
+.header-action {
+  composes: header-action from global;
+}
+
+.hero-cta {
+  composes: hero-cta from global;
+}
+
+.hero-photo {
+  composes: hero-photo from global;
+}
+
+.home-map-area {
+  composes: home-map-area from global;
+}
+
+.home-map-frame {
+  composes: home-map-frame from global;
+}
+
+.home-marker {
+  composes: home-marker from global;
+}
+
+.home-rail {
+  composes: home-rail from global;
+}
+
+.home-stack {
+  composes: home-stack from global;
+}
+
+.home-stats {
+  composes: home-stats from global;
+}
+
+.home-topbar {
+  composes: home-topbar from global;
+}
+
+.home-workspace {
+  composes: home-workspace from global;
+}
+
+.hover {
+  composes: hover from global;
+}
+
+.icon-btn {
+  composes: icon-btn from global;
+}
+
+.image-load-skeleton {
+  composes: image-load-skeleton from global;
+}
+
+.is-loaded {
+  composes: is-loaded from global;
+}
+
+.journal-text {
+  composes: journal-text from global;
+}
+
+.latest-memory {
+  composes: latest-memory from global;
+}
+
+.leaflet-container {
+  composes: leaflet-container from global;
+}
+
+.leaflet-map-shell {
+  composes: leaflet-map-shell from global;
+}
+
+.leaflet-tooltip-content {
+  composes: leaflet-tooltip-content from global;
+}
+
+.leaflet-tooltip-pane {
+  composes: leaflet-tooltip-pane from global;
+}
+
+.library-summary {
+  composes: library-summary from global;
+}
+
+.loadable-image {
+  composes: loadable-image from global;
+}
+
+.location-picker {
+  composes: location-picker from global;
+}
+
+.location-pin {
+  composes: location-pin from global;
+}
+
+.main-panel {
+  composes: main-panel from global;
+}
+
+.map-body {
+  composes: map-body from global;
+}
+
+.map-count {
+  composes: map-count from global;
+}
+
+.map-create {
+  composes: map-create from global;
+}
+
+.map-drawer {
+  composes: map-drawer from global;
+}
+
+.map-empty-state {
+  composes: map-empty-state from global;
+}
+
+.map-loading {
+  composes: map-loading from global;
+}
+
+.map-lock-backdrop {
+  composes: map-lock-backdrop from global;
+}
+
+.map-memory-list {
+  composes: map-memory-list from global;
+}
+
+.map-title {
+  composes: map-title from global;
+}
+
+.map-toolbar {
+  composes: map-toolbar from global;
+}
+
+.map-workspace {
+  composes: map-workspace from global;
+}
+
+.media-count {
+  composes: media-count from global;
+}
+
+.media-open-button {
+  composes: media-open-button from global;
+}
+
+.media-viewer-actions {
+  composes: media-viewer-actions from global;
+}
+
+.media-viewer-image-frame {
+  composes: media-viewer-image-frame from global;
+}
+
+.media-viewer-main {
+  composes: media-viewer-main from global;
+}
+
+.media-viewer-mini-nav {
+  composes: media-viewer-mini-nav from global;
+}
+
+.media-viewer-nav {
+  composes: media-viewer-nav from global;
+}
+
+.media-viewer-rail {
+  composes: media-viewer-rail from global;
+}
+
+.media-viewer-search {
+  composes: media-viewer-search from global;
+}
+
+.media-viewer-slide {
+  composes: media-viewer-slide from global;
+}
+
+.media-viewer-stage {
+  composes: media-viewer-stage from global;
+}
+
+.media-viewer-tabs {
+  composes: media-viewer-tabs from global;
+}
+
+.media-viewer-thumb-slide {
+  composes: media-viewer-thumb-slide from global;
+}
+
+.media-viewer-thumbs {
+  composes: media-viewer-thumbs from global;
+}
+
+.media-viewer-topcard {
+  composes: media-viewer-topcard from global;
+}
+
+.media-wall {
+  composes: media-wall from global;
+}
+
+.media-wall-item {
+  composes: media-wall-item from global;
+}
+
+.media-wall-section {
+  composes: media-wall-section from global;
+}
+
+.memory-article {
+  composes: memory-article from global;
+}
+
+.memory-drawer {
+  composes: memory-drawer from global;
+}
+
+.memory-drawer-head {
+  composes: memory-drawer-head from global;
+}
+
+.memory-hover-tooltip {
+  composes: memory-hover-tooltip from global;
+}
+
+.memory-media-preview {
+  composes: memory-media-preview from global;
+}
+
+.memory-media-viewer {
+  composes: memory-media-viewer from global;
+}
+
+.memory-place-body {
+  composes: memory-place-body from global;
+}
+
+.memory-place-card {
+  composes: memory-place-card from global;
+}
+
+.memory-place-card-photo {
+  composes: memory-place-card-photo from global;
+}
+
+.memory-place-play {
+  composes: memory-place-play from global;
+}
+
+.memory-place-scrim {
+  composes: memory-place-scrim from global;
+}
+
+.memory-place-slide {
+  composes: memory-place-slide from global;
+}
+
+.memory-place-slider {
+  composes: memory-place-slider from global;
+}
+
+.memory-place-swiper {
+  composes: memory-place-swiper from global;
+}
+
+.memory-preview-action {
+  composes: memory-preview-action from global;
+}
+
+.memory-preview-grid {
+  composes: memory-preview-grid from global;
+}
+
+.memory-preview-head {
+  composes: memory-preview-head from global;
+}
+
+.memory-preview-meta {
+  composes: memory-preview-meta from global;
+}
+
+.memory-preview-more {
+  composes: memory-preview-more from global;
+}
+
+.memory-preview-tile {
+  composes: memory-preview-tile from global;
+}
+
+.memory-slide-button {
+  composes: memory-slide-button from global;
+}
+
+.memory-slide-progress {
+  composes: memory-slide-progress from global;
+}
+
+.meta-list {
+  composes: meta-list from global;
+}
+
+.mini-map {
+  composes: mini-map from global;
+}
+
+.muted {
+  composes: muted from global;
+}
+
+.nav-icon {
+  composes: nav-icon from global;
+}
+
+.nav-item {
+  composes: nav-item from global;
+}
+
+.nav-list {
+  composes: nav-list from global;
+}
+
+.next {
+  composes: next from global;
+}
+
+.note-kicker {
+  composes: note-kicker from global;
+}
+
+.overview-map-page {
+  composes: overview-map-page from global;
+}
+
+.page-header {
+  composes: page-header from global;
+}
+
+.page-stack {
+  composes: page-stack from global;
+}
+
+.panel-heading {
+  composes: panel-heading from global;
+}
+
+.people-row {
+  composes: people-row from global;
+}
+
+.pill {
+  composes: pill from global;
+}
+
+.place-visit-timeline {
+  composes: place-visit-timeline from global;
+}
+
+.popup-card {
+  composes: popup-card from global;
+}
+
+.popup-card-body {
+  composes: popup-card-body from global;
+}
+
+.preference-list {
+  composes: preference-list from global;
+}
+
+.prev {
+  composes: prev from global;
+}
+
+.preview-item {
+  composes: preview-item from global;
+}
+
+.preview-row {
+  composes: preview-row from global;
+}
+
+.primary {
+  composes: primary from global;
+}
+
+.profile-grid {
+  composes: profile-grid from global;
+}
+
+.profile-hero {
+  composes: profile-hero from global;
+}
+
+.profile-hero-image {
+  composes: profile-hero-image from global;
+}
+
+.profile-map {
+  composes: profile-map from global;
+}
+
+.prompt-chip {
+  composes: prompt-chip from global;
+}
+
+.prompt-list {
+  composes: prompt-list from global;
+}
+
+.quick-actions {
+  composes: quick-actions from global;
+}
+
+.quick-memory-panel {
+  composes: quick-memory-panel from global;
+}
+
+.quick-upload {
+  composes: quick-upload from global;
+}
+
+.route-skeleton {
+  composes: route-skeleton from global;
+}
+
+.route-skeleton-body {
+  composes: route-skeleton-body from global;
+}
+
+.route-skeleton-top {
+  composes: route-skeleton-top from global;
+}
+
+.save-state {
+  composes: save-state from global;
+}
+
+.search-field {
+  composes: search-field from global;
+}
+
+.section-block {
+  composes: section-block from global;
+}
+
+.section-heading {
+  composes: section-heading from global;
+}
+
+.segmented {
+  composes: segmented from global;
+}
+
+.segmented-option {
+  composes: segmented-option from global;
+}
+
+.sidebar {
+  composes: sidebar from global;
+}
+
+.sidebar-note {
+  composes: sidebar-note from global;
+}
+
+.space-cover {
+  composes: space-cover from global;
+}
+
+.space-summary {
+  composes: space-summary from global;
+}
+
+.sr-only {
+  composes: sr-only from global;
+}
+
+.stat-card {
+  composes: stat-card from global;
+}
+
+.stats-grid {
+  composes: stats-grid from global;
+}
+
+.sticky-panel {
+  composes: sticky-panel from global;
+}
+
+.submit-btn {
+  composes: submit-btn from global;
+}
+
+.swiper-wrapper {
+  composes: swiper-wrapper from global;
+}
+
+.tag-row {
+  composes: tag-row from global;
+}
+
+.text-link {
+  composes: text-link from global;
+}
+
+.three {
+  composes: three from global;
+}
+
+.thumb-row {
+  composes: thumb-row from global;
+}
+
+.timeline-heading {
+  composes: timeline-heading from global;
+}
+
+.timeline-list {
+  composes: timeline-list from global;
+}
+
+.timeline-marker {
+  composes: timeline-marker from global;
+}
+
+.timeline-media-slide {
+  composes: timeline-media-slide from global;
+}
+
+.timeline-media-swiper {
+  composes: timeline-media-swiper from global;
+}
+
+.timeline-visit {
+  composes: timeline-visit from global;
+}
+
+.timeline-visit-content {
+  composes: timeline-visit-content from global;
+}
+
+.timeline-visit-date {
+  composes: timeline-visit-date from global;
+}
+
+.two {
+  composes: two from global;
+}
+
+.upload-zone {
+  composes: upload-zone from global;
+}
+
+.visibility-choice {
+  composes: visibility-choice from global;
+}
+

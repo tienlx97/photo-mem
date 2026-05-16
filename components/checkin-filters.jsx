@@ -5,6 +5,8 @@ import { categories, checkins, moods } from "@/lib/mock-data";
 import { CheckinCard } from "@/components/checkin-card";
 import { Field, SelectField, SelectItem } from "@/components/ui";
 
+import { cx } from "@/lib/styles";
+
 export function CheckinFilters() {
   const [query, setQuery] = useState("");
   const [categoryId, setCategoryId] = useState("all");
@@ -34,12 +36,12 @@ export function CheckinFilters() {
 
   return (
     <>
-      <section className="filter-panel" aria-label="Tìm kiếm và lọc kỷ niệm">
-        <div className="search-field">
+      <section className={cx("filter-panel")} aria-label="Tìm kiếm và lọc kỷ niệm">
+        <div className={cx("search-field")}>
           <span aria-hidden="true">⌕</span>
           <Field
             aria-label="Tìm tiêu đề, ghi chú hoặc địa điểm"
-            className="search-field-input"
+            className={cx("search-field-input")}
             value={query}
             onChange={setQuery}
             placeholder="Tìm tiêu đề, ghi chú hoặc địa điểm"
@@ -47,7 +49,7 @@ export function CheckinFilters() {
         </div>
 
         <SelectField
-          className="aria-select filter-select"
+          className={cx("aria-select filter-select")}
           selectedKey={categoryId}
           onSelectionChange={setCategoryId}
         >
@@ -60,7 +62,7 @@ export function CheckinFilters() {
         </SelectField>
 
         <SelectField
-          className="aria-select filter-select"
+          className={cx("aria-select filter-select")}
           selectedKey={moodId}
           onSelectionChange={setMoodId}
         >
@@ -73,7 +75,7 @@ export function CheckinFilters() {
         </SelectField>
 
         <SelectField
-          className="aria-select filter-select"
+          className={cx("aria-select filter-select")}
           selectedKey={sort}
           onSelectionChange={setSort}
         >
@@ -82,7 +84,7 @@ export function CheckinFilters() {
         </SelectField>
       </section>
 
-      <section className="library-summary" aria-label="Tổng quan thư viện">
+      <section className={cx("library-summary")} aria-label="Tổng quan thư viện">
         <div>
           <span>{filtered.length}</span>
           <strong>kỷ niệm phù hợp</strong>
@@ -90,7 +92,7 @@ export function CheckinFilters() {
         <p>Thư viện ưu tiên ảnh lớn, metadata gọn và bộ lọc nhanh theo nơi chốn, nhóm và cảm xúc.</p>
       </section>
 
-      <section className="checkin-grid gallery-grid" aria-label="Danh sách kỷ niệm">
+      <section className={cx("checkin-grid gallery-grid")} aria-label="Danh sách kỷ niệm">
         {filtered.map((checkin) => (
           <CheckinCard checkin={checkin} key={checkin.id} />
         ))}

@@ -3,20 +3,22 @@ import { CheckinCard } from "@/components/checkin-card";
 import { PageHeader, StatCard } from "@/components/ui";
 import { categories, checkins, coupleSpace, formatDate } from "@/lib/mock-data";
 
+import { cx } from "@/lib/styles";
+
 export default function ProfilePage() {
   const firstMemory = checkins[checkins.length - 1];
   const latestMemory = checkins[0];
 
   return (
-    <div className="page-stack">
+    <div className={cx("page-stack")}>
       <PageHeader
         eyebrow="Không gian của chúng mình"
         title={coupleSpace.spaceName}
         description="Thông tin chung, người trong không gian, ngày bắt đầu và các cột mốc đã lưu."
       />
 
-      <section className="profile-hero">
-        <div className="profile-hero-image">
+      <section className={cx("profile-hero")}>
+        <div className={cx("profile-hero-image")}>
           <Image
             src={coupleSpace.coverImage}
             alt=""
@@ -26,10 +28,10 @@ export default function ProfilePage() {
           />
         </div>
         <div>
-          <p className="eyebrow">Bắt đầu {formatDate(coupleSpace.startDate)}</p>
+          <p className={cx("eyebrow")}>Bắt đầu {formatDate(coupleSpace.startDate)}</p>
           <h2>{coupleSpace.name}</h2>
           <p>{coupleSpace.bio}</p>
-          <div className="people-row profile-people">
+          <div className={cx("people-row profile-people")}>
             {coupleSpace.people.map((person) => (
               <span key={person.id}>
                 <Image src={person.avatar} alt={person.displayName} width={48} height={48} />
@@ -40,22 +42,22 @@ export default function ProfilePage() {
         </div>
       </section>
 
-      <section className="stats-grid">
+      <section className={cx("stats-grid")}>
         <StatCard label="Kỷ niệm" value={coupleSpace.stats.memories} accent="#2f7d6f" />
         <StatCard label="Địa điểm" value={coupleSpace.stats.places} accent="#d9654f" />
         <StatCard label="Ảnh" value={coupleSpace.stats.photos} accent="#2b8fb8" />
         <StatCard label="Ngày bên nhau" value={coupleSpace.stats.daysTogether} accent="#6e63b6" />
       </section>
 
-      <section className="profile-grid">
-        <div className="section-block">
-          <div className="section-heading">
+      <section className={cx("profile-grid")}>
+        <div className={cx("section-block")}>
+          <div className={cx("section-heading")}>
             <div>
-              <p className="eyebrow">Cột mốc</p>
+              <p className={cx("eyebrow")}>Cột mốc</p>
               <h2>Dấu mốc chính</h2>
             </div>
           </div>
-          <div className="preference-list">
+          <div className={cx("preference-list")}>
             <div>
               <span style={{ background: "#2f7d6f" }}>1</span>
               <strong>Kỷ niệm đầu tiên</strong>
@@ -74,7 +76,7 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        <div className="profile-map">
+        <div className={cx("profile-map")}>
           {checkins.map((checkin) => (
             <span
               key={checkin.id}
@@ -87,14 +89,14 @@ export default function ProfilePage() {
         </div>
       </section>
 
-      <section className="section-block">
-        <div className="section-heading">
+      <section className={cx("section-block")}>
+        <div className={cx("section-heading")}>
           <div>
-            <p className="eyebrow">Gần đây</p>
+            <p className={cx("eyebrow")}>Gần đây</p>
             <h2>Kỷ niệm gần đây</h2>
           </div>
         </div>
-        <div className="checkin-grid three">
+        <div className={cx("checkin-grid three")}>
           {checkins.slice(0, 3).map((checkin) => (
             <CheckinCard checkin={checkin} key={checkin.id} compact />
           ))}

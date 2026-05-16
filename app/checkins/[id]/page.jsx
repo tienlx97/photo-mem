@@ -12,6 +12,8 @@ import {
   getMood
 } from "@/lib/mock-data";
 
+import { cx } from "@/lib/styles";
+
 export default function CheckinDetailPage({ params }) {
   const checkin = checkins.find((item) => item.id === params.id);
 
@@ -26,7 +28,7 @@ export default function CheckinDetailPage({ params }) {
   const related = checkins.filter((item) => item.id !== checkin.id).slice(0, 2);
 
   return (
-    <div className="page-stack article-stack">
+    <div className={cx("page-stack article-stack")}>
       <PageHeader
         eyebrow="Bài viết kỷ niệm"
         title={checkin.title}
@@ -39,10 +41,10 @@ export default function CheckinDetailPage({ params }) {
         }
       />
 
-      <article className="memory-article">
-        <section className="article-media" aria-label="Ảnh và video của kỷ niệm">
+      <article className={cx("memory-article")}>
+        <section className={cx("article-media")} aria-label="Ảnh và video của kỷ niệm">
           {media.map((item, index) => (
-            <figure className={index === 0 ? "article-media-item featured" : "article-media-item"} key={item.id}>
+            <figure className={index === 0 ? cx("article-media-item featured") : cx("article-media-item")} key={item.id}>
               {item.type === "video" ? (
                 <video controls preload="metadata">
                   <source src={item.url} type="video/mp4" />
@@ -60,17 +62,17 @@ export default function CheckinDetailPage({ params }) {
           ))}
         </section>
 
-        <section className="article-content">
-          <div className="article-prose">
-            <div className="tag-row">
-              <span className="pill" style={{ "--pill-color": category.color }}>
+        <section className={cx("article-content")}>
+          <div className={cx("article-prose")}>
+            <div className={cx("tag-row")}>
+              <span className={cx("pill")} style={{ "--pill-color": category.color }}>
                 {category.icon} · {category.name}
               </span>
-              <span className="pill muted">{mood.icon} · {mood.name}</span>
-              <span className="pill muted">Chỉ hai người</span>
+              <span className={cx("pill muted")}>{mood.icon} · {mood.name}</span>
+              <span className={cx("pill muted")}>Chỉ hai người</span>
             </div>
 
-            <p className="article-lead">{checkin.caption}</p>
+            <p className={cx("article-lead")}>{checkin.caption}</p>
             <p>
               Đây là phần bài viết dài hơn cho kỷ niệm. Khi backend sẵn sàng, nội dung này có thể
               lấy từ trường `note` hoặc `articleBody`, cho phép lưu lại câu chuyện đầy đủ sau mỗi
@@ -78,8 +80,8 @@ export default function CheckinDetailPage({ params }) {
             </p>
           </div>
 
-          <aside className="article-aside">
-            <dl className="meta-list">
+          <aside className={cx("article-aside")}>
+            <dl className={cx("meta-list")}>
               <div>
                 <dt>Địa điểm</dt>
                 <dd>{checkin.locationName}</dd>
@@ -102,7 +104,7 @@ export default function CheckinDetailPage({ params }) {
               </div>
             </dl>
 
-            <div className="mini-map">
+            <div className={cx("mini-map")}>
               <span
                 style={
                   {
@@ -119,14 +121,14 @@ export default function CheckinDetailPage({ params }) {
         </section>
       </article>
 
-      <section className="section-block">
-        <div className="section-heading">
+      <section className={cx("section-block")}>
+        <div className={cx("section-heading")}>
           <div>
-            <p className="eyebrow">Gợi ý</p>
+            <p className={cx("eyebrow")}>Gợi ý</p>
             <h2>Kỷ niệm khác</h2>
           </div>
         </div>
-        <div className="checkin-grid two">
+        <div className={cx("checkin-grid two")}>
           {related.map((item) => (
             <CheckinCard checkin={item} key={item.id} compact />
           ))}

@@ -1,9 +1,11 @@
 import { CheckinFormMock } from "@/components/checkin-form-mock";
 import { PageHeader } from "@/components/ui";
 
+import { cx } from "@/lib/styles";
+
 export default function NewCheckinPage() {
   return (
-    <div className="page-stack">
+    <div className={cx("page-stack")}>
       <PageHeader
         eyebrow="Thêm kỷ niệm"
         title="Lưu ảnh, ngày, ghi chú và địa điểm trong một form."

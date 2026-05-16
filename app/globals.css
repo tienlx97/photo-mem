@@ -2856,6 +2856,53 @@ textarea:focus {
   animation-name: drawer-panel-from-left;
 }
 
+.map-drawer.memory-drawer,
+.map-drawer.memory-drawer .drawer-memory {
+  scrollbar-color: transparent transparent;
+  scrollbar-width: none;
+}
+
+.map-drawer.memory-drawer:hover,
+.map-drawer.memory-drawer:hover .drawer-memory {
+  scrollbar-color: rgba(95, 99, 104, 0.58) transparent;
+  scrollbar-width: thin;
+}
+
+.map-drawer.memory-drawer::-webkit-scrollbar,
+.map-drawer.memory-drawer .drawer-memory::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.map-drawer.memory-drawer:hover::-webkit-scrollbar,
+.map-drawer.memory-drawer:hover .drawer-memory::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.map-drawer.memory-drawer::-webkit-scrollbar-track,
+.map-drawer.memory-drawer .drawer-memory::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.map-drawer.memory-drawer::-webkit-scrollbar-thumb,
+.map-drawer.memory-drawer .drawer-memory::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  background-clip: content-box;
+}
+
+.map-drawer.memory-drawer:hover::-webkit-scrollbar-thumb,
+.map-drawer.memory-drawer:hover .drawer-memory::-webkit-scrollbar-thumb {
+  background-color: rgba(95, 99, 104, 0.58);
+}
+
+.map-drawer.memory-drawer:hover::-webkit-scrollbar-thumb:hover,
+.map-drawer.memory-drawer:hover .drawer-memory::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(60, 64, 67, 0.76);
+}
+
 .map-drawer.add-drawer {
   top: 16px;
   bottom: 16px;

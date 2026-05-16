@@ -26,6 +26,7 @@ import {
   getMediaSummary,
   getMood
 } from "@/lib/mock-data";
+import { cx } from "@/lib/styles";
 
 const DEFAULT_CENTER = [10.7757, 106.7004];
 const DEFAULT_ZOOM = 11;
@@ -59,18 +60,23 @@ function createCheckinIcon(checkin, isActive) {
   const width = 44;
   const height = 54;
   const anchorY = 50;
+  const markerClassName = cx(
+    "explory-memory-marker",
+    category.id === "home" && "home-marker",
+    isActive && "active"
+  );
 
   return L.divIcon({
-    className: "checkin-leaflet-icon",
+    className: cx("checkin-leaflet-icon"),
     html: `
-      <span class="explory-memory-marker${category.id === "home" ? " home-marker" : ""}${isActive ? " active" : ""}" style="--marker-color: ${category.color}; --marker-active-color: ${markerActiveColor}">
-        ${isActive ? '<span class="explory-marker-pulse"></span>' : ""}
-        <span class="explory-marker-core">
-          <span class="explory-marker-photo" style="background-image: url('${coverImage}')"></span>
-          <span class="explory-marker-glass"></span>
-          <span class="explory-marker-camera" aria-hidden="true"></span>
+      <span class="${markerClassName}" style="--marker-color: ${category.color}; --marker-active-color: ${markerActiveColor}">
+        ${isActive ? `<span class="${cx("explory-marker-pulse")}"></span>` : ""}
+        <span class="${cx("explory-marker-core")}">
+          <span class="${cx("explory-marker-photo")}" style="background-image: url('${coverImage}')"></span>
+          <span class="${cx("explory-marker-glass")}"></span>
+          <span class="${cx("explory-marker-camera")}" aria-hidden="true"></span>
         </span>
-        <span class="explory-marker-tip" aria-hidden="true"></span>
+        <span class="${cx("explory-marker-tip")}" aria-hidden="true"></span>
       </span>
     `,
     iconSize: [width, height],
@@ -123,8 +129,8 @@ function MapControls({ activeCheckin, visibleCheckins, onAddMemory }) {
   }
 
   return (
-    <div className="explory-map-controls" aria-label="Điều khiển bản đồ">
-      <div className="explory-control-group">
+    <div className={cx("explory-map-controls")} aria-label="Điều khiển bản đồ">
+      <div className={cx("explory-control-group")}>
         <Button
           type="button"
           title="Phóng to"
@@ -144,25 +150,25 @@ function MapControls({ activeCheckin, visibleCheckins, onAddMemory }) {
         </Button>
       </div>
 
-      <div className="explory-control-button">
+      <div className={cx("explory-control-button")}>
         <Button type="button" title="Đưa về hành trình" aria-label="Đưa về hành trình" onPress={resetView}>
-          <span className="control-compass" aria-hidden="true" />
+          <span className={cx("control-compass")} aria-hidden="true" />
         </Button>
       </div>
 
-      <div className="explory-control-button">
+      <div className={cx("explory-control-button")}>
         <Button type="button" title="Vị trí hiện tại" aria-label="Vị trí hiện tại" onPress={locateUser}>
-          <span className="control-location" aria-hidden="true" />
+          <span className={cx("control-location")} aria-hidden="true" />
         </Button>
       </div>
 
-      <div className="explory-control-button primary">
+      <div className={cx("explory-control-button primary")}>
         <Button type="button" title="Thêm kỷ niệm" aria-label="Thêm kỷ niệm" onPress={onAddMemory}>
           +
         </Button>
       </div>
 
-      {locationStatus ? <p className="explory-location-status">{locationStatus}</p> : null}
+      {locationStatus ? <p className={cx("explory-location-status")}>{locationStatus}</p> : null}
     </div>
   );
 }
@@ -240,13 +246,13 @@ export function CheckinMap() {
   }
 
   return (
-    <section className="map-workspace">
-      <div className="map-body">
-        <Link href="/checkins" className="explory-back-button" aria-label="Quay lại danh sách">
+    <section className={cx("map-workspace")}>
+      <div className={cx("map-body")}>
+        <Link href="/checkins" className={cx("explory-back-button")} aria-label="Quay lại danh sách">
           <span aria-hidden="true">‹</span>
         </Link>
 
-        <div className="leaflet-map-shell">
+        <div className={cx("leaflet-map-shell")}>
           {mapPlaces.length > 0 ? (
             <MapContainer
               center={DEFAULT_CENTER}
@@ -256,7 +262,7 @@ export function CheckinMap() {
               attributionControl={false}
               zoomControl={false}
               scrollWheelZoom
-              className="checkin-leaflet-map"
+              className={cx("checkin-leaflet-map")}
             >
               <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
               <MapControls
@@ -286,7 +292,7 @@ export function CheckinMap() {
                   >
                     {hoveredPreviewId === checkin.id ? (
                       <Tooltip
-                        className="memory-hover-tooltip"
+                        className={cx("memory-hover-tooltip")}
                         direction="top"
                         interactive
                         offset={[0, 0]}
@@ -307,7 +313,7 @@ export function CheckinMap() {
               })}
             </MapContainer>
           ) : (
-            <div className="map-empty-state">
+            <div className={cx("map-empty-state")}>
               <h2>Chưa có kỷ niệm phù hợp</h2>
               <p>Thử đổi bộ lọc nhóm hoặc cảm xúc.</p>
             </div>
@@ -356,37 +362,37 @@ function MapDrawerOverlay({ activeCheckin, drawerMode, initialMediaIndex, onClos
       {isAddDrawer ? (
         <div
           {...underlayProps}
-          className="drawer-backdrop"
+          className={cx("drawer-backdrop")}
           role="presentation"
         />
       ) : null}
       <aside
         {...drawerProps}
         ref={drawerRef}
-        className={isAddDrawer ? "map-drawer add-drawer" : "map-drawer memory-drawer"}
+        className={isAddDrawer ? cx("map-drawer add-drawer") : cx("map-drawer memory-drawer")}
       >
-        <span className="drawer-handle" aria-hidden="true" />
-        <div className={isAddDrawer ? "drawer-head" : "drawer-head memory-drawer-head"}>
+        <span className={cx("drawer-handle")} aria-hidden="true" />
+        <div className={isAddDrawer ? cx("drawer-head") : cx("drawer-head memory-drawer-head")}>
           {isAddDrawer ? (
             <div>
-              <p className="eyebrow">Thêm mới</p>
+              <p className={cx("eyebrow")}>Thêm mới</p>
               <h2 {...titleProps} ref={titleRef}>
                 {title}
               </h2>
             </div>
           ) : (
-            <h2 {...titleProps} ref={titleRef} className="sr-only">
+            <h2 {...titleProps} ref={titleRef} className={cx("sr-only")}>
               {title}
             </h2>
           )}
           <Button
             aria-label="Đóng drawer"
-            className="icon-btn"
+            className={cx("icon-btn")}
             type="button"
             onPress={onClose}
           >
             <span aria-hidden="true">×</span>
-            <span className="sr-only">Đóng</span>
+            <span className={cx("sr-only")}>Đóng</span>
           </Button>
         </div>
 
@@ -430,9 +436,9 @@ function MemoryDrawerContent({ checkin, initialMediaIndex }) {
   }
 
   return (
-    <article className="drawer-memory">
+    <article className={cx("drawer-memory")}>
       <Button
-        className="google-place-hero media-open-button"
+        className={cx("google-place-hero media-open-button")}
         type="button"
         aria-label={`Mở ảnh ${checkin.title}`}
         onPress={() => openMedia(checkin, 0)}
@@ -445,20 +451,20 @@ function MemoryDrawerContent({ checkin, initialMediaIndex }) {
         />
       </Button>
 
-      <div className="google-place-summary">
+      <div className={cx("google-place-summary")}>
         <h2>{checkin.title}</h2>
       </div>
 
-      <Tabs className="drawer-detail-tabs" defaultSelectedKey="overview">
-        <TabList className="drawer-detail-tab-list" aria-label="Thông tin kỷ niệm">
+      <Tabs className={cx("drawer-detail-tabs")} defaultSelectedKey="overview">
+        <TabList className={cx("drawer-detail-tab-list")} aria-label="Thông tin kỷ niệm">
           <Tab id="overview">Overview</Tab>
           <Tab id="review">Review</Tab>
         </TabList>
 
-        <TabPanel className="drawer-detail-tab-panel" id="overview">
-          <p className="journal-text">{checkin.caption}</p>
+        <TabPanel className={cx("drawer-detail-tab-panel")} id="overview">
+          <p className={cx("journal-text")}>{checkin.caption}</p>
 
-          <dl className="google-place-facts drawer-meta">
+          <dl className={cx("google-place-facts drawer-meta")}>
             <div>
               <span aria-hidden="true">⌖</span>
               <dt>Địa điểm</dt>
@@ -466,7 +472,7 @@ function MemoryDrawerContent({ checkin, initialMediaIndex }) {
                 {checkin.locationName}
                 {checkin.googleMapsUrl ? (
                   <Link
-                    className="google-place-map-link"
+                    className={cx("google-place-map-link")}
                     href={checkin.googleMapsUrl}
                     target="_blank"
                     rel="noreferrer"
@@ -481,8 +487,8 @@ function MemoryDrawerContent({ checkin, initialMediaIndex }) {
           <PlaceVisitTimeline visits={placeVisits} onOpenMedia={openMedia} />
         </TabPanel>
 
-        <TabPanel className="drawer-detail-tab-panel" id="review">
-          <section className="drawer-review-panel" aria-label="Review kỷ niệm">
+        <TabPanel className={cx("drawer-detail-tab-panel")} id="review">
+          <section className={cx("drawer-review-panel")} aria-label="Review kỷ niệm">
             <div>
               <strong>{checkin.createdBy}</strong>
               <span>{formatDate(checkin.checkinTime)}</span>
@@ -508,26 +514,26 @@ function MemoryDrawerContent({ checkin, initialMediaIndex }) {
 
 function PlaceVisitTimeline({ visits, onOpenMedia }) {
   return (
-    <section className="place-visit-timeline" aria-label="Timeline ảnh theo ngày">
-      <div className="timeline-heading">
+    <section className={cx("place-visit-timeline")} aria-label="Timeline ảnh theo ngày">
+      <div className={cx("timeline-heading")}>
         <h3>Ảnh theo ngày</h3>
         <span>{visits.length} lần ghé</span>
       </div>
 
-      <div className="timeline-list">
+      <div className={cx("timeline-list")}>
         {visits.map((visit) => {
           const visitMedia = getMemoryMedia(visit);
 
           return (
-            <article className="timeline-visit" key={visit.id}>
-              <div className="timeline-marker" aria-hidden="true" />
-              <div className="timeline-visit-content">
-                <div className="timeline-visit-date">
+            <article className={cx("timeline-visit")} key={visit.id}>
+              <div className={cx("timeline-marker")} aria-hidden="true" />
+              <div className={cx("timeline-visit-content")}>
+                <div className={cx("timeline-visit-date")}>
                   <strong>{formatDate(visit.checkinTime)}</strong>
                   <span>{visit.title}</span>
                 </div>
                 <Swiper
-                  className="timeline-media-swiper"
+                  className={cx("timeline-media-swiper")}
                   freeMode
                   modules={[FreeMode]}
                   slidesPerView="auto"
@@ -535,9 +541,9 @@ function PlaceVisitTimeline({ visits, onOpenMedia }) {
                   watchSlidesProgress
                 >
                   {visitMedia.map((item, index) => (
-                    <SwiperSlide className="timeline-media-slide" key={item.id}>
+                    <SwiperSlide className={cx("timeline-media-slide")} key={item.id}>
                       <Button
-                        className="memory-preview-tile media-open-button"
+                        className={cx("memory-preview-tile media-open-button")}
                         type="button"
                         aria-label={`Mở ${item.type === "video" ? "video" : "ảnh"} ${index + 1} ngày ${formatDate(visit.checkinTime)}`}
                         onPress={() => onOpenMedia(visit, index)}
@@ -602,14 +608,14 @@ function MemoryMediaViewer({ activeIndex, checkin, media, onClose, onSelect, pre
 
   const viewer = (
     <div
-      className={preserveDrawer ? "memory-media-viewer drawer-stage-viewer" : "memory-media-viewer"}
+      className={preserveDrawer ? cx("memory-media-viewer drawer-stage-viewer") : cx("memory-media-viewer")}
       role="dialog"
       aria-modal="true"
       aria-label="Xem ảnh và video"
     >
       {preserveDrawer ? null : (
         <>
-          <nav className="media-viewer-mini-nav" aria-label="Điều hướng media">
+          <nav className={cx("media-viewer-mini-nav")} aria-label="Điều hướng media">
             <Button type="button" aria-label="Menu">
               ☰
             </Button>
@@ -621,14 +627,14 @@ function MemoryMediaViewer({ activeIndex, checkin, media, onClose, onSelect, pre
               <i aria-hidden="true">◷</i>
               Recents
             </span>
-            <span className="active">
+            <span className={cx("active")}>
               <i aria-hidden="true">▣</i>
               Media
             </span>
           </nav>
 
-          <aside className="media-viewer-rail" aria-label="Danh sách media">
-            <div className="media-viewer-search">
+          <aside className={cx("media-viewer-rail")} aria-label="Danh sách media">
+            <div className={cx("media-viewer-search")}>
               <Button type="button" aria-label="Đóng trình xem" onPress={onClose}>
                 ←
               </Button>
@@ -642,7 +648,7 @@ function MemoryMediaViewer({ activeIndex, checkin, media, onClose, onSelect, pre
               aria-label="Bộ lọc media"
               onSelectionChange={(key) => setMediaFilter(String(key))}
             >
-              <TabList className="media-viewer-tabs">
+              <TabList className={cx("media-viewer-tabs")}>
                 <Tab id="all">Tất cả</Tab>
                 <Tab id="latest">Mới nhất</Tab>
                 <Tab id="video">Video</Tab>
@@ -650,7 +656,7 @@ function MemoryMediaViewer({ activeIndex, checkin, media, onClose, onSelect, pre
               </TabList>
             </Tabs>
             <Swiper
-              className="media-viewer-thumbs"
+              className={cx("media-viewer-thumbs")}
               direction="vertical"
               freeMode
               modules={[FreeMode]}
@@ -669,9 +675,9 @@ function MemoryMediaViewer({ activeIndex, checkin, media, onClose, onSelect, pre
               }}
             >
               {media.map((item, index) => (
-                <SwiperSlide className="media-viewer-thumb-slide" key={item.id}>
+                <SwiperSlide className={cx("media-viewer-thumb-slide")} key={item.id}>
                   <Button
-                    className={index === activeIndex ? "active" : ""}
+                    className={index === activeIndex ? cx("active") : cx("")}
                     type="button"
                     aria-label={`Chọn ${item.type === "video" ? "video" : "ảnh"} ${index + 1}`}
                     onPress={() => onSelect(index)}
@@ -686,14 +692,14 @@ function MemoryMediaViewer({ activeIndex, checkin, media, onClose, onSelect, pre
         </>
       )}
 
-      <section className="media-viewer-stage">
-        <div className="media-viewer-topcard">
+      <section className={cx("media-viewer-stage")}>
+        <div className={cx("media-viewer-topcard")}>
           <strong>{checkin.title}</strong>
           <span>{checkin.createdBy} · {formatDate(checkin.checkinTime)}</span>
           <small>{activeItem?.type === "video" ? "Video" : "Photo"} · {activeIndex + 1}/{media.length}</small>
         </div>
 
-        <div className="media-viewer-actions">
+        <div className={cx("media-viewer-actions")}>
           <Button type="button">
             <span aria-hidden="true">↗</span>
             Chia sẻ
@@ -706,7 +712,7 @@ function MemoryMediaViewer({ activeIndex, checkin, media, onClose, onSelect, pre
         {media.length > 1 ? (
           <>
             <Button
-              className="media-viewer-nav prev"
+              className={cx("media-viewer-nav prev")}
               type="button"
               aria-label="Media trước"
               onPress={() => move(-1)}
@@ -714,7 +720,7 @@ function MemoryMediaViewer({ activeIndex, checkin, media, onClose, onSelect, pre
               ‹
             </Button>
             <Button
-              className="media-viewer-nav next"
+              className={cx("media-viewer-nav next")}
               type="button"
               aria-label="Media tiếp theo"
               onPress={() => move(1)}
@@ -725,7 +731,7 @@ function MemoryMediaViewer({ activeIndex, checkin, media, onClose, onSelect, pre
         ) : null}
 
         <Swiper
-          className="media-viewer-main"
+          className={cx("media-viewer-main")}
           initialSlide={activeIndex}
           keyboard={{ enabled: true }}
           modules={[Keyboard]}
@@ -734,11 +740,11 @@ function MemoryMediaViewer({ activeIndex, checkin, media, onClose, onSelect, pre
           onSwiper={setMainSwiper}
         >
           {media.map((item) => (
-            <SwiperSlide className="media-viewer-slide" key={item.id}>
+            <SwiperSlide className={cx("media-viewer-slide")} key={item.id}>
               {item.type === "video" ? (
                 <video key={item.id} controls preload="metadata" src={item.url} />
               ) : (
-                <div className="media-viewer-image-frame">
+                <div className={cx("media-viewer-image-frame")}>
                   <LoadableImage
                     key={item.id}
                     src={item.url}
@@ -767,10 +773,10 @@ function LoadableImage({ alt, className = "", src, ...props }) {
 
   return (
     <>
-      {!isLoaded ? <span className="image-load-skeleton" aria-hidden="true" /> : null}
+      {!isLoaded ? <span className={cx("image-load-skeleton")} aria-hidden="true" /> : null}
       <Image
         {...props}
-        className={`${className} loadable-image${isLoaded ? " is-loaded" : ""}`.trim()}
+        className={cx(className, "loadable-image", isLoaded && "is-loaded")}
         src={src}
         alt={alt}
         onLoad={() => setIsLoaded(true)}
@@ -830,14 +836,14 @@ function MemoryMediaPreview({ checkin, onMouseEnter, onMouseLeave, onPress, vari
 
   const preview = isHoverPreview ? (
     <article
-      className="memory-place-card hover"
+      className={cx("memory-place-card hover")}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       aria-label={`Xem chi tiết ${checkin.title}`}
     >
-      <div className="memory-place-slider">
+      <div className={cx("memory-place-slider")}>
         <Swiper
-          className="memory-place-swiper"
+          className={cx("memory-place-swiper")}
           loop={media.length > 1}
           slidesPerView={1}
           preventClicks
@@ -846,19 +852,19 @@ function MemoryMediaPreview({ checkin, onMouseEnter, onMouseLeave, onPress, vari
           onSwiper={setHoverSwiper}
         >
           {media.map((item) => (
-            <SwiperSlide className="memory-place-slide" key={item.id}>
+            <SwiperSlide className={cx("memory-place-slide")} key={item.id}>
               <MediaPreview
-                className="memory-place-card-photo"
+                className={cx("memory-place-card-photo")}
                 item={item}
                 alt={item.alt ?? checkin.title}
               />
             </SwiperSlide>
           ))}
         </Swiper>
-        <div className="memory-place-scrim" aria-hidden="true" />
+        <div className={cx("memory-place-scrim")} aria-hidden="true" />
 
         {activeSlide?.type === "video" ? (
-          <span className="memory-place-play" aria-label="Video">
+          <span className={cx("memory-place-play")} aria-label="Video">
             <span aria-hidden="true" />
           </span>
         ) : null}
@@ -866,7 +872,7 @@ function MemoryMediaPreview({ checkin, onMouseEnter, onMouseLeave, onPress, vari
         {media.length > 1 ? (
           <>
             <Button
-              className="memory-slide-button prev"
+              className={cx("memory-slide-button prev")}
               type="button"
               aria-label="Media trước"
               onPress={() => moveSlide(-1)}
@@ -874,7 +880,7 @@ function MemoryMediaPreview({ checkin, onMouseEnter, onMouseLeave, onPress, vari
               ‹
             </Button>
             <Button
-              className="memory-slide-button next"
+              className={cx("memory-slide-button next")}
               type="button"
               aria-label="Media tiếp theo"
               onPress={() => moveSlide(1)}
@@ -885,10 +891,10 @@ function MemoryMediaPreview({ checkin, onMouseEnter, onMouseLeave, onPress, vari
         ) : null}
 
         {media.length > 1 ? (
-          <div className="memory-slide-progress" aria-label={`${activeSlideIndex + 1} / ${media.length}`}>
+          <div className={cx("memory-slide-progress")} aria-label={`${activeSlideIndex + 1} / ${media.length}`}>
             {media.map((item, index) => (
               <span
-                className={index === activeSlideIndex ? "active" : ""}
+                className={index === activeSlideIndex ? cx("active") : cx("")}
                 key={item.id}
                 aria-hidden="true"
               />
@@ -897,43 +903,43 @@ function MemoryMediaPreview({ checkin, onMouseEnter, onMouseLeave, onPress, vari
         ) : null}
       </div>
 
-      <div className="memory-place-body">
+      <div className={cx("memory-place-body")}>
         <h3>{checkin.title}</h3>
         <p>{formatDate(checkin.checkinTime)}</p>
       </div>
     </article>
   ) : (
     <article
-      className={`memory-media-preview ${variant}`}
+      className={cx("memory-media-preview", variant)}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <div className="memory-preview-head">
+      <div className={cx("memory-preview-head")}>
         <div>
           <p>{mediaSummary.total} media</p>
           <h3>{checkin.title}</h3>
         </div>
       </div>
 
-      <div className="memory-preview-grid" aria-label="Ảnh và video trong kỷ niệm">
+      <div className={cx("memory-preview-grid")} aria-label="Ảnh và video trong kỷ niệm">
         {visibleMedia.map((item) => (
-          <span className="memory-preview-tile" key={item.id}>
+          <span className={cx("memory-preview-tile")} key={item.id}>
             <MediaPreview item={item} alt={item.alt ?? ""} />
             {item.type === "video" ? <i aria-label="Video" /> : null}
           </span>
         ))}
         {remainingCount > 0 ? (
-          <span className="memory-preview-more">
+          <span className={cx("memory-preview-more")}>
             <strong>+{remainingCount}</strong>
             <small>More</small>
           </span>
         ) : null}
       </div>
 
-      <dl className="memory-preview-meta">
+      <dl className={cx("memory-preview-meta")}>
         <div>
           <dt>Vị trí</dt>
-          <dd className="coordinate-value">
+          <dd className={cx("coordinate-value")}>
             {checkin.latitude.toFixed(4)}° N, {checkin.longitude.toFixed(4)}° E
           </dd>
         </div>
