@@ -13,7 +13,11 @@ import {
   TextArea,
   TextField
 } from "react-aria-components";
-import { cx } from "@/lib/styles";
+
+import styles from "./ui.module.css";
+import { createCx } from "@/lib/styles";
+
+const cx = createCx(styles);
 
 export function PageHeader({
   eyebrow,

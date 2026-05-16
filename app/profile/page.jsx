@@ -3,7 +3,12 @@ import { CheckinCard } from "@/components/checkin-card";
 import { PageHeader, StatCard } from "@/components/ui";
 import { categories, checkins, coupleSpace, formatDate } from "@/lib/mock-data";
 
-import { cx } from "@/lib/styles";
+import profileStyles from "./profile.module.css";
+import checkinStyles from "@/components/checkins.module.css";
+import uiStyles from "@/components/ui.module.css";
+import { createCx } from "@/lib/styles";
+
+const cx = createCx(uiStyles, checkinStyles, profileStyles);
 
 export default function ProfilePage() {
   const firstMemory = checkins[checkins.length - 1];

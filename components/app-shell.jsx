@@ -4,7 +4,10 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Link } from "react-aria-components";
 
-import { cx } from "@/lib/styles";
+import styles from "./app-shell.module.css";
+import { createCx } from "@/lib/styles";
+
+const cx = createCx(styles);
 
 const navItems = [
   { href: "/", label: "Bản đồ", icon: "⌖" },
@@ -16,6 +19,7 @@ const navItems = [
 export function AppShell({ children }) {
   const pathname = usePathname();
   const [pendingHref, setPendingHref] = useState(null);
+  const isMapPage = pathname === "/";
 
   useEffect(() => {
     if ("serviceWorker" in navigator) {
@@ -31,7 +35,7 @@ export function AppShell({ children }) {
 
   return (
     <div className={cx("app-shell")}>
-      <main className={cx("main-panel")} aria-busy={isRouteLoading}>
+      <main className={cx("main-panel", isMapPage && "map-main-panel")} aria-busy={isRouteLoading}>
         {isRouteLoading ? <RouteSkeleton /> : null}
         {children}
       </main>

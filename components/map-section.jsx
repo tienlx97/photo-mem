@@ -2,7 +2,10 @@
 
 import dynamic from "next/dynamic";
 
-import { cx } from "@/lib/styles";
+import styles from "./map.module.css";
+import { createCx } from "@/lib/styles";
+
+const cx = createCx(styles);
 
 const CheckinMap = dynamic(
   () => import("@/components/checkin-map").then((module) => module.CheckinMap),

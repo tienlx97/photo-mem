@@ -1,7 +1,10 @@
 import { CheckinFilters } from "@/components/checkin-filters";
 import { PageHeader, PrimaryLink } from "@/components/ui";
 
-import { cx } from "@/lib/styles";
+import styles from "@/components/ui.module.css";
+import { createCx } from "@/lib/styles";
+
+const cx = createCx(styles);
 
 export default function CheckinsPage() {
   return (

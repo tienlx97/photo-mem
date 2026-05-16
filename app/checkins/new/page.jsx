@@ -1,7 +1,10 @@
 import { CheckinFormMock } from "@/components/checkin-form-mock";
 import { PageHeader } from "@/components/ui";
 
-import { cx } from "@/lib/styles";
+import styles from "@/components/ui.module.css";
+import { createCx } from "@/lib/styles";
+
+const cx = createCx(styles);
 
 export default function NewCheckinPage() {
   return (

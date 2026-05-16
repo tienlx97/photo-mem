@@ -27,7 +27,12 @@ import {
   getMediaSummary,
   getMood
 } from "@/lib/mock-data";
-import { cx } from "@/lib/styles";
+
+import mapStyles from "./map.module.css";
+import uiStyles from "./ui.module.css";
+import { createCx } from "@/lib/styles";
+
+const cx = createCx(uiStyles, mapStyles);
 
 const DEFAULT_CENTER = [10.7757, 106.7004];
 const DEFAULT_ZOOM = 11;

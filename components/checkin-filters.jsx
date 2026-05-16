@@ -5,7 +5,11 @@ import { categories, checkins, moods } from "@/lib/mock-data";
 import { CheckinCard } from "@/components/checkin-card";
 import { Field, SelectField, SelectItem } from "@/components/ui";
 
-import { cx } from "@/lib/styles";
+import checkinStyles from "./checkins.module.css";
+import uiStyles from "./ui.module.css";
+import { createCx } from "@/lib/styles";
+
+const cx = createCx(uiStyles, checkinStyles);
 
 export function CheckinFilters() {
   const [query, setQuery] = useState("");
