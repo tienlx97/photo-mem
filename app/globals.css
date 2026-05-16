@@ -3120,9 +3120,13 @@ textarea:focus {
 }
 
 .drawer-detail-tab-list {
+  position: sticky;
+  top: 0;
+  z-index: 3;
   display: flex;
   gap: 24px;
   border-bottom: 1px solid #e8eaed;
+  background: #fff;
   padding: 0 24px;
 }
 
@@ -3153,6 +3157,7 @@ textarea:focus {
 }
 
 .drawer-detail-tab-panel {
+  min-height: calc(100dvh - 47px);
   outline: none;
 }
 
@@ -4222,6 +4227,10 @@ textarea {
   .drawer-detail-tab-list {
     padding-right: 18px;
     padding-left: 18px;
+  }
+
+  .drawer-detail-tab-panel {
+    min-height: calc(min(78dvh, calc(100dvh - 136px)) - 47px);
   }
 
   .map-drawer.memory-drawer .journal-text,
