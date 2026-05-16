@@ -14,10 +14,8 @@ import {
   TextField
 } from "react-aria-components";
 
-import styles from "./ui.module.css";
-import { createCx } from "@/lib/styles";
+import { cx } from "@/lib/styles";
 
-const cx = createCx(styles);
 
 export function PageHeader({
   eyebrow,

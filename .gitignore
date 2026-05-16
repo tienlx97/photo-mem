@@ -1,2 +1,3 @@
 /node_modules
 /.next
+/.codex-dev-server*.log

@@ -3,6 +3,7 @@ import "overlayscrollbars/overlayscrollbars.css";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "./globals.css";
+import "./styles.css";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 import { AriaProviders } from "@/components/aria-providers";

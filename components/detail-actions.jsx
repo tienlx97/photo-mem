@@ -2,11 +2,8 @@
 
 import { Button } from "react-aria-components";
 
-import detailStyles from "../app/checkins/[id]/detail.module.css";
-import uiStyles from "./ui.module.css";
-import { createCx } from "@/lib/styles";
+import { cx } from "@/lib/styles";
 
-const cx = createCx(uiStyles, detailStyles);
 
 export function DetailActions() {
   return (

@@ -1,9 +1,7 @@
 import { MapSection } from "@/components/map-section";
 
-import styles from "@/components/map.module.css";
-import { createCx } from "@/lib/styles";
+import { cx } from "@/lib/styles";
 
-const cx = createCx(styles);
 
 export default function HomePage() {
   return (

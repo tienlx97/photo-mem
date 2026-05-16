@@ -4,10 +4,8 @@ import Image from "next/image";
 import { Link } from "react-aria-components";
 import { formatDate, getCategory, getCoverImage, getMediaSummary, getMood } from "@/lib/mock-data";
 
-import styles from "./checkins.module.css";
-import { createCx } from "@/lib/styles";
+import { cx } from "@/lib/styles";
 
-const cx = createCx(styles);
 
 export function CheckinCard({ checkin, compact = false }) {
   const category = getCategory(checkin.categoryId);

@@ -12,12 +12,8 @@ import {
   getMood
 } from "@/lib/mock-data";
 
-import detailStyles from "./detail.module.css";
-import checkinStyles from "@/components/checkins.module.css";
-import uiStyles from "@/components/ui.module.css";
-import { createCx } from "@/lib/styles";
+import { cx } from "@/lib/styles";
 
-const cx = createCx(uiStyles, checkinStyles, detailStyles);
 
 export default function CheckinDetailPage({ params }) {
   const checkin = checkins.find((item) => item.id === params.id);

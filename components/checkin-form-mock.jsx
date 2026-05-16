@@ -6,11 +6,8 @@ import { Button, Radio, RadioGroup } from "react-aria-components";
 import { categories, journalPrompts, moods } from "@/lib/mock-data";
 import { Field, SelectField, SelectItem, TextAreaField } from "@/components/ui";
 
-import formStyles from "./form.module.css";
-import uiStyles from "./ui.module.css";
-import { createCx } from "@/lib/styles";
+import { cx } from "@/lib/styles";
 
-const cx = createCx(uiStyles, formStyles);
 
 const previewImages = [
   "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80",

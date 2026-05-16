@@ -5,11 +5,8 @@ import { Button, Input, Link } from "react-aria-components";
 import { moods } from "@/lib/mock-data";
 import { Field, SelectField, SelectItem, TextAreaField } from "@/components/ui";
 
-import mapStyles from "./map.module.css";
-import uiStyles from "./ui.module.css";
-import { createCx } from "@/lib/styles";
+import { cx } from "@/lib/styles";
 
-const cx = createCx(uiStyles, mapStyles);
 
 export function QuickMemoryPanel({ embedded = false }) {
   const [saved, setSaved] = useState(false);
