@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import L from "leaflet";
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { MapContainer, Marker, TileLayer, Tooltip, useMap } from "react-leaflet";
 import { FreeMode, Keyboard } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -30,6 +31,14 @@ import { cx } from "@/lib/styles";
 
 const DEFAULT_CENTER = [10.7757, 106.7004];
 const DEFAULT_ZOOM = 11;
+const DRAWER_SCROLL_OPTIONS = {
+  overflow: { x: "hidden" },
+  scrollbars: {
+    autoHide: "leave",
+    autoHideDelay: 120,
+    theme: "os-theme-google-map"
+  }
+};
 
 function fitMapToCheckins(map, visibleCheckins, options = {}) {
   if (!map || visibleCheckins.length === 0) {
@@ -399,7 +408,13 @@ function MapDrawerOverlay({ activeCheckin, drawerMode, initialMediaIndex, onClos
         {isAddDrawer ? (
           <QuickMemoryPanel embedded />
         ) : activeCheckin ? (
-          <MemoryDrawerContent checkin={activeCheckin} initialMediaIndex={initialMediaIndex} />
+          <OverlayScrollbarsComponent
+            className={cx("drawer-scroll")}
+            defer
+            options={DRAWER_SCROLL_OPTIONS}
+          >
+            <MemoryDrawerContent checkin={activeCheckin} initialMediaIndex={initialMediaIndex} />
+          </OverlayScrollbarsComponent>
         ) : null}
       </aside>
     </FocusScope>

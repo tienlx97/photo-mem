@@ -1,4 +1,5 @@
 import "leaflet/dist/leaflet.css";
+import "overlayscrollbars/overlayscrollbars.css";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "./globals.css";
